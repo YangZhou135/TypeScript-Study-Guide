@@ -1,6 +1,6 @@
 /**
  * 第5章：泛型编程实践练习题解答
- * 
+ *
  * 这里提供了 practice.ts 中所有练习题的正确答案
  * 展示了泛型编程的正确实现方式和最佳实践
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：泛型函数练习 - 解答
 // ============================================================================
 
-console.log('=== 练习1：泛型函数练习 - 解答 ===');
+console.log("=== 练习1：泛型函数练习 - 解答 ===");
 
 // 1. 实现 identity 函数 - 返回传入的参数
 function identity<T>(arg: T): T {
@@ -51,21 +51,21 @@ const strings = ["apple", "banana", "cherry"];
 const identityNumber = identity(42);
 const identityString = identity("hello");
 const swappedTuple = swap(["hello", 42]);
-const evenNumbers = filterArray(numbers, n => n % 2 === 0);
-const doubled = mapArray(numbers, n => n * 2);
+const evenNumbers = filterArray(numbers, (n) => n % 2 === 0);
+const doubled = mapArray(numbers, (n) => n * 2);
 const sum = reduceArray(numbers, (acc, n) => acc + n, 0);
 
-console.log('身份函数:', { identityNumber, identityString });
-console.log('交换元组:', swappedTuple);
-console.log('偶数:', evenNumbers);
-console.log('翻倍:', doubled);
-console.log('求和:', sum);
+console.log("身份函数:", { identityNumber, identityString });
+console.log("交换元组:", swappedTuple);
+console.log("偶数:", evenNumbers);
+console.log("翻倍:", doubled);
+console.log("求和:", sum);
 
 // ============================================================================
 // 练习2：泛型接口练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习2：泛型接口练习 - 解答 ===');
+console.log("\n=== 练习2：泛型接口练习 - 解答 ===");
 
 // 1. 定义 Container<T> 接口 - 通用容器
 interface Container<T> {
@@ -164,7 +164,7 @@ class MemoryRepository<T extends { id: K }, K> implements Repository<T, K> {
 
 // 测试接口实现
 const stringContainer = new SimpleContainer<string>("Hello");
-console.log('容器值:', stringContainer.getValue());
+console.log("容器值:", stringContainer.getValue());
 
 interface User {
     id: number;
@@ -179,7 +179,7 @@ userRepo.save({ id: 1, name: "张三", email: "zhangsan@example.com" });
 // 练习3：泛型类练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习3：泛型类练习 - 解答 ===');
+console.log("\n=== 练习3：泛型类练习 - 解答 ===");
 
 // 1. 实现 Stack<T> 类 - 栈数据结构
 class Stack<T> {
@@ -341,7 +341,7 @@ class EventBus<T> implements EventEmitter<T> {
     emit(event: string, data: T): void {
         const eventListeners = this.listeners.get(event);
         if (eventListeners) {
-            eventListeners.forEach(listener => listener(data));
+            eventListeners.forEach((listener) => listener(data));
         }
     }
 
@@ -359,26 +359,26 @@ const numberStack = new Stack<number>();
 numberStack.push(1);
 numberStack.push(2);
 numberStack.push(3);
-console.log('栈顶元素:', numberStack.peek());
-console.log('弹出元素:', numberStack.pop());
+console.log("栈顶元素:", numberStack.peek());
+console.log("弹出元素:", numberStack.pop());
 
 const stringQueue = new Queue<string>();
 stringQueue.enqueue("first");
 stringQueue.enqueue("second");
-console.log('队首元素:', stringQueue.front());
-console.log('出队元素:', stringQueue.dequeue());
+console.log("队首元素:", stringQueue.front());
+console.log("出队元素:", stringQueue.dequeue());
 
 const numberList = new LinkedList<number>();
 numberList.append(1);
 numberList.append(2);
 numberList.append(3);
-console.log('链表数组:', numberList.toArray());
+console.log("链表数组:", numberList.toArray());
 
 // ============================================================================
 // 练习4：泛型约束练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习4：泛型约束练习 - 解答 ===');
+console.log("\n=== 练习4：泛型约束练习 - 解答 ===");
 
 // 1. 实现 getLength 函数 - 获取有 length 属性的对象长度
 interface Lengthwise {
@@ -406,7 +406,7 @@ function merge<T extends object, U extends object>(obj1: T, obj2: U): T & U {
 // 4. 实现 pick 函数 - 选择对象属性
 function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
     const result = {} as Pick<T, K>;
-    keys.forEach(key => {
+    keys.forEach((key) => {
         result[key] = obj[key];
     });
     return result;
@@ -414,14 +414,17 @@ function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
 
 // 5. 实现 groupBy 函数 - 按键分组
 function groupBy<T, K extends keyof T>(array: T[], key: K): Record<string, T[]> {
-    return array.reduce((groups, item) => {
-        const groupKey = String(item[key]);
-        if (!groups[groupKey]) {
-            groups[groupKey] = [];
-        }
-        groups[groupKey].push(item);
-        return groups;
-    }, {} as Record<string, T[]>);
+    return array.reduce(
+        (groups, item) => {
+            const groupKey = String(item[key]);
+            if (!groups[groupKey]) {
+                groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+        },
+        {} as Record<string, T[]>
+    );
 }
 
 // 测试约束泛型
@@ -429,26 +432,22 @@ const testObject = { name: "test", age: 25, city: "Beijing" };
 const picked = pick(testObject, ["name", "age"]);
 const merged = merge({ a: 1 }, { b: 2 });
 
-console.log('选择属性:', picked);
-console.log('合并对象:', merged);
-console.log('字符串长度:', getLength("hello world"));
-console.log('数组长度:', getLength([1, 2, 3, 4, 5]));
+console.log("选择属性:", picked);
+console.log("合并对象:", merged);
+console.log("字符串长度:", getLength("hello world"));
+console.log("数组长度:", getLength([1, 2, 3, 4, 5]));
 
 // ============================================================================
 // 练习5：条件泛型练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习5：条件泛型练习 - 解答 ===');
+console.log("\n=== 练习5：条件泛型练习 - 解答 ===");
 
 // 1. 实现 Flatten<T> - 扁平化数组类型
 type Flatten<T> = T extends (infer U)[] ? U : T;
 
 // 2. 实现 DeepFlatten<T> - 深度扁平化
-type DeepFlatten<T> = T extends (infer U)[]
-    ? U extends any[]
-        ? DeepFlatten<U>
-        : U
-    : T;
+type DeepFlatten<T> = T extends (infer U)[] ? (U extends any[] ? DeepFlatten<U> : U) : T;
 
 // 3. 实现 PromiseType<T> - 提取 Promise 类型
 type PromiseType<T> = T extends Promise<infer U> ? U : T;
@@ -483,15 +482,18 @@ type FlatNumber = Flatten<number>; // number
 type PromiseString = PromiseType<Promise<string>>; // string
 type TestArgs = FunctionArgs<(a: string, b: number) => boolean>; // [string, number]
 
-const nestedArray = [[1, 2], [3, 4]];
+const nestedArray = [
+    [1, 2],
+    [3, 4],
+];
 const flattened = flattenArray(nestedArray);
-console.log('扁平化数组:', flattened);
+console.log("扁平化数组:", flattened);
 
 // ============================================================================
 // 练习6：综合应用练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习6：综合应用练习 - 解答 ===');
+console.log("\n=== 练习6：综合应用练习 - 解答 ===");
 
 // 1. 定义 API 相关的泛型类型
 interface ApiResponse<T> {
@@ -512,7 +514,7 @@ interface ApiError {
 }
 
 type ApiResult<T> = ApiResponse<T> | ApiError;
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 interface RequestConfig<T = any> {
     headers?: Record<string, string>;
@@ -531,16 +533,16 @@ class ApiClient {
             return {
                 success: true,
                 data: {} as T,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         } catch (error) {
             return {
                 success: false,
                 error: {
-                    code: 'NETWORK_ERROR',
-                    message: 'Network request failed'
+                    code: "NETWORK_ERROR",
+                    message: "Network request failed",
                 },
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         }
     }
@@ -551,16 +553,16 @@ class ApiClient {
             return {
                 success: true,
                 data: {} as T,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         } catch (error) {
             return {
                 success: false,
                 error: {
-                    code: 'NETWORK_ERROR',
-                    message: 'Network request failed'
+                    code: "NETWORK_ERROR",
+                    message: "Network request failed",
                 },
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         }
     }
@@ -571,16 +573,16 @@ class ApiClient {
             return {
                 success: true,
                 data: {} as T,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         } catch (error) {
             return {
                 success: false,
                 error: {
-                    code: 'NETWORK_ERROR',
-                    message: 'Network request failed'
+                    code: "NETWORK_ERROR",
+                    message: "Network request failed",
                 },
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         }
     }
@@ -591,16 +593,16 @@ class ApiClient {
             return {
                 success: true,
                 data: {} as T,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         } catch (error) {
             return {
                 success: false,
                 error: {
-                    code: 'NETWORK_ERROR',
-                    message: 'Network request failed'
+                    code: "NETWORK_ERROR",
+                    message: "Network request failed",
                 },
-                timestamp: Date.now()
+                timestamp: Date.now(),
             };
         }
     }
@@ -632,7 +634,7 @@ class UserService {
     }
 
     async createUser(userData: CreateUserRequest): Promise<ApiResult<User>> {
-        return this.apiClient.post<User, CreateUserRequest>('/users', userData);
+        return this.apiClient.post<User, CreateUserRequest>("/users", userData);
     }
 
     async updateUser(id: number, userData: UpdateUserRequest): Promise<ApiResult<User>> {
@@ -645,7 +647,7 @@ class UserService {
 }
 
 // 测试 API 客户端
-const apiClient = new ApiClient('https://api.example.com');
+const apiClient = new ApiClient("https://api.example.com");
 const userService = new UserService(apiClient);
 
 // 模拟 API 调用
@@ -653,18 +655,18 @@ async function testApiClient() {
     const userResult = await userService.getUser(1);
     const createResult = await userService.createUser({
         name: "张三",
-        email: "zhangsan@example.com"
+        email: "zhangsan@example.com",
     });
-    
-    console.log('API 客户端测试完成');
+
+    console.log("API 客户端测试完成");
 }
 
 testApiClient();
 
-console.log('\n=== 解答完成！ ===');
-console.log('💡 学习要点:');
-console.log('1. 泛型提供了代码重用和类型安全的完美平衡');
-console.log('2. 泛型约束让你能够在保持灵活性的同时添加类型限制');
-console.log('3. 条件泛型提供了强大的类型推导能力');
-console.log('4. 泛型在数据结构和 API 设计中有广泛应用');
-console.log('5. 合理使用泛型可以构建高度可重用的代码库');
+console.log("\n=== 解答完成！ ===");
+console.log("💡 学习要点:");
+console.log("1. 泛型提供了代码重用和类型安全的完美平衡");
+console.log("2. 泛型约束让你能够在保持灵活性的同时添加类型限制");
+console.log("3. 条件泛型提供了强大的类型推导能力");
+console.log("4. 泛型在数据结构和 API 设计中有广泛应用");
+console.log("5. 合理使用泛型可以构建高度可重用的代码库");

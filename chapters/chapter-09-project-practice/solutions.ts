@@ -1,6 +1,6 @@
 /**
  * 第9章：完整项目实战练习题解答
- * 
+ *
  * 这里提供了 practice.ts 中博客管理系统练习的标准解答
  * 展示了完整项目开发的最佳实践
  */
@@ -9,14 +9,14 @@
 export {};
 
 // 模拟相关导入
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Vue, Component, Prop, Emit, Watch } from "vue-property-decorator";
+import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 
 // ============================================================================
 // 练习1：博客系统类型定义 - 解答
 // ============================================================================
 
-console.log('=== 练习1：博客系统类型定义 - 解答 ===');
+console.log("=== 练习1：博客系统类型定义 - 解答 ===");
 
 // 1. 定义用户类型
 interface User {
@@ -33,10 +33,10 @@ interface User {
 
 // 2. 定义用户角色枚举
 enum UserRole {
-    ADMIN = 'admin',
-    EDITOR = 'editor',
-    AUTHOR = 'author',
-    READER = 'reader'
+    ADMIN = "admin",
+    EDITOR = "editor",
+    AUTHOR = "author",
+    READER = "reader",
 }
 
 // 3. 定义文章类型
@@ -60,9 +60,9 @@ interface Article {
 
 // 4. 定义文章状态枚举
 enum ArticleStatus {
-    DRAFT = 'draft',
-    PUBLISHED = 'published',
-    ARCHIVED = 'archived'
+    DRAFT = "draft",
+    PUBLISHED = "published",
+    ARCHIVED = "archived",
 }
 
 // 5. 定义分类类型
@@ -151,7 +151,7 @@ interface CommentForm {
 // 练习2：API 客户端实现 - 解答
 // ============================================================================
 
-console.log('=== 练习2：API 客户端实现 - 解答 ===');
+console.log("=== 练习2：API 客户端实现 - 解答 ===");
 
 // 1. 实现基础HTTP客户端
 class ApiClient {
@@ -160,23 +160,23 @@ class ApiClient {
 
     constructor(baseURL: string) {
         this.baseURL = baseURL;
-        this.token = localStorage.getItem('auth_token');
+        this.token = localStorage.getItem("auth_token");
     }
 
     setToken(token: string): void {
         this.token = token;
-        localStorage.setItem('auth_token', token);
+        localStorage.setItem("auth_token", token);
     }
 
     clearToken(): void {
         this.token = null;
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem("auth_token");
     }
 
     private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
         const url = `${this.baseURL}${endpoint}`;
         const headers: HeadersInit = {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             ...options.headers,
         };
 
@@ -189,62 +189,64 @@ class ApiClient {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Request failed');
+                throw new Error(data.message || "Request failed");
             }
 
             return data;
         } catch (error) {
-            console.error('API request failed:', error);
+            console.error("API request failed:", error);
             throw error;
         }
     }
 
     async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-        return this.request<T>(endpoint, { method: 'GET' });
+        return this.request<T>(endpoint, { method: "GET" });
     }
 
     async post<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, {
-            method: 'POST',
+            method: "POST",
             body: data ? JSON.stringify(data) : undefined,
         });
     }
 
     async put<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, {
-            method: 'PUT',
+            method: "PUT",
             body: data ? JSON.stringify(data) : undefined,
         });
     }
 
     async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
-        return this.request<T>(endpoint, { method: 'DELETE' });
+        return this.request<T>(endpoint, { method: "DELETE" });
     }
 }
 
 // 创建API客户端实例
-const apiClient = new ApiClient('http://localhost:3000/api');
+const apiClient = new ApiClient("http://localhost:3000/api");
 
 // 2. 实现认证API
 class AuthApi {
-    static async login(credentials: LoginForm): Promise<ApiResponse<{ user: User; token: string }>> {
-        return apiClient.post<{ user: User; token: string }, LoginForm>('/auth/login', credentials);
+    static async login(
+        credentials: LoginForm
+    ): Promise<ApiResponse<{ user: User; token: string }>> {
+        return apiClient.post<{ user: User; token: string }, LoginForm>("/auth/login", credentials);
     }
 
     static async register(userData: RegisterForm): Promise<ApiResponse<User>> {
-        return apiClient.post<User, RegisterForm>('/auth/register', userData);
+        return apiClient.post<User, RegisterForm>("/auth/register", userData);
     }
 
     static async getProfile(): Promise<ApiResponse<User>> {
-        return apiClient.get<User>('/auth/profile');
+        return apiClient.get<User>("/auth/profile");
     }
 
     static async updateProfile(userData: Partial<User>): Promise<ApiResponse<User>> {
-        return apiClient.put<User>('/auth/profile', userData);
+        return apiClient.put<User>("/auth/profile", userData);
     }
 
     static async logout(): Promise<ApiResponse<null>> {
-        return apiClient.post<null>('/auth/logout');
+        return apiClient.post<null>("/auth/logout");
     }
 }
 
@@ -258,8 +260,8 @@ class ArticleApi {
         authorId?: number;
         search?: string;
     }): Promise<PaginatedResponse<Article>> {
-        const queryString = params ? new URLSearchParams(params as any).toString() : '';
-        return apiClient.get<Article[]>(`/articles${queryString ? `?${queryString}` : ''}`);
+        const queryString = params ? new URLSearchParams(params as any).toString() : "";
+        return apiClient.get<Article[]>(`/articles${queryString ? `?${queryString}` : ""}`);
     }
 
     static async getArticle(id: number): Promise<ApiResponse<Article>> {
@@ -267,10 +269,13 @@ class ArticleApi {
     }
 
     static async createArticle(articleData: ArticleForm): Promise<ApiResponse<Article>> {
-        return apiClient.post<Article, ArticleForm>('/articles', articleData);
+        return apiClient.post<Article, ArticleForm>("/articles", articleData);
     }
 
-    static async updateArticle(id: number, articleData: Partial<ArticleForm>): Promise<ApiResponse<Article>> {
+    static async updateArticle(
+        id: number,
+        articleData: Partial<ArticleForm>
+    ): Promise<ApiResponse<Article>> {
         return apiClient.put<Article>(`/articles/${id}`, articleData);
     }
 
@@ -290,18 +295,23 @@ class ArticleApi {
 // 4. 实现分类API
 class CategoryApi {
     static async getCategories(): Promise<ApiResponse<Category[]>> {
-        return apiClient.get<Category[]>('/categories');
+        return apiClient.get<Category[]>("/categories");
     }
 
     static async getCategory(id: number): Promise<ApiResponse<Category>> {
         return apiClient.get<Category>(`/categories/${id}`);
     }
 
-    static async createCategory(categoryData: Omit<Category, 'id' | 'articleCount' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<Category>> {
-        return apiClient.post<Category>('/categories', categoryData);
+    static async createCategory(
+        categoryData: Omit<Category, "id" | "articleCount" | "createdAt" | "updatedAt">
+    ): Promise<ApiResponse<Category>> {
+        return apiClient.post<Category>("/categories", categoryData);
     }
 
-    static async updateCategory(id: number, categoryData: Partial<Category>): Promise<ApiResponse<Category>> {
+    static async updateCategory(
+        id: number,
+        categoryData: Partial<Category>
+    ): Promise<ApiResponse<Category>> {
         return apiClient.put<Category>(`/categories/${id}`, categoryData);
     }
 
@@ -312,19 +322,30 @@ class CategoryApi {
 
 // 5. 实现评论API
 class CommentApi {
-    static async getComments(articleId: number, params?: {
-        page?: number;
-        limit?: number;
-    }): Promise<PaginatedResponse<Comment>> {
-        const queryString = params ? new URLSearchParams(params as any).toString() : '';
-        return apiClient.get<Comment[]>(`/articles/${articleId}/comments${queryString ? `?${queryString}` : ''}`);
+    static async getComments(
+        articleId: number,
+        params?: {
+            page?: number;
+            limit?: number;
+        }
+    ): Promise<PaginatedResponse<Comment>> {
+        const queryString = params ? new URLSearchParams(params as any).toString() : "";
+        return apiClient.get<Comment[]>(
+            `/articles/${articleId}/comments${queryString ? `?${queryString}` : ""}`
+        );
     }
 
-    static async createComment(articleId: number, commentData: CommentForm): Promise<ApiResponse<Comment>> {
+    static async createComment(
+        articleId: number,
+        commentData: CommentForm
+    ): Promise<ApiResponse<Comment>> {
         return apiClient.post<Comment, CommentForm>(`/articles/${articleId}/comments`, commentData);
     }
 
-    static async updateComment(id: number, commentData: Partial<CommentForm>): Promise<ApiResponse<Comment>> {
+    static async updateComment(
+        id: number,
+        commentData: Partial<CommentForm>
+    ): Promise<ApiResponse<Comment>> {
         return apiClient.put<Comment>(`/comments/${id}`, commentData);
     }
 
@@ -345,13 +366,13 @@ class CommentApi {
 // 练习3：Vuex 状态管理 - 解答
 // ============================================================================
 
-console.log('=== 练习3：Vuex 状态管理 - 解答 ===');
+console.log("=== 练习3：Vuex 状态管理 - 解答 ===");
 
 // 1. 实现认证模块
 @Module({ namespaced: true })
 class AuthModule extends VuexModule {
     user: User | null = null;
-    token: string | null = localStorage.getItem('auth_token');
+    token: string | null = localStorage.getItem("auth_token");
     isLoading: boolean = false;
 
     // Getters
@@ -360,7 +381,7 @@ class AuthModule extends VuexModule {
     }
 
     get userName(): string {
-        return this.user?.username || 'Guest';
+        return this.user?.username || "Guest";
     }
 
     get userRole(): UserRole | null {
@@ -368,14 +389,15 @@ class AuthModule extends VuexModule {
     }
 
     get canWrite(): boolean {
-        return this.user?.role === UserRole.ADMIN ||
-               this.user?.role === UserRole.EDITOR ||
-               this.user?.role === UserRole.AUTHOR;
+        return (
+            this.user?.role === UserRole.ADMIN ||
+            this.user?.role === UserRole.EDITOR ||
+            this.user?.role === UserRole.AUTHOR
+        );
     }
 
     get canManage(): boolean {
-        return this.user?.role === UserRole.ADMIN ||
-               this.user?.role === UserRole.EDITOR;
+        return this.user?.role === UserRole.ADMIN || this.user?.role === UserRole.EDITOR;
     }
 
     // Mutations
@@ -387,7 +409,7 @@ class AuthModule extends VuexModule {
     @Mutation
     SET_TOKEN(token: string): void {
         this.token = token;
-        localStorage.setItem('auth_token', token);
+        localStorage.setItem("auth_token", token);
         apiClient.setToken(token);
     }
 
@@ -400,7 +422,7 @@ class AuthModule extends VuexModule {
     CLEAR_AUTH(): void {
         this.user = null;
         this.token = null;
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem("auth_token");
         apiClient.clearToken();
     }
 
@@ -456,27 +478,30 @@ class ArticleModule extends VuexModule {
         page: 1,
         limit: 10,
         total: 0,
-        totalPages: 0
+        totalPages: 0,
     };
 
     // Getters
     get publishedArticles(): Article[] {
-        return this.articles.filter(article => article.status === ArticleStatus.PUBLISHED);
+        return this.articles.filter((article) => article.status === ArticleStatus.PUBLISHED);
     }
 
     get draftArticles(): Article[] {
-        return this.articles.filter(article => article.status === ArticleStatus.DRAFT);
+        return this.articles.filter((article) => article.status === ArticleStatus.DRAFT);
     }
 
     get filteredArticles(): Article[] {
-        return this.articles.filter(article => {
+        return this.articles.filter((article) => {
             if (this.filters.status && article.status !== this.filters.status) return false;
-            if (this.filters.categoryId && article.categoryId !== this.filters.categoryId) return false;
+            if (this.filters.categoryId && article.categoryId !== this.filters.categoryId)
+                return false;
             if (this.filters.authorId && article.authorId !== this.filters.authorId) return false;
             if (this.filters.search) {
                 const searchLower = this.filters.search.toLowerCase();
-                return article.title.toLowerCase().includes(searchLower) ||
-                       article.content.toLowerCase().includes(searchLower);
+                return (
+                    article.title.toLowerCase().includes(searchLower) ||
+                    article.content.toLowerCase().includes(searchLower)
+                );
             }
             return true;
         });
@@ -484,7 +509,7 @@ class ArticleModule extends VuexModule {
 
     get articleById() {
         return (id: number): Article | undefined => {
-            return this.articles.find(article => article.id === id);
+            return this.articles.find((article) => article.id === id);
         };
     }
 
@@ -506,7 +531,7 @@ class ArticleModule extends VuexModule {
 
     @Mutation
     UPDATE_ARTICLE(updatedArticle: Article): void {
-        const index = this.articles.findIndex(a => a.id === updatedArticle.id);
+        const index = this.articles.findIndex((a) => a.id === updatedArticle.id);
         if (index > -1) {
             this.articles.splice(index, 1, updatedArticle);
         }
@@ -514,7 +539,7 @@ class ArticleModule extends VuexModule {
 
     @Mutation
     REMOVE_ARTICLE(articleId: number): void {
-        const index = this.articles.findIndex(a => a.id === articleId);
+        const index = this.articles.findIndex((a) => a.id === articleId);
         if (index > -1) {
             this.articles.splice(index, 1);
         }
@@ -526,7 +551,7 @@ class ArticleModule extends VuexModule {
     }
 
     @Mutation
-    SET_FILTERS(filters: ArticleModule['filters']): void {
+    SET_FILTERS(filters: ArticleModule["filters"]): void {
         this.filters = { ...this.filters, ...filters };
     }
 
@@ -536,7 +561,7 @@ class ArticleModule extends VuexModule {
     }
 
     @Mutation
-    SET_PAGINATION(pagination: ArticleModule['pagination']): void {
+    SET_PAGINATION(pagination: ArticleModule["pagination"]): void {
         this.pagination = pagination;
     }
 
@@ -579,7 +604,13 @@ class ArticleModule extends VuexModule {
     }
 
     @Action
-    async updateArticle({ id, data }: { id: number; data: Partial<ArticleForm> }): Promise<Article> {
+    async updateArticle({
+        id,
+        data,
+    }: {
+        id: number;
+        data: Partial<ArticleForm>;
+    }): Promise<Article> {
         const response = await ArticleApi.updateArticle(id, data);
         this.UPDATE_ARTICLE(response.data);
         return response.data;
@@ -609,7 +640,7 @@ class ArticleModule extends VuexModule {
     }
 
     @Action
-    setFilters(filters: ArticleModule['filters']): void {
+    setFilters(filters: ArticleModule["filters"]): void {
         this.SET_FILTERS(filters);
     }
 
@@ -623,7 +654,7 @@ class ArticleModule extends VuexModule {
 // 练习4：Vue 组件开发 - 解答
 // ============================================================================
 
-console.log('=== 练习4：Vue 组件开发 - 解答 ===');
+console.log("=== 练习4：Vue 组件开发 - 解答 ===");
 
 // 1. 实现文章卡片组件
 @Component
@@ -643,20 +674,22 @@ class ArticleCard extends Vue {
     // 计算属性
     get statusClass(): string {
         const classMap = {
-            [ArticleStatus.DRAFT]: 'status-draft',
-            [ArticleStatus.PUBLISHED]: 'status-published',
-            [ArticleStatus.ARCHIVED]: 'status-archived'
+            [ArticleStatus.DRAFT]: "status-draft",
+            [ArticleStatus.PUBLISHED]: "status-published",
+            [ArticleStatus.ARCHIVED]: "status-archived",
         };
         return classMap[this.article.status];
     }
 
     get formattedDate(): string {
-        return new Date(this.article.publishedAt || this.article.createdAt).toLocaleDateString('zh-CN');
+        return new Date(this.article.publishedAt || this.article.createdAt).toLocaleDateString(
+            "zh-CN"
+        );
     }
 
     get excerpt(): string {
         if (this.article.excerpt) return this.article.excerpt;
-        return this.article.content.substring(0, 200) + '...';
+        return this.article.content.substring(0, 200) + "...";
     }
 
     get readingTime(): string {
@@ -667,22 +700,22 @@ class ArticleCard extends Vue {
     }
 
     // 事件处理
-    @Emit('click')
+    @Emit("click")
     handleClick(): Article {
         return this.article;
     }
 
-    @Emit('like')
+    @Emit("like")
     handleLike(): Article {
         return this.article;
     }
 
-    @Emit('edit')
+    @Emit("edit")
     handleEdit(): Article {
         return this.article;
     }
 
-    @Emit('delete')
+    @Emit("delete")
     handleDelete(): Article {
         return this.article;
     }
@@ -705,36 +738,36 @@ class ArticleEditor extends Vue {
 
     // 表单状态
     private form: ArticleForm = {
-        title: '',
-        content: '',
-        excerpt: '',
-        coverImage: '',
+        title: "",
+        content: "",
+        excerpt: "",
+        coverImage: "",
         categoryId: 0,
         tags: [],
-        status: ArticleStatus.DRAFT
+        status: ArticleStatus.DRAFT,
     };
 
     private errors: Record<string, string> = {};
     private isDirty: boolean = false;
 
     // 监听初始文章变化
-    @Watch('initialArticle', { immediate: true })
+    @Watch("initialArticle", { immediate: true })
     onInitialArticleChanged(article?: Article): void {
         if (article) {
             this.form = {
                 title: article.title,
                 content: article.content,
-                excerpt: article.excerpt || '',
-                coverImage: article.coverImage || '',
+                excerpt: article.excerpt || "",
+                coverImage: article.coverImage || "",
                 categoryId: article.categoryId,
                 tags: [...article.tags],
-                status: article.status
+                status: article.status,
             };
         }
     }
 
     // 监听表单变化
-    @Watch('form', { deep: true })
+    @Watch("form", { deep: true })
     onFormChanged(): void {
         this.isDirty = true;
     }
@@ -745,7 +778,7 @@ class ArticleEditor extends Vue {
     }
 
     get canSave(): boolean {
-        return this.form.title.trim() !== '' && this.form.content.trim() !== '';
+        return this.form.title.trim() !== "" && this.form.content.trim() !== "";
     }
 
     get canPublish(): boolean {
@@ -761,21 +794,21 @@ class ArticleEditor extends Vue {
         this.errors = {};
 
         if (!this.form.title.trim()) {
-            this.errors.title = '标题不能为空';
+            this.errors.title = "标题不能为空";
         }
 
         if (!this.form.content.trim()) {
-            this.errors.content = '内容不能为空';
+            this.errors.content = "内容不能为空";
         }
 
         if (this.form.categoryId === 0) {
-            this.errors.categoryId = '请选择分类';
+            this.errors.categoryId = "请选择分类";
         }
 
         return Object.keys(this.errors).length === 0;
     }
 
-    @Emit('save')
+    @Emit("save")
     handleSave(): ArticleForm | null {
         if (this.validateForm()) {
             this.isDirty = false;
@@ -784,7 +817,7 @@ class ArticleEditor extends Vue {
         return null;
     }
 
-    @Emit('publish')
+    @Emit("publish")
     handlePublish(): ArticleForm | null {
         if (this.validateForm() && this.canPublish) {
             this.form.status = ArticleStatus.PUBLISHED;
@@ -794,7 +827,7 @@ class ArticleEditor extends Vue {
         return null;
     }
 
-    @Emit('cancel')
+    @Emit("cancel")
     handleCancel(): void {
         this.isDirty = false;
     }
@@ -802,7 +835,7 @@ class ArticleEditor extends Vue {
     // 生命周期钩子
     beforeRouteLeave(to: any, from: any, next: any): void {
         if (this.isDirty) {
-            const answer = window.confirm('您有未保存的更改，确定要离开吗？');
+            const answer = window.confirm("您有未保存的更改，确定要离开吗？");
             if (answer) {
                 next();
             } else {
@@ -818,31 +851,37 @@ class ArticleEditor extends Vue {
 // 练习5：工具函数和类型守卫 - 解答
 // ============================================================================
 
-console.log('=== 练习5：工具函数和类型守卫 - 解答 ===');
+console.log("=== 练习5：工具函数和类型守卫 - 解答 ===");
 
 // 1. 实现类型守卫
 function isUser(obj: any): obj is User {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.username === 'string' &&
-           typeof obj.email === 'string' &&
-           Object.values(UserRole).includes(obj.role);
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.username === "string" &&
+        typeof obj.email === "string" &&
+        Object.values(UserRole).includes(obj.role)
+    );
 }
 
 function isArticle(obj: any): obj is Article {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.title === 'string' &&
-           typeof obj.content === 'string' &&
-           Object.values(ArticleStatus).includes(obj.status);
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.title === "string" &&
+        typeof obj.content === "string" &&
+        Object.values(ArticleStatus).includes(obj.status)
+    );
 }
 
 function isComment(obj: any): obj is Comment {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.content === 'string' &&
-           typeof obj.authorId === 'number' &&
-           typeof obj.articleId === 'number';
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.content === "string" &&
+        typeof obj.authorId === "number" &&
+        typeof obj.articleId === "number"
+    );
 }
 
 // 2. 实现文本处理工具
@@ -862,20 +901,20 @@ class TextUtils {
     // 高亮搜索关键词
     static highlightKeywords(text: string, keywords: string[]): string {
         let result = text;
-        keywords.forEach(keyword => {
-            const regex = new RegExp(`(${keyword})`, 'gi');
-            result = result.replace(regex, '<mark>$1</mark>');
+        keywords.forEach((keyword) => {
+            const regex = new RegExp(`(${keyword})`, "gi");
+            result = result.replace(regex, "<mark>$1</mark>");
         });
         return result;
     }
 
     // 清理HTML标签
     static stripHtml(html: string): string {
-        return html.replace(/<[^>]*>/g, '');
+        return html.replace(/<[^>]*>/g, "");
     }
 
     // 截断文本
-    static truncate(text: string, maxLength: number, suffix: string = '...'): string {
+    static truncate(text: string, maxLength: number, suffix: string = "..."): string {
         if (text.length <= maxLength) return text;
         return text.substring(0, maxLength - suffix.length) + suffix;
     }
@@ -887,9 +926,9 @@ class SeoUtils {
     static generateSlug(title: string): string {
         return title
             .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
+            .replace(/[^\w\s-]/g, "")
+            .replace(/[\s_-]+/g, "-")
+            .replace(/^-+|-+$/g, "");
     }
 
     // 生成meta描述
@@ -902,12 +941,12 @@ class SeoUtils {
     static extractKeywords(content: string, maxCount: number = 10): string[] {
         const words = content
             .toLowerCase()
-            .replace(/[^\w\s]/g, '')
+            .replace(/[^\w\s]/g, "")
             .split(/\s+/)
-            .filter(word => word.length > 3);
+            .filter((word) => word.length > 3);
 
         const wordCount: Record<string, number> = {};
-        words.forEach(word => {
+        words.forEach((word) => {
             wordCount[word] = (wordCount[word] || 0) + 1;
         });
 
@@ -951,7 +990,7 @@ class PermissionUtils {
 // 练习6：错误处理和测试 - 解答
 // ============================================================================
 
-console.log('=== 练习6：错误处理和测试 - 解答 ===');
+console.log("=== 练习6：错误处理和测试 - 解答 ===");
 
 // 1. 定义自定义错误类
 class BlogError extends Error {
@@ -960,7 +999,7 @@ class BlogError extends Error {
 
     constructor(message: string, code: string, statusCode: number = 500) {
         super(message);
-        this.name = 'BlogError';
+        this.name = "BlogError";
         this.code = code;
         this.statusCode = statusCode;
         Error.captureStackTrace(this, this.constructor);
@@ -971,30 +1010,30 @@ class ValidationError extends BlogError {
     public readonly field: string;
 
     constructor(message: string, field: string) {
-        super(message, 'VALIDATION_ERROR', 400);
-        this.name = 'ValidationError';
+        super(message, "VALIDATION_ERROR", 400);
+        this.name = "ValidationError";
         this.field = field;
     }
 }
 
 class AuthenticationError extends BlogError {
-    constructor(message: string = '认证失败') {
-        super(message, 'AUTHENTICATION_ERROR', 401);
-        this.name = 'AuthenticationError';
+    constructor(message: string = "认证失败") {
+        super(message, "AUTHENTICATION_ERROR", 401);
+        this.name = "AuthenticationError";
     }
 }
 
 class AuthorizationError extends BlogError {
-    constructor(message: string = '权限不足') {
-        super(message, 'AUTHORIZATION_ERROR', 403);
-        this.name = 'AuthorizationError';
+    constructor(message: string = "权限不足") {
+        super(message, "AUTHORIZATION_ERROR", 403);
+        this.name = "AuthorizationError";
     }
 }
 
 // 2. 实现错误处理器
 class ErrorHandler {
     static handle(error: Error): void {
-        console.error('Error occurred:', error);
+        console.error("Error occurred:", error);
 
         if (error instanceof BlogError) {
             this.handleBlogError(error);
@@ -1019,25 +1058,25 @@ class ErrorHandler {
     }
 
     private static handleValidationError(error: ValidationError): void {
-        this.notifyUser(`${error.field}: ${error.message}`, 'warning');
+        this.notifyUser(`${error.field}: ${error.message}`, "warning");
     }
 
     private static handleAuthError(error: AuthenticationError | AuthorizationError): void {
-        this.notifyUser(error.message, 'error');
+        this.notifyUser(error.message, "error");
         // 可能需要重定向到登录页面
     }
 
     private static handleUnknownError(error: Error): void {
         this.logError(error);
-        this.notifyUser('发生了未知错误，请稍后重试');
+        this.notifyUser("发生了未知错误，请稍后重试");
     }
 
     private static logError(error: Error): void {
         // 这里应该发送错误到日志服务
-        console.error('System Error:', error);
+        console.error("System Error:", error);
     }
 
-    private static notifyUser(message: string, type: 'error' | 'warning' = 'error'): void {
+    private static notifyUser(message: string, type: "error" | "warning" = "error"): void {
         // 这里应该调用通知组件显示错误
         console.error(`User ${type}:`, message);
     }
@@ -1047,15 +1086,16 @@ class ErrorHandler {
 // 练习7：性能优化 - 解答
 // ============================================================================
 
-console.log('=== 练习7：性能优化 - 解答 ===');
+console.log("=== 练习7：性能优化 - 解答 ===");
 
 // 1. 实现缓存装饰器
-function Cache(ttl: number = 300000) { // 5分钟默认缓存
-    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+function Cache(ttl: number = 300000) {
+    // 5分钟默认缓存
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         const cache = new Map<string, { value: any; timestamp: number }>();
 
-        descriptor.value = function(...args: any[]) {
+        descriptor.value = function (...args: any[]) {
             const key = JSON.stringify(args);
             const cached = cache.get(key);
 
@@ -1074,11 +1114,11 @@ function Cache(ttl: number = 300000) { // 5分钟默认缓存
 
 // 2. 实现防抖装饰器
 function Debounce(delay: number = 300) {
-    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         let timeoutId: number;
 
-        descriptor.value = function(...args: any[]) {
+        descriptor.value = function (...args: any[]) {
             clearTimeout(timeoutId);
             timeoutId = window.setTimeout(() => {
                 originalMethod.apply(this, args);
@@ -1091,11 +1131,11 @@ function Debounce(delay: number = 300) {
 
 // 3. 实现节流装饰器
 function Throttle(delay: number = 300) {
-    return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         let lastCall = 0;
 
-        descriptor.value = function(...args: any[]) {
+        descriptor.value = function (...args: any[]) {
             const now = Date.now();
             if (now - lastCall >= delay) {
                 lastCall = now;
@@ -1115,7 +1155,7 @@ class CacheUtils {
         this.cache.set(key, {
             value,
             timestamp: Date.now(),
-            ttl
+            ttl,
         });
     }
 

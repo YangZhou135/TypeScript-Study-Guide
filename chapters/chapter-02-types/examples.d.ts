@@ -44,18 +44,21 @@ type Theme = "light" | "dark" | "auto";
 type Size = "small" | "medium" | "large";
 type ID = string | number;
 type Response = string | number | boolean | null;
-type PaymentMethod = {
-    type: "credit_card";
-    cardNumber: string;
-    expiryDate: string;
-} | {
-    type: "paypal";
-    email: string;
-} | {
-    type: "bank_transfer";
-    accountNumber: string;
-    routingNumber: string;
-};
+type PaymentMethod =
+    | {
+          type: "credit_card";
+          cardNumber: string;
+          expiryDate: string;
+      }
+    | {
+          type: "paypal";
+          email: string;
+      }
+    | {
+          type: "bank_transfer";
+          accountNumber: string;
+          routingNumber: string;
+      };
 declare function processStatus(status: Status): string;
 declare function formatID(id: ID): string;
 declare function processPayment(method: PaymentMethod): string;

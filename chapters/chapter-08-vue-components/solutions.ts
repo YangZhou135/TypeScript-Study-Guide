@@ -1,6 +1,6 @@
 /**
  * 第8章：Vue 组件的 TypeScript 开发练习题解答
- * 
+ *
  * 这里提供了 practice.ts 中所有练习题的正确答案
  * 展示了用 TypeScript 开发类型安全的 Vue 组件的最佳实践
  */
@@ -9,42 +9,42 @@
 export {};
 
 // 模拟 Vue 相关导入
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
+import { Vue, Component, Prop, Emit, Watch } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
 
 // ============================================================================
 // 练习1：复杂 Props 类型定义练习 - 解答
 // ============================================================================
 
-console.log('=== 练习1：复杂 Props 类型定义练习 - 解答 ===');
+console.log("=== 练习1：复杂 Props 类型定义练习 - 解答 ===");
 
 // 1. 定义表格列配置类型
 interface TableColumn {
-    key: string;                                    // 列的唯一标识
-    title: string;                                  // 列标题
-    width?: number;                                 // 列宽度（可选）
-    sortable?: boolean;                             // 是否可排序（可选）
-    render?: (value: any, record: any) => string;  // 自定义渲染函数（可选）
+    key: string; // 列的唯一标识
+    title: string; // 列标题
+    width?: number; // 列宽度（可选）
+    sortable?: boolean; // 是否可排序（可选）
+    render?: (value: any, record: any) => string; // 自定义渲染函数（可选）
 }
 
 // 2. 定义分页配置类型
 interface PaginationConfig {
-    current: number;                // 当前页码
-    pageSize: number;               // 每页条数
-    total: number;                  // 总条数
-    showSizeChanger?: boolean;      // 是否显示页面大小选择器（可选）
-    showQuickJumper?: boolean;      // 是否显示快速跳转（可选）
+    current: number; // 当前页码
+    pageSize: number; // 每页条数
+    total: number; // 总条数
+    showSizeChanger?: boolean; // 是否显示页面大小选择器（可选）
+    showQuickJumper?: boolean; // 是否显示快速跳转（可选）
 }
 
 // 3. 定义数据表格组件 Props 类型
 interface DataTableProps {
-    columns: TableColumn[];                                         // 表格列配置
-    dataSource: any[];                                             // 数据源
-    loading?: boolean;                                             // 加载状态（可选）
-    pagination?: PaginationConfig;                                 // 分页配置（可选）
-    rowKey?: string;                                               // 行数据的 key（可选，默认为 'id'）
-    onRowClick?: (record: any, index: number) => void;            // 行点击事件（可选）
-    onSortChange?: (column: TableColumn, order: 'asc' | 'desc' | null) => void; // 排序变化事件（可选）
+    columns: TableColumn[]; // 表格列配置
+    dataSource: any[]; // 数据源
+    loading?: boolean; // 加载状态（可选）
+    pagination?: PaginationConfig; // 分页配置（可选）
+    rowKey?: string; // 行数据的 key（可选，默认为 'id'）
+    onRowClick?: (record: any, index: number) => void; // 行点击事件（可选）
+    onSortChange?: (column: TableColumn, order: "asc" | "desc" | null) => void; // 排序变化事件（可选）
 }
 
 // 4. 实现 DataTable 组件（类组件风格）
@@ -53,114 +53,114 @@ class DataTableComponent extends Vue implements DataTableProps {
     // 使用 @Prop 装饰器定义 props
     @Prop({ type: Array, required: true })
     columns!: TableColumn[];
-    
+
     @Prop({ type: Array, required: true })
     dataSource!: any[];
-    
+
     @Prop({ type: Boolean, default: false })
     loading!: boolean;
-    
+
     @Prop({ type: Object })
     pagination?: PaginationConfig;
-    
-    @Prop({ type: String, default: 'id' })
+
+    @Prop({ type: String, default: "id" })
     rowKey!: string;
-    
+
     @Prop({ type: Function })
     onRowClick?: (record: any, index: number) => void;
-    
+
     @Prop({ type: Function })
-    onSortChange?: (column: TableColumn, order: 'asc' | 'desc' | null) => void;
-    
+    onSortChange?: (column: TableColumn, order: "asc" | "desc" | null) => void;
+
     // 定义组件内部状态
     private sortColumn: string | null = null;
-    private sortOrder: 'asc' | 'desc' | null = null;
-    
+    private sortOrder: "asc" | "desc" | null = null;
+
     // 定义计算属性
     get sortedData(): any[] {
         if (!this.sortColumn || !this.sortOrder) {
             return this.dataSource;
         }
-        
+
         return [...this.dataSource].sort((a, b) => {
             const aValue = a[this.sortColumn!];
             const bValue = b[this.sortColumn!];
-            
+
             if (aValue === bValue) return 0;
-            
+
             const result = aValue > bValue ? 1 : -1;
-            return this.sortOrder === 'asc' ? result : -result;
+            return this.sortOrder === "asc" ? result : -result;
         });
     }
-    
+
     get hasData(): boolean {
         return this.dataSource.length > 0;
     }
-    
+
     get sortableColumns(): TableColumn[] {
-        return this.columns.filter(col => col.sortable);
+        return this.columns.filter((col) => col.sortable);
     }
-    
+
     // 定义方法
     handleSort(column: TableColumn): void {
         if (!column.sortable) return;
-        
+
         if (this.sortColumn === column.key) {
             // 切换排序顺序：asc -> desc -> null -> asc
             switch (this.sortOrder) {
-                case 'asc':
-                    this.sortOrder = 'desc';
+                case "asc":
+                    this.sortOrder = "desc";
                     break;
-                case 'desc':
+                case "desc":
                     this.sortOrder = null;
                     this.sortColumn = null;
                     break;
                 default:
-                    this.sortOrder = 'asc';
+                    this.sortOrder = "asc";
                     break;
             }
         } else {
             this.sortColumn = column.key;
-            this.sortOrder = 'asc';
+            this.sortOrder = "asc";
         }
-        
+
         // 触发排序变化事件
         if (this.onSortChange) {
             this.onSortChange(column, this.sortOrder);
         }
     }
-    
+
     handleRowClick(record: any, index: number): void {
         if (this.onRowClick) {
             this.onRowClick(record, index);
         }
     }
-    
+
     // 获取行的唯一标识
     getRowKey(record: any, index: number): string | number {
         return record[this.rowKey] || index;
     }
-    
+
     // 渲染单元格内容
     renderCell(column: TableColumn, record: any): string {
         if (column.render) {
             return column.render(record[column.key], record);
         }
-        return record[column.key] || '';
+        return record[column.key] || "";
     }
-    
+
     // 获取排序图标类名
     getSortIconClass(column: TableColumn): string {
-        if (!column.sortable) return '';
-        if (this.sortColumn !== column.key) return 'sort-icon';
-        
+        if (!column.sortable) return "";
+        if (this.sortColumn !== column.key) return "sort-icon";
+
         switch (this.sortOrder) {
-            case 'asc':
-                return 'sort-icon sort-asc';
-            case 'desc':
-                return 'sort-icon sort-desc';
+            case "asc":
+                return "sort-icon sort-asc";
+            case "desc":
+                return "sort-icon sort-desc";
             default:
-                return 'sort-icon';
+                return "sort-icon";
         }
     }
 }
@@ -169,14 +169,14 @@ class DataTableComponent extends Vue implements DataTableProps {
 // 练习2：组件间通信练习 - 解答
 // ============================================================================
 
-console.log('=== 练习2：组件间通信练习 - 解答 ===');
+console.log("=== 练习2：组件间通信练习 - 解答 ===");
 
 // 1. 定义用户数据类型
 interface User {
     id: number;
     name: string;
     email: string;
-    role: 'admin' | 'user' | 'guest';
+    role: "admin" | "user" | "guest";
     isActive: boolean;
     createdAt: Date;
 }
@@ -185,7 +185,7 @@ interface User {
 interface UserFormData {
     name: string;
     email: string;
-    role: 'admin' | 'user' | 'guest';
+    role: "admin" | "user" | "guest";
     isActive: boolean;
 }
 
@@ -201,106 +201,106 @@ class UserFormComponent extends Vue {
     // 定义 props
     @Prop({ type: Object })
     initialUser?: Partial<User>;
-    
+
     @Prop({ type: Boolean, default: false })
     loading!: boolean;
-    
+
     // 定义组件状态
     private form: UserFormData = {
-        name: '',
-        email: '',
-        role: 'user',
-        isActive: true
+        name: "",
+        email: "",
+        role: "user",
+        isActive: true,
     };
-    
+
     private errors: ValidationError[] = [];
-    
+
     // 监听 initialUser 变化
-    @Watch('initialUser', { immediate: true })
+    @Watch("initialUser", { immediate: true })
     onInitialUserChanged(user?: Partial<User>): void {
         if (user) {
             this.form = {
-                name: user.name || '',
-                email: user.email || '',
-                role: user.role || 'user',
-                isActive: user.isActive !== undefined ? user.isActive : true
+                name: user.name || "",
+                email: user.email || "",
+                role: user.role || "user",
+                isActive: user.isActive !== undefined ? user.isActive : true,
             };
         }
     }
-    
+
     // 定义表单验证方法
     validateForm(): boolean {
         this.errors = [];
-        
+
         // 验证姓名
         if (!this.form.name.trim()) {
-            this.errors.push({ field: 'name', message: '姓名不能为空' });
+            this.errors.push({ field: "name", message: "姓名不能为空" });
         } else if (this.form.name.length < 2) {
-            this.errors.push({ field: 'name', message: '姓名至少需要2个字符' });
+            this.errors.push({ field: "name", message: "姓名至少需要2个字符" });
         }
-        
+
         // 验证邮箱
         if (!this.form.email.trim()) {
-            this.errors.push({ field: 'email', message: '邮箱不能为空' });
+            this.errors.push({ field: "email", message: "邮箱不能为空" });
         } else if (!this.isValidEmail(this.form.email)) {
-            this.errors.push({ field: 'email', message: '邮箱格式不正确' });
+            this.errors.push({ field: "email", message: "邮箱格式不正确" });
         }
-        
+
         // 如果有错误，触发验证错误事件
         if (this.errors.length > 0) {
             this.emitValidationError();
             return false;
         }
-        
+
         return true;
     }
-    
+
     private isValidEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-    
+
     // 使用 @Emit 装饰器定义事件
-    @Emit('submit')
+    @Emit("submit")
     handleSubmit(): UserFormData | null {
         if (this.validateForm()) {
             return { ...this.form };
         }
         return null;
     }
-    
-    @Emit('cancel')
+
+    @Emit("cancel")
     handleCancel(): void {
         // 重置表单
         this.form = {
-            name: '',
-            email: '',
-            role: 'user',
-            isActive: true
+            name: "",
+            email: "",
+            role: "user",
+            isActive: true,
         };
         this.errors = [];
     }
-    
-    @Emit('validation-error')
+
+    @Emit("validation-error")
     emitValidationError(): ValidationError[] {
         return [...this.errors];
     }
-    
+
     // 获取字段错误信息
     getFieldError(field: string): string | null {
-        const error = this.errors.find(err => err.field === field);
+        const error = this.errors.find((err) => err.field === field);
         return error ? error.message : null;
     }
-    
+
     // 检查字段是否有错误
     hasFieldError(field: string): boolean {
-        return this.errors.some(err => err.field === field);
+        return this.errors.some((err) => err.field === field);
     }
 }
 
 // 5. 实现用户列表组件（父组件）
 @Component({
-    components: { UserForm: UserFormComponent }
+    components: { UserForm: UserFormComponent },
 })
 class UserListComponent extends Vue {
     // 定义组件状态
@@ -320,33 +320,32 @@ class UserListComponent extends Vue {
                 // 更新现有用户
                 const updatedUser: User = {
                     ...this.editingUser,
-                    ...formData
+                    ...formData,
                 };
 
-                const index = this.users.findIndex(u => u.id === this.editingUser!.id);
+                const index = this.users.findIndex((u) => u.id === this.editingUser!.id);
                 if (index > -1) {
                     this.$set(this.users, index, updatedUser);
                 }
 
-                console.log('用户更新成功:', updatedUser);
+                console.log("用户更新成功:", updatedUser);
             } else {
                 // 创建新用户
                 const newUser: User = {
                     id: Date.now(), // 简单的 ID 生成
                     ...formData,
-                    createdAt: new Date()
+                    createdAt: new Date(),
                 };
 
                 this.users.push(newUser);
-                console.log('用户创建成功:', newUser);
+                console.log("用户创建成功:", newUser);
             }
 
             // 关闭表单
             this.showForm = false;
             this.editingUser = null;
-
         } catch (error) {
-            console.error('保存用户失败:', error);
+            console.error("保存用户失败:", error);
         } finally {
             this.formLoading = false;
         }
@@ -359,7 +358,7 @@ class UserListComponent extends Vue {
     }
 
     handleValidationError(errors: ValidationError[]): void {
-        console.error('表单验证错误:', errors);
+        console.error("表单验证错误:", errors);
         // 可以在这里显示全局错误提示
     }
 
@@ -369,10 +368,10 @@ class UserListComponent extends Vue {
     }
 
     deleteUser(userId: number): void {
-        const index = this.users.findIndex(u => u.id === userId);
+        const index = this.users.findIndex((u) => u.id === userId);
         if (index > -1) {
             const deletedUser = this.users.splice(index, 1)[0];
-            console.log('用户删除成功:', deletedUser);
+            console.log("用户删除成功:", deletedUser);
         }
     }
 
@@ -383,18 +382,18 @@ class UserListComponent extends Vue {
 
     // 计算属性
     get activeUsers(): User[] {
-        return this.users.filter(user => user.isActive);
+        return this.users.filter((user) => user.isActive);
     }
 
     get inactiveUsers(): User[] {
-        return this.users.filter(user => !user.isActive);
+        return this.users.filter((user) => !user.isActive);
     }
 
     get userStats(): { total: number; active: number; inactive: number } {
         return {
             total: this.users.length,
             active: this.activeUsers.length,
-            inactive: this.inactiveUsers.length
+            inactive: this.inactiveUsers.length,
         };
     }
 }
@@ -403,15 +402,15 @@ class UserListComponent extends Vue {
 // 练习3：Event Bus 类型安全通信练习 - 解答
 // ============================================================================
 
-console.log('=== 练习3：Event Bus 类型安全通信练习 - 解答 ===');
+console.log("=== 练习3：Event Bus 类型安全通信练习 - 解答 ===");
 
 // 1. 定义事件类型映射
 interface EventMap {
-    'user-created': (user: User) => void;
-    'user-updated': (user: User) => void;
-    'user-deleted': (userId: number) => void;
-    'notification': (message: string, type: 'success' | 'error' | 'warning') => void;
-    'theme-changed': (theme: 'light' | 'dark') => void;
+    "user-created": (user: User) => void;
+    "user-updated": (user: User) => void;
+    "user-deleted": (userId: number) => void;
+    notification: (message: string, type: "success" | "error" | "warning") => void;
+    "theme-changed": (theme: "light" | "dark") => void;
 }
 
 // 2. 实现类型安全的 Event Bus
@@ -450,7 +449,7 @@ class NotificationComponent extends Vue {
     private notifications: Array<{
         id: number;
         message: string;
-        type: 'success' | 'error' | 'warning';
+        type: "success" | "error" | "warning";
         timestamp: Date;
     }> = [];
 
@@ -458,27 +457,27 @@ class NotificationComponent extends Vue {
 
     // 在组件挂载时监听事件
     mounted(): void {
-        eventBus.on('notification', this.handleNotification);
-        eventBus.on('user-created', this.handleUserCreated);
-        eventBus.on('user-updated', this.handleUserUpdated);
-        eventBus.on('user-deleted', this.handleUserDeleted);
+        eventBus.on("notification", this.handleNotification);
+        eventBus.on("user-created", this.handleUserCreated);
+        eventBus.on("user-updated", this.handleUserUpdated);
+        eventBus.on("user-deleted", this.handleUserDeleted);
     }
 
     // 在组件销毁前移除事件监听
     beforeDestroy(): void {
-        eventBus.off('notification', this.handleNotification);
-        eventBus.off('user-created', this.handleUserCreated);
-        eventBus.off('user-updated', this.handleUserUpdated);
-        eventBus.off('user-deleted', this.handleUserDeleted);
+        eventBus.off("notification", this.handleNotification);
+        eventBus.off("user-created", this.handleUserCreated);
+        eventBus.off("user-updated", this.handleUserUpdated);
+        eventBus.off("user-deleted", this.handleUserDeleted);
     }
 
     // 定义事件处理方法
-    private handleNotification(message: string, type: 'success' | 'error' | 'warning'): void {
+    private handleNotification(message: string, type: "success" | "error" | "warning"): void {
         const notification = {
             id: ++this.notificationId,
             message,
             type,
-            timestamp: new Date()
+            timestamp: new Date(),
         };
 
         this.notifications.push(notification);
@@ -490,20 +489,20 @@ class NotificationComponent extends Vue {
     }
 
     private handleUserCreated(user: User): void {
-        this.handleNotification(`用户 ${user.name} 创建成功`, 'success');
+        this.handleNotification(`用户 ${user.name} 创建成功`, "success");
     }
 
     private handleUserUpdated(user: User): void {
-        this.handleNotification(`用户 ${user.name} 更新成功`, 'success');
+        this.handleNotification(`用户 ${user.name} 更新成功`, "success");
     }
 
     private handleUserDeleted(userId: number): void {
-        this.handleNotification(`用户已删除`, 'warning');
+        this.handleNotification(`用户已删除`, "warning");
     }
 
     // 移除通知
     removeNotification(id: number): void {
-        const index = this.notifications.findIndex(n => n.id === id);
+        const index = this.notifications.findIndex((n) => n.id === id);
         if (index > -1) {
             this.notifications.splice(index, 1);
         }
@@ -528,7 +527,7 @@ class NotificationComponent extends Vue {
 // 练习4：TypeScript Mixin 练习 - 解答
 // ============================================================================
 
-console.log('=== 练习4：TypeScript Mixin 练习 - 解答 ===');
+console.log("=== 练习4：TypeScript Mixin 练习 - 解答 ===");
 
 // 1. 定义加载状态 Mixin
 @Component
@@ -621,9 +620,9 @@ class FormValidationMixin extends Vue {
     }
 
     // 常用验证规则
-    protected createRequiredRule(message: string = '此字段为必填项') {
+    protected createRequiredRule(message: string = "此字段为必填项") {
         return (value: any): string | null => {
-            if (value === null || value === undefined || value === '') {
+            if (value === null || value === undefined || value === "") {
                 return message;
             }
             return null;
@@ -639,7 +638,7 @@ class FormValidationMixin extends Vue {
         };
     }
 
-    protected createEmailRule(message: string = '邮箱格式不正确') {
+    protected createEmailRule(message: string = "邮箱格式不正确") {
         return (value: string): string | null => {
             if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 return message;
@@ -681,18 +680,18 @@ class PermissionMixin extends Vue {
     // 模拟获取用户权限
     private getUserPermissions(): string[] {
         // 实际应用中应该从 store 获取
-        return ['user:read', 'user:write', 'post:read'];
+        return ["user:read", "user:write", "post:read"];
     }
 
     // 模拟获取用户角色
     private getUserRoles(): string[] {
         // 实际应用中应该从 store 获取
-        return ['user', 'editor'];
+        return ["user", "editor"];
     }
 
     // 检查是否为管理员
     protected isAdmin(): boolean {
-        return this.hasRole('admin');
+        return this.hasRole("admin");
     }
 
     // 检查是否为当前用户
@@ -710,25 +709,25 @@ class PermissionMixin extends Vue {
 
 // 4. 使用多个 Mixin 的组件
 @Component({
-    mixins: [LoadingMixin, FormValidationMixin, PermissionMixin]
+    mixins: [LoadingMixin, FormValidationMixin, PermissionMixin],
 })
 class UserManagementComponent extends mixins(LoadingMixin, FormValidationMixin, PermissionMixin) {
     // 定义组件状态
     private users: User[] = [];
     private userForm: UserFormData = {
-        name: '',
-        email: '',
-        role: 'user',
-        isActive: true
+        name: "",
+        email: "",
+        role: "user",
+        isActive: true,
     };
 
     // 在组件创建时检查权限
     created(): void {
         try {
-            this.requirePermission('user:read');
+            this.requirePermission("user:read");
             this.setupValidationRules();
         } catch (error) {
-            console.error('权限检查失败:', error);
+            console.error("权限检查失败:", error);
             // 可以跳转到无权限页面
         }
     }
@@ -737,13 +736,10 @@ class UserManagementComponent extends mixins(LoadingMixin, FormValidationMixin, 
     private setupValidationRules(): void {
         this.validationRules = {
             name: [
-                this.createRequiredRule('姓名不能为空'),
-                this.createMinLengthRule(2, '姓名至少需要2个字符')
+                this.createRequiredRule("姓名不能为空"),
+                this.createMinLengthRule(2, "姓名至少需要2个字符"),
             ],
-            email: [
-                this.createRequiredRule('邮箱不能为空'),
-                this.createEmailRule()
-            ]
+            email: [this.createRequiredRule("邮箱不能为空"), this.createEmailRule()],
         };
     }
 
@@ -751,47 +747,47 @@ class UserManagementComponent extends mixins(LoadingMixin, FormValidationMixin, 
     async loadUsers(): Promise<void> {
         await this.withLoading(async () => {
             // 模拟 API 调用
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             this.users = [
                 {
                     id: 1,
-                    name: 'John Doe',
-                    email: 'john@example.com',
-                    role: 'user',
+                    name: "John Doe",
+                    email: "john@example.com",
+                    role: "user",
                     isActive: true,
-                    createdAt: new Date()
-                }
+                    createdAt: new Date(),
+                },
             ];
         });
     }
 
     async saveUser(): Promise<void> {
         try {
-            this.requirePermission('user:write');
+            this.requirePermission("user:write");
         } catch (error) {
-            console.error('没有保存权限');
+            console.error("没有保存权限");
             return;
         }
 
         if (!this.validateForm(this.userForm)) {
-            console.error('表单验证失败');
+            console.error("表单验证失败");
             return;
         }
 
         await this.withLoading(async () => {
             // 模拟保存用户
-            await new Promise(resolve => setTimeout(resolve, 500));
-            console.log('用户保存成功');
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            console.log("用户保存成功");
         });
     }
 
     // 计算属性
     get canCreateUser(): boolean {
-        return this.hasPermission('user:write');
+        return this.hasPermission("user:write");
     }
 
     get canDeleteUser(): boolean {
-        return this.hasPermission('user:delete') || this.isAdmin();
+        return this.hasPermission("user:delete") || this.isAdmin();
     }
 }
 
@@ -799,7 +795,7 @@ class UserManagementComponent extends mixins(LoadingMixin, FormValidationMixin, 
 // 练习5：高阶组件练习 - 解答
 // ============================================================================
 
-console.log('=== 练习5：高阶组件练习 - 解答 ===');
+console.log("=== 练习5：高阶组件练习 - 解答 ===");
 
 // 1. 定义权限控制高阶组件
 interface WithAuthOptions {
@@ -810,15 +806,15 @@ interface WithAuthOptions {
 }
 
 function withAuth(options: WithAuthOptions = {}) {
-    return function<T extends typeof Vue>(WrappedComponent: T): typeof Vue {
+    return function <T extends typeof Vue>(WrappedComponent: T): typeof Vue {
         @Component
         class WithAuthComponent extends Vue {
             get hasRequiredPermissions(): boolean {
                 if (!options.requiredPermissions) return true;
 
                 // 模拟权限检查
-                const userPermissions = ['user:read', 'user:write'];
-                return options.requiredPermissions.every(permission =>
+                const userPermissions = ["user:read", "user:write"];
+                return options.requiredPermissions.every((permission) =>
                     userPermissions.includes(permission)
                 );
             }
@@ -827,10 +823,8 @@ function withAuth(options: WithAuthOptions = {}) {
                 if (!options.requiredRoles) return true;
 
                 // 模拟角色检查
-                const userRoles = ['user'];
-                return options.requiredRoles.every(role =>
-                    userRoles.includes(role)
-                );
+                const userRoles = ["user"];
+                return options.requiredRoles.every((role) => userRoles.includes(role));
             }
 
             get canAccess(): boolean {
@@ -849,13 +843,13 @@ function withAuth(options: WithAuthOptions = {}) {
                     if (options.fallbackComponent) {
                         return this.$createElement(options.fallbackComponent);
                     }
-                    return this.$createElement('div', '无权限访问');
+                    return this.$createElement("div", "无权限访问");
                 }
 
                 return this.$createElement(WrappedComponent, {
                     props: this.$props,
                     attrs: this.$attrs,
-                    on: this.$listeners
+                    on: this.$listeners,
                 });
             }
         }
@@ -872,7 +866,7 @@ interface WithLoadingOptions {
 }
 
 function withLoading(options: WithLoadingOptions = {}) {
-    return function<T extends typeof Vue>(WrappedComponent: T): typeof Vue {
+    return function <T extends typeof Vue>(WrappedComponent: T): typeof Vue {
         @Component
         class WithLoadingComponent extends Vue {
             private loading: boolean = true;
@@ -918,20 +912,20 @@ function withLoading(options: WithLoadingOptions = {}) {
 
             render() {
                 if (this.timedOut) {
-                    return this.$createElement('div', '加载超时');
+                    return this.$createElement("div", "加载超时");
                 }
 
                 if (this.loading) {
                     if (options.loadingComponent) {
                         return this.$createElement(options.loadingComponent);
                     }
-                    return this.$createElement('div', '加载中...');
+                    return this.$createElement("div", "加载中...");
                 }
 
                 return this.$createElement(WrappedComponent, {
                     props: this.$props,
                     attrs: this.$attrs,
-                    on: this.$listeners
+                    on: this.$listeners,
                 });
             }
         }
@@ -942,27 +936,29 @@ function withLoading(options: WithLoadingOptions = {}) {
 
 // 3. 使用高阶组件
 const AuthenticatedUserList = withAuth({
-    requiredPermissions: ['user:read'],
-    redirectTo: '/login'
+    requiredPermissions: ["user:read"],
+    redirectTo: "/login",
 })(UserListComponent);
 
 const LoadingUserList = withLoading({
     delay: 200,
-    timeout: 10000
+    timeout: 10000,
 })(UserListComponent);
 
 // 组合使用多个高阶组件
 const EnhancedUserList = withAuth({
-    requiredPermissions: ['user:read']
-})(withLoading({
-    delay: 200
-})(UserListComponent));
+    requiredPermissions: ["user:read"],
+})(
+    withLoading({
+        delay: 200,
+    })(UserListComponent)
+);
 
 // ============================================================================
 // 练习6：组件测试练习 - 解答
 // ============================================================================
 
-console.log('=== 练习6：组件测试练习 - 解答 ===');
+console.log("=== 练习6：组件测试练习 - 解答 ===");
 
 // 1. 定义测试工具类型
 interface TestWrapper<T extends Vue> {
@@ -970,8 +966,8 @@ interface TestWrapper<T extends Vue> {
     find(selector: string): Element | null;
     findAll(selector: string): Element[];
     trigger(event: string, data?: any): Promise<void>;
-    setProps(props: Partial<T['$props']>): Promise<void>;
-    setData(data: Partial<T['$data']>): Promise<void>;
+    setProps(props: Partial<T["$props"]>): Promise<void>;
+    setData(data: Partial<T["$data"]>): Promise<void>;
     destroy(): void;
 }
 
@@ -1009,7 +1005,9 @@ function expect(actual: any) {
         },
         toEqual: (expected: any) => {
             if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-                throw new Error(`Expected ${JSON.stringify(expected)}, but got ${JSON.stringify(actual)}`);
+                throw new Error(
+                    `Expected ${JSON.stringify(expected)}, but got ${JSON.stringify(actual)}`
+                );
             }
         },
         toBeTruthy: () => {
@@ -1021,7 +1019,7 @@ function expect(actual: any) {
             if (!actual.includes(expected)) {
                 throw new Error(`Expected ${actual} to contain ${expected}`);
             }
-        }
+        },
     };
 }
 
@@ -1037,28 +1035,28 @@ function shallowMount<T extends Vue>(Component: typeof Vue, options?: any): Test
         trigger: async (event: string, data?: any) => {},
         setProps: async (props: any) => {},
         setData: async (data: any) => {},
-        destroy: () => {}
+        destroy: () => {},
     };
 }
 
 // 3. 定义测试用例
-describe('UserCard Component', () => {
+describe("UserCard Component", () => {
     let wrapper: TestWrapper<UserFormComponent>;
     const mockUser: User = {
         id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        role: 'user',
+        name: "John Doe",
+        email: "john@example.com",
+        role: "user",
         isActive: true,
-        createdAt: new Date()
+        createdAt: new Date(),
     };
 
     beforeEach(() => {
         wrapper = shallowMount(UserFormComponent, {
             propsData: {
                 initialUser: mockUser,
-                loading: false
-            }
+                loading: false,
+            },
         });
     });
 
@@ -1066,40 +1064,40 @@ describe('UserCard Component', () => {
         wrapper.destroy();
     });
 
-    it('should render user information correctly', () => {
+    it("should render user information correctly", () => {
         expect(wrapper.vm.form.name).toBe(mockUser.name);
         expect(wrapper.vm.form.email).toBe(mockUser.email);
         expect(wrapper.vm.form.role).toBe(mockUser.role);
     });
 
-    it('should validate form correctly', () => {
+    it("should validate form correctly", () => {
         // 测试空表单验证
-        wrapper.vm.form.name = '';
-        wrapper.vm.form.email = '';
+        wrapper.vm.form.name = "";
+        wrapper.vm.form.email = "";
         expect(wrapper.vm.validateForm()).toBe(false);
         expect(wrapper.vm.errors.length).toBe(2);
 
         // 测试有效表单
-        wrapper.vm.form.name = 'Valid Name';
-        wrapper.vm.form.email = 'valid@example.com';
+        wrapper.vm.form.name = "Valid Name";
+        wrapper.vm.form.email = "valid@example.com";
         expect(wrapper.vm.validateForm()).toBe(true);
         expect(wrapper.vm.errors.length).toBe(0);
     });
 
-    it('should emit events correctly', () => {
+    it("should emit events correctly", () => {
         // 测试提交事件
-        wrapper.vm.form.name = 'Test User';
-        wrapper.vm.form.email = 'test@example.com';
+        wrapper.vm.form.name = "Test User";
+        wrapper.vm.form.email = "test@example.com";
 
         const result = wrapper.vm.handleSubmit();
         expect(result).toBeTruthy();
-        expect(result?.name).toBe('Test User');
+        expect(result?.name).toBe("Test User");
     });
 
-    it('should handle validation errors', () => {
-        wrapper.vm.form.email = 'invalid-email';
+    it("should handle validation errors", () => {
+        wrapper.vm.form.email = "invalid-email";
         expect(wrapper.vm.validateForm()).toBe(false);
-        expect(wrapper.vm.getFieldError('email')).toBe('邮箱格式不正确');
+        expect(wrapper.vm.getFieldError("email")).toBe("邮箱格式不正确");
     });
 });
 

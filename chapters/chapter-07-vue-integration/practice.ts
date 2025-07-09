@@ -1,6 +1,6 @@
 /**
  * 第7章：Vue 2 + TypeScript 项目集成练习题
- * 
+ *
  * 请完成以下练习，掌握在 Vue 2 项目中使用 TypeScript 的方法
  * 包括组件类型定义、Vuex 状态管理、Vue Router 等
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：Vue 组件类型定义练习
 // ============================================================================
 
-console.log('=== 练习1：Vue 组件类型定义练习 ===');
+console.log("=== 练习1：Vue 组件类型定义练习 ===");
 
 // TODO: 定义以下类型和组件
 
@@ -34,27 +34,27 @@ console.log('=== 练习1：Vue 组件类型定义练习 ===');
 // 4. 实现 ProductCard 组件（选项式 API）
 // const ProductCardComponent = {
 //     name: 'ProductCard',
-//     
+//
 //     // TODO: 定义 props
 //     props: {
 //         // TODO: 实现
 //     },
-//     
+//
 //     // TODO: 定义 data
 //     data(): ProductCardData {
 //         // TODO: 实现
 //     },
-//     
+//
 //     // TODO: 定义 computed
 //     computed: {
 //         // TODO: 实现价格格式化、库存状态等计算属性
 //     },
-//     
+//
 //     // TODO: 定义 methods
 //     methods: {
 //         // TODO: 实现添加到购物车、查看详情等方法
 //     },
-//     
+//
 //     // TODO: 定义生命周期钩子
 //     created() {
 //         // TODO: 实现
@@ -66,13 +66,13 @@ console.log('=== 练习1：Vue 组件类型定义练习 ===');
 //     // TODO: 创建测试产品数据
 // };
 
-console.log('Vue 组件类型定义练习 - 请实现上述组件');
+console.log("Vue 组件类型定义练习 - 请实现上述组件");
 
 // ============================================================================
 // 练习2：Vuex 状态管理练习
 // ============================================================================
 
-console.log('\n=== 练习2：Vuex 状态管理练习 ===');
+console.log("\n=== 练习2：Vuex 状态管理练习 ===");
 
 // TODO: 定义购物车状态管理
 
@@ -104,31 +104,31 @@ console.log('\n=== 练习2：Vuex 状态管理练习 ===');
 // 6. 实现购物车 Vuex 模块
 // const cartModule = {
 //     namespaced: true,
-//     
+//
 //     state: (): CartState => ({
 //         // TODO: 实现初始状态
 //     }),
-//     
+//
 //     mutations: {
 //         // TODO: 实现 mutations
 //     } as CartMutations,
-//     
+//
 //     actions: {
 //         // TODO: 实现 actions
 //     } as CartActions,
-//     
+//
 //     getters: {
 //         // TODO: 实现 getters
 //     } as CartGetters
 // };
 
-console.log('Vuex 状态管理练习 - 请实现购物车模块');
+console.log("Vuex 状态管理练习 - 请实现购物车模块");
 
 // ============================================================================
 // 练习3：Vue Router 类型定义练习
 // ============================================================================
 
-console.log('\n=== 练习3：Vue Router 类型定义练习 ===');
+console.log("\n=== 练习3：Vue Router 类型定义练习 ===");
 
 // TODO: 定义电商网站的路由配置
 
@@ -169,13 +169,13 @@ console.log('\n=== 练习3：Vue Router 类型定义练习 ===');
 //     // TODO: 实现路由器配置
 // };
 
-console.log('Vue Router 类型定义练习 - 请实现电商路由');
+console.log("Vue Router 类型定义练习 - 请实现电商路由");
 
 // ============================================================================
 // 练习4：Vue 插件开发练习
 // ============================================================================
 
-console.log('\n=== 练习4：Vue 插件开发练习 ===');
+console.log("\n=== 练习4：Vue 插件开发练习 ===");
 
 // TODO: 开发一个通知插件
 
@@ -198,12 +198,12 @@ console.log('\n=== 练习4：Vue 插件开发练习 ===');
 // const NotificationPlugin: NotificationPlugin = {
 //     install(Vue: any, options?: any) {
 //         // TODO: 实现插件安装逻辑
-//         
+//
 //         // 添加全局方法
 //         Vue.prototype.$notify = {
 //             // TODO: 实现通知方法
 //         };
-//         
+//
 //         // 添加全局组件
 //         Vue.component('Notification', {
 //             // TODO: 实现通知组件
@@ -220,13 +220,13 @@ console.log('\n=== 练习4：Vue 插件开发练习 ===');
 //     }
 // }
 
-console.log('Vue 插件开发练习 - 请实现通知插件');
+console.log("Vue 插件开发练习 - 请实现通知插件");
 
 // ============================================================================
 // 练习5：Vue 混入练习
 // ============================================================================
 
-console.log('\n=== 练习5：Vue 混入练习 ===');
+console.log("\n=== 练习5：Vue 混入练习 ===");
 
 // TODO: 实现常用的混入
 
@@ -260,22 +260,22 @@ console.log('\n=== 练习5：Vue 混入练习 ===');
 // 4. 使用混入的组件示例
 // const UserManagementComponent = {
 //     name: 'UserManagement',
-//     
+//
 //     // TODO: 使用多个混入
 //     mixins: [
 //         // TODO: 添加混入
 //     ],
-//     
+//
 //     // TODO: 实现组件逻辑
 // };
 
-console.log('Vue 混入练习 - 请实现常用混入');
+console.log("Vue 混入练习 - 请实现常用混入");
 
 // ============================================================================
 // 练习6：综合应用练习
 // ============================================================================
 
-console.log('\n=== 练习6：综合应用练习 ===');
+console.log("\n=== 练习6：综合应用练习 ===");
 
 // 场景：实现一个完整的用户管理页面
 
@@ -319,11 +319,11 @@ console.log('\n=== 练习6：综合应用练习 ===');
 //     // TODO: 实现完整的用户管理状态
 // };
 
-console.log('综合应用练习 - 请实现完整的用户管理功能');
+console.log("综合应用练习 - 请实现完整的用户管理功能");
 
-console.log('\n=== 练习完成！请检查 Vue + TypeScript 集成是否正确 ===');
-console.log('💡 提示：');
-console.log('1. 在实际项目中需要安装相应的 Vue 2 依赖包');
-console.log('2. 配置 tsconfig.json 以支持 Vue 文件');
-console.log('3. 创建 shims-vue.d.ts 文件声明 .vue 文件类型');
-console.log('4. 使用 vue-class-component 可以获得更好的 TypeScript 支持');
+console.log("\n=== 练习完成！请检查 Vue + TypeScript 集成是否正确 ===");
+console.log("💡 提示：");
+console.log("1. 在实际项目中需要安装相应的 Vue 2 依赖包");
+console.log("2. 配置 tsconfig.json 以支持 Vue 文件");
+console.log("3. 创建 shims-vue.d.ts 文件声明 .vue 文件类型");
+console.log("4. 使用 vue-class-component 可以获得更好的 TypeScript 支持");

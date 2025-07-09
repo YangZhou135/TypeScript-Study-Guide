@@ -32,8 +32,8 @@ function identity<T>(arg: T): T {
 
 // 使用
 const str = identity<string>("hello"); // string
-const num = identity<number>(42);      // number
-const bool = identity(true);           // 类型推断为 boolean
+const num = identity<number>(42); // number
+const bool = identity(true); // 类型推断为 boolean
 ```
 
 ### 5.2 泛型函数
@@ -72,8 +72,12 @@ interface Transformer<T, U> {
 // 使用
 const stringContainer: Container<string> = {
     value: "hello",
-    getValue() { return this.value; },
-    setValue(value: string) { this.value = value; }
+    getValue() {
+        return this.value;
+    },
+    setValue(value: string) {
+        this.value = value;
+    },
 };
 ```
 
@@ -123,9 +127,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 }
 
 // 条件约束
-type ApiResponse<T> = T extends string 
-    ? { message: T } 
-    : { data: T };
+type ApiResponse<T> = T extends string ? { message: T } : { data: T };
 ```
 
 ### 5.6 条件泛型
@@ -160,12 +162,12 @@ interface Repository<T, K> {
 // 构建器模式
 class Builder<T> {
     private partial: Partial<T> = {};
-    
+
     set<K extends keyof T>(key: K, value: T[K]): Builder<T> {
         this.partial[key] = value;
         return this;
     }
-    
+
     build(): T {
         return this.partial as T;
     }

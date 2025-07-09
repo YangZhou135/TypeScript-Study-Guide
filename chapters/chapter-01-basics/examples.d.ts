@@ -41,33 +41,39 @@ declare let users: Array<{
     age: number;
     isActive: boolean;
 }>;
-declare function getActiveUsers(users: Array<{
-    id: number;
-    username: string;
-    email: string;
-    age: number;
-    isActive: boolean;
-}>): Array<{
+declare function getActiveUsers(
+    users: Array<{
+        id: number;
+        username: string;
+        email: string;
+        age: number;
+        isActive: boolean;
+    }>
+): Array<{
     id: number;
     username: string;
     email: string;
     age: number;
     isActive: boolean;
 }>;
-declare function calculateAverageAge(users: Array<{
-    id: number;
-    username: string;
-    email: string;
-    age: number;
-    isActive: boolean;
-}>): number;
-declare let foundUser: {
-    id: number;
-    username: string;
-    email: string;
-    age: number;
-    isActive: boolean;
-} | undefined;
+declare function calculateAverageAge(
+    users: Array<{
+        id: number;
+        username: string;
+        email: string;
+        age: number;
+        isActive: boolean;
+    }>
+): number;
+declare let foundUser:
+    | {
+          id: number;
+          username: string;
+          email: string;
+          age: number;
+          isActive: boolean;
+      }
+    | undefined;
 declare let activeUsers: {
     id: number;
     username: string;

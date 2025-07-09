@@ -1,43 +1,43 @@
 {
-  "name": "typescript-study-guide",
-  "version": "1.0.0",
-  "description": "TypeScript学习指引 - 适合Vue 2 + JavaScript开发者的渐进式学习项目",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "dev": "ts-node-dev --respawn --transpile-only",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint . --ext .ts,.js",
-    "format": "prettier --write ."
-  },
-  "keywords": [
-    "typescript",
-    "vue",
-    "javascript",
-    "tutorial",
-    "learning",
-    "guide"
-  ],
-  "author": "TypeScript Study Guide",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^29.5.0",
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
-    "jest": "^29.5.0",
-    "prettier": "^3.0.0",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "vue": "^2.7.0",
-    "vue-class-component": "^7.2.6",
-    "vue-property-decorator": "^9.1.2"
-  }
+    "name": "typescript-study-guide",
+    "version": "1.0.0",
+    "description": "TypeScript学习指引 - 适合Vue 2 + JavaScript开发者的渐进式学习项目",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "dev": "ts-node-dev --respawn --transpile-only",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "lint": "eslint . --ext .ts,.js",
+        "format": "prettier --write ."
+    },
+    "keywords": [
+        "typescript",
+        "vue",
+        "javascript",
+        "tutorial",
+        "learning",
+        "guide"
+    ],
+    "author": "TypeScript Study Guide",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/jest": "^29.5.0",
+        "@types/node": "^20.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "eslint": "^8.0.0",
+        "jest": "^29.5.0",
+        "prettier": "^3.0.0",
+        "ts-jest": "^29.1.0",
+        "ts-node": "^10.9.0",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "vue": "^2.7.0",
+        "vue-class-component": "^7.2.6",
+        "vue-property-decorator": "^9.1.2"
+    }
 }

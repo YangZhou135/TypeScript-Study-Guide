@@ -101,13 +101,13 @@ const multiply = (x: number, y: number): number => x * y;
 let user: { name: string; age: number; email: string } = {
     name: "张三",
     age: 25,
-    email: "zhangsan@example.com"
+    email: "zhangsan@example.com",
 };
 
 // 可选属性
 let product: { name: string; price: number; description?: string } = {
     name: "iPhone",
-    price: 6999
+    price: 6999,
 };
 ```
 
@@ -118,6 +118,16 @@ let product: { name: string; price: number; description?: string } = {
 - `examples.ts` - 基础语法示例
 - `practice.ts` - 练习题目
 - `solutions.ts` - 练习解答
+- `troubleshooting.md` - 🆕 常见错误和解决方案
+
+## 🔧 遇到问题？
+
+如果在学习过程中遇到错误，请查看 [故障排除指南](./troubleshooting.md)，里面包含了：
+
+- 最常见的错误类型和解决方案
+- 实用的调试技巧
+- VS Code 使用技巧
+- 获取帮助的方法
 
 ## 🔧 编译和运行
 
@@ -134,9 +144,37 @@ npx ts-node examples.ts
 
 ## 📝 练习题目
 
-1. **类型声明练习**: 为给定的 JavaScript 代码添加类型声明
+### 🟢 初级练习（必做）
+
+1. **基础类型声明**: 为给定的 JavaScript 变量添加类型声明
+    - 难度：⭐⭐☆☆☆
+    - 预计时间：10分钟
+    - 涵盖：string, number, boolean, array
+
+### 🟡 中级练习（推荐）
+
 2. **函数类型练习**: 编写带有类型的函数
+    - 难度：⭐⭐⭐☆☆
+    - 预计时间：15分钟
+    - 涵盖：参数类型、返回值类型、可选参数、默认参数
+
+### 🟠 高级练习（挑战）
+
 3. **对象类型练习**: 定义复杂对象的类型
+    - 难度：⭐⭐⭐⭐☆
+    - 预计时间：20分钟
+    - 涵盖：嵌套对象、可选属性、数组组合
+
+4. **综合应用**: 完整的用户管理系统类型定义
+    - 难度：⭐⭐⭐⭐⭐
+    - 预计时间：30分钟
+    - 涵盖：所有基础概念的综合应用
+
+💡 **学习建议**：
+
+- 按顺序完成练习，每完成一个立即运行 `npx tsc practice.ts --noEmit` 检查
+- 遇到错误时，先尝试理解错误信息，再查看解答
+- 完成练习后对比 `solutions.ts` 中的标准答案
 
 ## 🎯 本章小结
 

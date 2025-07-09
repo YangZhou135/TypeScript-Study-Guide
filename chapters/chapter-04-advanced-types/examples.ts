@@ -1,6 +1,6 @@
 /**
  * 第4章：TypeScript 高级类型示例
- * 
+ *
  * 本文件展示了 TypeScript 高级类型特性
  * 包括映射类型、条件类型、工具类型、模板字面量类型等
  */
@@ -12,7 +12,7 @@ export {};
 // 1. 映射类型 (Mapped Types)
 // ============================================================================
 
-console.log('=== 映射类型示例 ===');
+console.log("=== 映射类型示例 ===");
 
 // 基础接口
 interface User {
@@ -45,31 +45,31 @@ const readonlyUser: ReadonlyUser = {
     id: 1,
     name: "张三",
     email: "zhangsan@example.com",
-    age: 25
+    age: 25,
 };
 
 // readonlyUser.name = "李四"; // 错误：无法分配到 "name" ，因为它是只读属性
 
 const partialUser: PartialUser = {
-    name: "李四" // 只需要部分属性
+    name: "李四", // 只需要部分属性
 };
 
-console.log('只读用户:', readonlyUser);
-console.log('部分用户:', partialUser);
+console.log("只读用户:", readonlyUser);
+console.log("部分用户:", partialUser);
 
 // 高级映射类型：添加前缀
 type AddPrefix<T, P extends string> = {
     [K in keyof T as `${P}${string & K}`]: T[K];
 };
 
-type PrefixedUser = AddPrefix<User, 'user_'>;
+type PrefixedUser = AddPrefix<User, "user_">;
 // 结果: { user_id: number; user_name: string; user_email: string; user_age: number; }
 
 // ============================================================================
 // 2. 条件类型 (Conditional Types)
 // ============================================================================
 
-console.log('\n=== 条件类型示例 ===');
+console.log("\n=== 条件类型示例 ===");
 
 // 基础条件类型
 type IsString<T> = T extends string ? true : false;
@@ -104,14 +104,14 @@ function processValue<T>(value: T): ToArray<T> {
 const stringArray = processValue("hello"); // string[]
 const numberArray = processValue(42); // number[]
 
-console.log('字符串数组:', stringArray);
-console.log('数字数组:', numberArray);
+console.log("字符串数组:", stringArray);
+console.log("数字数组:", numberArray);
 
 // ============================================================================
 // 3. 内置工具类型 (Utility Types)
 // ============================================================================
 
-console.log('\n=== 工具类型示例 ===');
+console.log("\n=== 工具类型示例 ===");
 
 interface Product {
     id: number;
@@ -123,40 +123,40 @@ interface Product {
 }
 
 // Pick - 选择特定属性
-type ProductSummary = Pick<Product, 'id' | 'name' | 'price'>;
+type ProductSummary = Pick<Product, "id" | "name" | "price">;
 const productSummary: ProductSummary = {
     id: 1,
     name: "iPhone 14",
-    price: 6999
+    price: 6999,
 };
 
 // Omit - 排除特定属性
-type ProductWithoutId = Omit<Product, 'id'>;
+type ProductWithoutId = Omit<Product, "id">;
 const newProduct: ProductWithoutId = {
     name: "iPad Pro",
     price: 8999,
     category: "平板电脑",
     inStock: true,
-    description: "专业级平板电脑"
+    description: "专业级平板电脑",
 };
 
 // Record - 创建记录类型
 type ProductCatalog = Record<string, Product>;
 const catalog: ProductCatalog = {
-    "iphone": {
+    iphone: {
         id: 1,
         name: "iPhone 14",
         price: 6999,
         category: "手机",
-        inStock: true
+        inStock: true,
     },
-    "ipad": {
+    ipad: {
         id: 2,
         name: "iPad Pro",
         price: 8999,
         category: "平板电脑",
-        inStock: true
-    }
+        inStock: true,
+    },
 };
 
 // Exclude 和 Extract
@@ -164,34 +164,34 @@ type AllTypes = string | number | boolean | null;
 type StringOrNumber = Exclude<AllTypes, boolean | null>; // string | number
 type OnlyBoolean = Extract<AllTypes, boolean>; // boolean
 
-console.log('产品摘要:', productSummary);
-console.log('新产品:', newProduct);
-console.log('产品目录:', Object.keys(catalog));
+console.log("产品摘要:", productSummary);
+console.log("新产品:", newProduct);
+console.log("产品目录:", Object.keys(catalog));
 
 // ============================================================================
 // 4. 模板字面量类型 (Template Literal Types)
 // ============================================================================
 
-console.log('\n=== 模板字面量类型示例 ===');
+console.log("\n=== 模板字面量类型示例 ===");
 
 // 基础模板字面量类型
 type Greeting = `Hello ${string}`;
-type SpecificGreeting = `Hello ${'World' | 'TypeScript' | 'JavaScript'}`;
+type SpecificGreeting = `Hello ${"World" | "TypeScript" | "JavaScript"}`;
 
 // 事件名称生成
 type EventName<T extends string> = `on${Capitalize<T>}`;
-type ClickEvent = EventName<'click'>; // 'onClick'
-type MouseEvent = EventName<'mouseOver'>; // 'onMouseOver'
+type ClickEvent = EventName<"click">; // 'onClick'
+type MouseEvent = EventName<"mouseOver">; // 'onMouseOver'
 
 // API 端点生成
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 type ApiEndpoint<T extends string> = `api/v1/${T}`;
-type UserEndpoint = ApiEndpoint<'users'>; // 'api/v1/users'
-type ProductEndpoint = ApiEndpoint<'products'>; // 'api/v1/products'
+type UserEndpoint = ApiEndpoint<"users">; // 'api/v1/users'
+type ProductEndpoint = ApiEndpoint<"products">; // 'api/v1/products'
 
 // CSS 属性生成
 type CSSProperty<T extends string> = `--${T}`;
-type ColorProperty = CSSProperty<'primary-color'>; // '--primary-color'
+type ColorProperty = CSSProperty<"primary-color">; // '--primary-color'
 
 // 实际使用示例
 interface EventHandlers {
@@ -201,28 +201,28 @@ interface EventHandlers {
 }
 
 const handlers: EventHandlers = {
-    onClick: () => console.log('点击事件'),
-    onMouseOver: () => console.log('鼠标悬停事件'),
-    onFocus: () => console.log('焦点事件')
+    onClick: () => console.log("点击事件"),
+    onMouseOver: () => console.log("鼠标悬停事件"),
+    onFocus: () => console.log("焦点事件"),
 };
 
 // 路径参数类型
 type PathParams<T extends string> = T extends `${string}:${infer P}/${infer Rest}`
     ? P | PathParams<Rest>
     : T extends `${string}:${infer P}`
-    ? P
-    : never;
+      ? P
+      : never;
 
-type UserPath = '/users/:id/posts/:postId';
+type UserPath = "/users/:id/posts/:postId";
 type UserPathParams = PathParams<UserPath>; // 'id' | 'postId'
 
-console.log('事件处理器已注册');
+console.log("事件处理器已注册");
 
 // ============================================================================
 // 5. keyof 和 typeof 操作符
 // ============================================================================
 
-console.log('\n=== keyof 和 typeof 示例 ===');
+console.log("\n=== keyof 和 typeof 示例 ===");
 
 // keyof 操作符
 type UserKeys = keyof User; // 'id' | 'name' | 'email' | 'age'
@@ -236,36 +236,36 @@ const user: User = {
     id: 1,
     name: "王五",
     email: "wangwu@example.com",
-    age: 30
+    age: 30,
 };
 
-const userName = getProperty(user, 'name'); // string
-const userAge = getProperty(user, 'age'); // number
+const userName = getProperty(user, "name"); // string
+const userAge = getProperty(user, "age"); // number
 
 // typeof 操作符
 const config = {
-    apiUrl: 'https://api.example.com',
+    apiUrl: "https://api.example.com",
     timeout: 5000,
     retries: 3,
     features: {
         auth: true,
-        cache: false
-    }
+        cache: false,
+    },
 } as const; // as const 确保字面量类型
 
 type Config = typeof config;
 type ApiUrl = typeof config.apiUrl; // "https://api.example.com"
 type Features = typeof config.features; // { readonly auth: true; readonly cache: false; }
 
-console.log('用户名:', userName);
-console.log('用户年龄:', userAge);
-console.log('配置类型已定义');
+console.log("用户名:", userName);
+console.log("用户年龄:", userAge);
+console.log("配置类型已定义");
 
 // ============================================================================
 // 6. 索引访问类型 (Indexed Access Types)
 // ============================================================================
 
-console.log('\n=== 索引访问类型示例 ===');
+console.log("\n=== 索引访问类型示例 ===");
 
 interface Company {
     name: string;
@@ -285,13 +285,13 @@ interface Company {
 }
 
 // 访问嵌套类型
-type Employee = Company['employees'][number]; // 数组元素类型
-type Department = Employee['department']; // { name: string; budget: number; }
-type Headquarters = Company['headquarters']; // { address: string; country: string; }
+type Employee = Company["employees"][number]; // 数组元素类型
+type Department = Employee["department"]; // { name: string; budget: number; }
+type Headquarters = Company["headquarters"]; // { address: string; country: string; }
 
 // 动态访问类型
 type GetProperty<T, K extends keyof T> = T[K];
-type CompanyName = GetProperty<Company, 'name'>; // string
+type CompanyName = GetProperty<Company, "name">; // string
 
 // 实际使用
 const company: Company = {
@@ -303,8 +303,8 @@ const company: Company = {
             position: "前端工程师",
             department: {
                 name: "技术部",
-                budget: 1000000
-            }
+                budget: 1000000,
+            },
         },
         {
             id: 2,
@@ -312,14 +312,14 @@ const company: Company = {
             position: "后端工程师",
             department: {
                 name: "技术部",
-                budget: 1000000
-            }
-        }
+                budget: 1000000,
+            },
+        },
     ],
     headquarters: {
         address: "北京市朝阳区",
-        country: "中国"
-    }
+        country: "中国",
+    },
 };
 
 function getEmployeeInfo(company: Company, index: number): Employee {
@@ -327,13 +327,13 @@ function getEmployeeInfo(company: Company, index: number): Employee {
 }
 
 const firstEmployee = getEmployeeInfo(company, 0);
-console.log('第一个员工:', firstEmployee.name, '-', firstEmployee.position);
+console.log("第一个员工:", firstEmployee.name, "-", firstEmployee.position);
 
 // ============================================================================
 // 7. 实际应用：API 响应类型生成
 // ============================================================================
 
-console.log('\n=== 实际应用示例 ===');
+console.log("\n=== 实际应用示例 ===");
 
 // 基础 API 响应类型
 interface ApiResponse<T> {
@@ -381,14 +381,14 @@ const userListResponse: UserListResponse = {
         page: 1,
         limit: 10,
         total: 1,
-        totalPages: 1
-    }
+        totalPages: 1,
+    },
 };
 
-console.log('API 响应示例:', {
+console.log("API 响应示例:", {
     success: userListResponse.success,
     dataCount: userListResponse.data.length,
-    currentPage: userListResponse.pagination.page
+    currentPage: userListResponse.pagination.page,
 });
 
-console.log('\n=== 第4章示例代码执行完成 ===');
+console.log("\n=== 第4章示例代码执行完成 ===");

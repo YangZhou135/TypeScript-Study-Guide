@@ -36,6 +36,7 @@
 ## 🏗️ 项目架构
 
 ### 目录结构
+
 ```
 task-manager/
 ├── public/
@@ -81,66 +82,66 @@ task-manager/
 ```typescript
 // types/api.ts
 export interface User {
-  id: number;
-  username: string;
-  email: string;
-  avatar?: string;
-  createdAt: string;
-  updatedAt: string;
+    id: number;
+    username: string;
+    email: string;
+    avatar?: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface Project {
-  id: number;
-  name: string;
-  description?: string;
-  color: string;
-  ownerId: number;
-  memberIds: number[];
-  createdAt: string;
-  updatedAt: string;
+    id: number;
+    name: string;
+    description?: string;
+    color: string;
+    ownerId: number;
+    memberIds: number[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface Task {
-  id: number;
-  title: string;
-  description?: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  projectId: number;
-  assigneeId?: number;
-  dueDate?: string;
-  createdAt: string;
-  updatedAt: string;
+    id: number;
+    title: string;
+    description?: string;
+    status: TaskStatus;
+    priority: TaskPriority;
+    projectId: number;
+    assigneeId?: number;
+    dueDate?: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export enum TaskStatus {
-  TODO = 'todo',
-  IN_PROGRESS = 'in_progress',
-  REVIEW = 'review',
-  DONE = 'done'
+    TODO = "todo",
+    IN_PROGRESS = "in_progress",
+    REVIEW = "review",
+    DONE = "done",
 }
 
 export enum TaskPriority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  URGENT = 'urgent'
+    LOW = "low",
+    MEDIUM = "medium",
+    HIGH = "high",
+    URGENT = "urgent",
 }
 
 // API 响应类型
 export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  message?: string;
+    success: boolean;
+    data: T;
+    message?: string;
 }
 
 export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+    pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+    };
 }
 ```
 
@@ -148,80 +149,80 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
 
 ```typescript
 // store/modules/auth.ts
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { User } from '@/types/api';
-import authApi from '@/api/auth';
+import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
+import { User } from "@/types/api";
+import authApi from "@/api/auth";
 
 @Module({ namespaced: true })
 export default class AuthModule extends VuexModule {
-  user: User | null = null;
-  token: string | null = localStorage.getItem('token');
-  isLoading: boolean = false;
+    user: User | null = null;
+    token: string | null = localStorage.getItem("token");
+    isLoading: boolean = false;
 
-  get isAuthenticated(): boolean {
-    return !!this.token && !!this.user;
-  }
-
-  get userName(): string {
-    return this.user?.username || 'Guest';
-  }
-
-  @Mutation
-  SET_USER(user: User): void {
-    this.user = user;
-  }
-
-  @Mutation
-  SET_TOKEN(token: string): void {
-    this.token = token;
-    localStorage.setItem('token', token);
-  }
-
-  @Mutation
-  SET_LOADING(loading: boolean): void {
-    this.isLoading = loading;
-  }
-
-  @Mutation
-  CLEAR_AUTH(): void {
-    this.user = null;
-    this.token = null;
-    localStorage.removeItem('token');
-  }
-
-  @Action
-  async login(credentials: LoginCredentials): Promise<void> {
-    this.SET_LOADING(true);
-    try {
-      const response = await authApi.login(credentials);
-      this.SET_TOKEN(response.data.token);
-      this.SET_USER(response.data.user);
-    } finally {
-      this.SET_LOADING(false);
+    get isAuthenticated(): boolean {
+        return !!this.token && !!this.user;
     }
-  }
 
-  @Action
-  async logout(): Promise<void> {
-    try {
-      await authApi.logout();
-    } finally {
-      this.CLEAR_AUTH();
+    get userName(): string {
+        return this.user?.username || "Guest";
     }
-  }
 
-  @Action
-  async fetchProfile(): Promise<void> {
-    if (!this.token) return;
-    
-    try {
-      const response = await authApi.getProfile();
-      this.SET_USER(response.data);
-    } catch (error) {
-      this.CLEAR_AUTH();
-      throw error;
+    @Mutation
+    SET_USER(user: User): void {
+        this.user = user;
     }
-  }
+
+    @Mutation
+    SET_TOKEN(token: string): void {
+        this.token = token;
+        localStorage.setItem("token", token);
+    }
+
+    @Mutation
+    SET_LOADING(loading: boolean): void {
+        this.isLoading = loading;
+    }
+
+    @Mutation
+    CLEAR_AUTH(): void {
+        this.user = null;
+        this.token = null;
+        localStorage.removeItem("token");
+    }
+
+    @Action
+    async login(credentials: LoginCredentials): Promise<void> {
+        this.SET_LOADING(true);
+        try {
+            const response = await authApi.login(credentials);
+            this.SET_TOKEN(response.data.token);
+            this.SET_USER(response.data.user);
+        } finally {
+            this.SET_LOADING(false);
+        }
+    }
+
+    @Action
+    async logout(): Promise<void> {
+        try {
+            await authApi.logout();
+        } finally {
+            this.CLEAR_AUTH();
+        }
+    }
+
+    @Action
+    async fetchProfile(): Promise<void> {
+        if (!this.token) return;
+
+        try {
+            const response = await authApi.getProfile();
+            this.SET_USER(response.data);
+        } catch (error) {
+            this.CLEAR_AUTH();
+            throw error;
+        }
+    }
 }
 ```
 
@@ -229,77 +230,79 @@ export default class AuthModule extends VuexModule {
 
 ```typescript
 // utils/request.ts
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ApiResponse } from '@/types/api';
-import store from '@/store';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { ApiResponse } from "@/types/api";
+import store from "@/store";
 
 class ApiClient {
-  private instance: AxiosInstance;
+    private instance: AxiosInstance;
 
-  constructor(baseURL: string) {
-    this.instance = axios.create({
-      baseURL,
-      timeout: 10000,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    constructor(baseURL: string) {
+        this.instance = axios.create({
+            baseURL,
+            timeout: 10000,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-    this.setupInterceptors();
-  }
+        this.setupInterceptors();
+    }
 
-  private setupInterceptors(): void {
-    // 请求拦截器
-    this.instance.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
-        const token = store.state.auth.token;
-        if (token) {
-          config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${token}`
-          };
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
+    private setupInterceptors(): void {
+        // 请求拦截器
+        this.instance.interceptors.request.use(
+            (config: AxiosRequestConfig) => {
+                const token = store.state.auth.token;
+                if (token) {
+                    config.headers = {
+                        ...config.headers,
+                        Authorization: `Bearer ${token}`,
+                    };
+                }
+                return config;
+            },
+            (error) => Promise.reject(error)
+        );
 
-    // 响应拦截器
-    this.instance.interceptors.response.use(
-      (response: AxiosResponse<ApiResponse<any>>) => {
-        return response;
-      },
-      (error) => {
-        if (error.response?.status === 401) {
-          store.dispatch('auth/logout');
-        }
-        return Promise.reject(error);
-      }
-    );
-  }
+        // 响应拦截器
+        this.instance.interceptors.response.use(
+            (response: AxiosResponse<ApiResponse<any>>) => {
+                return response;
+            },
+            (error) => {
+                if (error.response?.status === 401) {
+                    store.dispatch("auth/logout");
+                }
+                return Promise.reject(error);
+            }
+        );
+    }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    const response = await this.instance.get<ApiResponse<T>>(url, config);
-    return response.data;
-  }
+    async get<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+        const response = await this.instance.get<ApiResponse<T>>(url, config);
+        return response.data;
+    }
 
-  async post<T, U>(url: string, data?: T, config?: AxiosRequestConfig): Promise<ApiResponse<U>> {
-    const response = await this.instance.post<ApiResponse<U>>(url, data, config);
-    return response.data;
-  }
+    async post<T, U>(url: string, data?: T, config?: AxiosRequestConfig): Promise<ApiResponse<U>> {
+        const response = await this.instance.post<ApiResponse<U>>(url, data, config);
+        return response.data;
+    }
 
-  async put<T, U>(url: string, data?: T, config?: AxiosRequestConfig): Promise<ApiResponse<U>> {
-    const response = await this.instance.put<ApiResponse<U>>(url, data, config);
-    return response.data;
-  }
+    async put<T, U>(url: string, data?: T, config?: AxiosRequestConfig): Promise<ApiResponse<U>> {
+        const response = await this.instance.put<ApiResponse<U>>(url, data, config);
+        return response.data;
+    }
 
-  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    const response = await this.instance.delete<ApiResponse<T>>(url, config);
-    return response.data;
-  }
+    async delete<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+        const response = await this.instance.delete<ApiResponse<T>>(url, config);
+        return response.data;
+    }
 }
 
-export const apiClient = new ApiClient(process.env.VUE_APP_API_BASE_URL || 'http://localhost:3000/api');
+export const apiClient = new ApiClient(
+    process.env.VUE_APP_API_BASE_URL || "http://localhost:3000/api"
+);
 ```
 
 ### 组件开发示例
@@ -318,21 +321,21 @@ export const apiClient = new ApiClient(process.env.VUE_APP_API_BASE_URL || 'http
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    
+
     <p v-if="task.description" class="task-description">
       {{ task.description }}
     </p>
-    
+
     <div class="task-meta">
       <el-tag :type="priorityTagType" size="mini">
         {{ priorityText }}
       </el-tag>
-      
+
       <span v-if="task.dueDate" class="due-date" :class="dueDateClass">
         {{ formatDate(task.dueDate) }}
       </span>
     </div>
-    
+
     <div v-if="assignee" class="task-assignee">
       <el-avatar :size="24" :src="assignee.avatar">
         {{ assignee.username.charAt(0).toUpperCase() }}
@@ -436,6 +439,7 @@ export default class TaskCard extends Vue {
 ## 🚀 开发流程
 
 ### 1. 项目初始化
+
 ```bash
 # 创建项目
 vue create task-manager --preset typescript
@@ -448,12 +452,14 @@ npm install --save-dev @types/jest @vue/test-utils
 ```
 
 ### 2. 配置文件设置
+
 - TypeScript 配置
 - Vue CLI 配置
 - ESLint 和 Prettier 配置
 - 环境变量配置
 
 ### 3. 开发步骤
+
 1. 设计数据模型和类型定义
 2. 搭建项目架构
 3. 实现状态管理
@@ -464,6 +470,7 @@ npm install --save-dev @types/jest @vue/test-utils
 8. 性能优化
 
 ### 4. 部署和优化
+
 - 构建优化
 - 代码分割
 - 缓存策略

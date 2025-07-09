@@ -1,6 +1,6 @@
 /**
  * 第5章：泛型编程实践练习题
- * 
+ *
  * 请完成以下练习，掌握泛型函数、泛型类、泛型约束等概念
  * 通过实际编程练习理解泛型的强大功能
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：泛型函数练习
 // ============================================================================
 
-console.log('=== 练习1：泛型函数练习 ===');
+console.log("=== 练习1：泛型函数练习 ===");
 
 // TODO: 实现以下泛型函数
 
@@ -57,13 +57,13 @@ const strings = ["apple", "banana", "cherry"];
 // const doubled = mapArray(numbers, n => n * 2);
 // const sum = reduceArray(numbers, (acc, n) => acc + n, 0);
 
-console.log('泛型函数练习 - 请实现上述函数');
+console.log("泛型函数练习 - 请实现上述函数");
 
 // ============================================================================
 // 练习2：泛型接口练习
 // ============================================================================
 
-console.log('\n=== 练习2：泛型接口练习 ===');
+console.log("\n=== 练习2：泛型接口练习 ===");
 
 // TODO: 定义以下泛型接口
 
@@ -102,27 +102,27 @@ console.log('\n=== 练习2：泛型接口练习 ===');
 //     // TODO: 实现
 // }
 
-console.log('泛型接口练习 - 请定义并实现上述接口');
+console.log("泛型接口练习 - 请定义并实现上述接口");
 
 // ============================================================================
 // 练习3：泛型类练习
 // ============================================================================
 
-console.log('\n=== 练习3：泛型类练习 ===');
+console.log("\n=== 练习3：泛型类练习 ===");
 
 // TODO: 实现以下泛型类
 
 // 1. 实现 Stack<T> 类 - 栈数据结构
 // class Stack<T> {
 //     private items: T[] = [];
-//     
+//
 //     // TODO: 实现 push, pop, peek, isEmpty, size 方法
 // }
 
 // 2. 实现 Queue<T> 类 - 队列数据结构
 // class Queue<T> {
 //     private items: T[] = [];
-//     
+//
 //     // TODO: 实现 enqueue, dequeue, front, isEmpty, size 方法
 // }
 
@@ -130,7 +130,7 @@ console.log('\n=== 练习3：泛型类练习 ===');
 // class LinkedListNode<T> {
 //     // TODO: 定义节点结构
 // }
-// 
+//
 // class LinkedList<T> {
 //     // TODO: 实现链表操作
 // }
@@ -139,7 +139,7 @@ console.log('\n=== 练习3：泛型类练习 ===');
 // class TreeNode<T> {
 //     // TODO: 定义树节点
 // }
-// 
+//
 // class BinaryTree<T> {
 //     // TODO: 实现二叉树操作
 // }
@@ -153,13 +153,13 @@ console.log('\n=== 练习3：泛型类练习 ===');
 // const numberStack = new Stack<number>();
 // const stringQueue = new Queue<string>();
 
-console.log('泛型类练习 - 请实现上述类');
+console.log("泛型类练习 - 请实现上述类");
 
 // ============================================================================
 // 练习4：泛型约束练习
 // ============================================================================
 
-console.log('\n=== 练习4：泛型约束练习 ===');
+console.log("\n=== 练习4：泛型约束练习 ===");
 
 // TODO: 实现带约束的泛型函数
 
@@ -167,7 +167,7 @@ console.log('\n=== 练习4：泛型约束练习 ===');
 // interface Lengthwise {
 //     length: number;
 // }
-// 
+//
 // function getLength<T extends Lengthwise>(arg: T): number {
 //     // TODO: 实现
 // }
@@ -176,7 +176,7 @@ console.log('\n=== 练习4：泛型约束练习 ===');
 // interface Comparable<T> {
 //     compareTo(other: T): number;
 // }
-// 
+//
 // function compare<T extends Comparable<T>>(a: T, b: T): number {
 //     // TODO: 实现
 // }
@@ -201,13 +201,13 @@ const testObject = { name: "test", age: 25, city: "Beijing" };
 // const picked = pick(testObject, ["name", "age"]);
 // const merged = merge({ a: 1 }, { b: 2 });
 
-console.log('泛型约束练习 - 请实现上述函数');
+console.log("泛型约束练习 - 请实现上述函数");
 
 // ============================================================================
 // 练习5：条件泛型练习
 // ============================================================================
 
-console.log('\n=== 练习5：条件泛型练习 ===');
+console.log("\n=== 练习5：条件泛型练习 ===");
 
 // TODO: 实现以下条件泛型
 
@@ -249,13 +249,13 @@ console.log('\n=== 练习5：条件泛型练习 ===');
 //     // TODO: 实现
 // }
 
-console.log('条件泛型练习 - 请实现上述类型和函数');
+console.log("条件泛型练习 - 请实现上述类型和函数");
 
 // ============================================================================
 // 练习6：综合应用练习
 // ============================================================================
 
-console.log('\n=== 练习6：综合应用练习 ===');
+console.log("\n=== 练习6：综合应用练习 ===");
 
 // 场景：实现一个类型安全的 API 客户端
 
@@ -286,26 +286,26 @@ console.log('\n=== 练习6：综合应用练习 ===');
 
 // class ApiClient {
 //     private baseUrl: string;
-//     
+//
 //     constructor(baseUrl: string) {
 //         this.baseUrl = baseUrl;
 //     }
-//     
+//
 //     // TODO: 实现 get 方法
 //     async get<T>(url: string, config?: RequestConfig): Promise<ApiResult<T>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     // TODO: 实现 post 方法
 //     async post<T, U = any>(url: string, data?: U, config?: RequestConfig): Promise<ApiResult<T>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     // TODO: 实现 put 方法
 //     async put<T, U = any>(url: string, data?: U, config?: RequestConfig): Promise<ApiResult<T>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     // TODO: 实现 delete 方法
 //     async delete<T>(url: string, config?: RequestConfig): Promise<ApiResult<T>> {
 //         // TODO: 实现
@@ -334,20 +334,20 @@ console.log('\n=== 练习6：综合应用练习 ===');
 
 // class UserService {
 //     constructor(private apiClient: ApiClient) {}
-//     
+//
 //     // TODO: 实现用户相关的 API 方法
 //     async getUser(id: number): Promise<ApiResult<User>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     async createUser(userData: CreateUserRequest): Promise<ApiResult<User>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     async updateUser(id: number, userData: UpdateUserRequest): Promise<ApiResult<User>> {
 //         // TODO: 实现
 //     }
-//     
+//
 //     async deleteUser(id: number): Promise<ApiResult<void>> {
 //         // TODO: 实现
 //     }
@@ -357,7 +357,7 @@ console.log('\n=== 练习6：综合应用练习 ===');
 // const apiClient = new ApiClient('https://api.example.com');
 // const userService = new UserService(apiClient);
 
-console.log('综合应用练习 - 请实现类型安全的 API 客户端');
+console.log("综合应用练习 - 请实现类型安全的 API 客户端");
 
-console.log('\n=== 练习完成！请检查泛型实现是否正确 ===');
-console.log('运行命令: npx tsc chapters/chapter-05-generics/practice.ts --noEmit 来检查类型错误');
+console.log("\n=== 练习完成！请检查泛型实现是否正确 ===");
+console.log("运行命令: npx tsc chapters/chapter-05-generics/practice.ts --noEmit 来检查类型错误");

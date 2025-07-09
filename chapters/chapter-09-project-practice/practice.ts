@@ -1,6 +1,6 @@
 /**
  * 第9章：完整项目实战练习题
- * 
+ *
  * 请完成以下综合性练习，构建一个完整的博客管理系统
  * 整合前面所有章节的知识点，实现类型安全的前端应用
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：博客系统类型定义
 // ============================================================================
 
-console.log('=== 练习1：博客系统类型定义 ===');
+console.log("=== 练习1：博客系统类型定义 ===");
 
 // TODO: 定义博客系统的核心类型
 
@@ -154,7 +154,7 @@ console.log('=== 练习1：博客系统类型定义 ===');
 // 练习2：API 客户端实现
 // ============================================================================
 
-console.log('=== 练习2：API 客户端实现 ===');
+console.log("=== 练习2：API 客户端实现 ===");
 
 // TODO: 实现博客系统的API客户端
 
@@ -163,35 +163,35 @@ console.log('=== 练习2：API 客户端实现 ===');
 //     // TODO: 实现HTTP客户端
 //     // private baseURL: string;
 //     // private token: string | null = null;
-//     
+//
 //     // constructor(baseURL: string) {
 //         // 初始化
 //     // }
-//     
+//
 //     // setToken(token: string): void {
 //         // 设置认证令牌
 //     // }
-//     
+//
 //     // clearToken(): void {
 //         // 清除认证令牌
 //     // }
-//     
+//
 //     // private async request<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
 //         // 通用请求方法
 //     // }
-//     
+//
 //     // async get<T>(endpoint: string): Promise<ApiResponse<T>> {
 //         // GET请求
 //     // }
-//     
+//
 //     // async post<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
 //         // POST请求
 //     // }
-//     
+//
 //     // async put<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
 //         // PUT请求
 //     // }
-//     
+//
 //     // async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
 //         // DELETE请求
 //     // }
@@ -203,19 +203,19 @@ console.log('=== 练习2：API 客户端实现 ===');
 //     // static async login(credentials: LoginForm): Promise<ApiResponse<{ user: User; token: string }>> {
 //         // 登录
 //     // }
-//     
+//
 //     // static async register(userData: RegisterForm): Promise<ApiResponse<User>> {
 //         // 注册
 //     // }
-//     
+//
 //     // static async getProfile(): Promise<ApiResponse<User>> {
 //         // 获取当前用户信息
 //     // }
-//     
+//
 //     // static async updateProfile(userData: Partial<User>): Promise<ApiResponse<User>> {
 //         // 更新用户信息
 //     // }
-//     
+//
 //     // static async logout(): Promise<ApiResponse<null>> {
 //         // 登出
 //     // }
@@ -234,27 +234,27 @@ console.log('=== 练习2：API 客户端实现 ===');
 //     // }): Promise<PaginatedResponse<Article>> {
 //         // 获取文章列表
 //     // }
-//     
+//
 //     // static async getArticle(id: number): Promise<ApiResponse<Article>> {
 //         // 获取单篇文章
 //     // }
-//     
+//
 //     // static async createArticle(articleData: ArticleForm): Promise<ApiResponse<Article>> {
 //         // 创建文章
 //     // }
-//     
+//
 //     // static async updateArticle(id: number, articleData: Partial<ArticleForm>): Promise<ApiResponse<Article>> {
 //         // 更新文章
 //     // }
-//     
+//
 //     // static async deleteArticle(id: number): Promise<ApiResponse<null>> {
 //         // 删除文章
 //     // }
-//     
+//
 //     // static async publishArticle(id: number): Promise<ApiResponse<Article>> {
 //         // 发布文章
 //     // }
-//     
+//
 //     // static async likeArticle(id: number): Promise<ApiResponse<{ likeCount: number }>> {
 //         // 点赞文章
 //     // }
@@ -266,19 +266,19 @@ console.log('=== 练习2：API 客户端实现 ===');
 //     // static async getCategories(): Promise<ApiResponse<Category[]>> {
 //         // 获取分类列表
 //     // }
-//     
+//
 //     // static async getCategory(id: number): Promise<ApiResponse<Category>> {
 //         // 获取单个分类
 //     // }
-//     
+//
 //     // static async createCategory(categoryData: Omit<Category, 'id' | 'articleCount' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<Category>> {
 //         // 创建分类
 //     // }
-//     
+//
 //     // static async updateCategory(id: number, categoryData: Partial<Category>): Promise<ApiResponse<Category>> {
 //         // 更新分类
 //     // }
-//     
+//
 //     // static async deleteCategory(id: number): Promise<ApiResponse<null>> {
 //         // 删除分类
 //     // }
@@ -293,23 +293,23 @@ console.log('=== 练习2：API 客户端实现 ===');
 //     // }): Promise<PaginatedResponse<Comment>> {
 //         // 获取文章评论
 //     // }
-//     
+//
 //     // static async createComment(articleId: number, commentData: CommentForm): Promise<ApiResponse<Comment>> {
 //         // 创建评论
 //     // }
-//     
+//
 //     // static async updateComment(id: number, commentData: Partial<CommentForm>): Promise<ApiResponse<Comment>> {
 //         // 更新评论
 //     // }
-//     
+//
 //     // static async deleteComment(id: number): Promise<ApiResponse<null>> {
 //         // 删除评论
 //     // }
-//     
+//
 //     // static async approveComment(id: number): Promise<ApiResponse<Comment>> {
 //         // 审核通过评论
 //     // }
-//     
+//
 //     // static async likeComment(id: number): Promise<ApiResponse<{ likeCount: number }>> {
 //         // 点赞评论
 //     // }
@@ -319,7 +319,7 @@ console.log('=== 练习2：API 客户端实现 ===');
 // 练习3：Vuex 状态管理
 // ============================================================================
 
-console.log('=== 练习3：Vuex 状态管理 ===');
+console.log("=== 练习3：Vuex 状态管理 ===");
 
 // TODO: 实现博客系统的状态管理
 
@@ -330,60 +330,60 @@ console.log('=== 练习3：Vuex 状态管理 ===');
 //     // user: User | null = null;
 //     // token: string | null = localStorage.getItem('auth_token');
 //     // isLoading: boolean = false;
-//     
+//
 //     // TODO: 定义getters
 //     // get isAuthenticated(): boolean {
 //         // 检查是否已认证
 //     // }
-//     
+//
 //     // get userName(): string {
 //         // 获取用户名
 //     // }
-//     
+//
 //     // get userRole(): UserRole | null {
 //         // 获取用户角色
 //     // }
-//     
+//
 //     // get canWrite(): boolean {
 //         // 检查是否有写权限
 //     // }
-//     
+//
 //     // get canManage(): boolean {
 //         // 检查是否有管理权限
 //     // }
-//     
+//
 //     // TODO: 定义mutations
 //     // @Mutation
 //     // SET_USER(user: User): void {
 //         // 设置用户信息
 //     // }
-//     
+//
 //     // @Mutation
 //     // SET_TOKEN(token: string): void {
 //         // 设置令牌
 //     // }
-//     
+//
 //     // @Mutation
 //     // SET_LOADING(loading: boolean): void {
 //         // 设置加载状态
 //     // }
-//     
+//
 //     // @Mutation
 //     // CLEAR_AUTH(): void {
 //         // 清除认证信息
 //     // }
-//     
+//
 //     // TODO: 定义actions
 //     // @Action
 //     // async login(credentials: LoginForm): Promise<void> {
 //         // 登录
 //     // }
-//     
+//
 //     // @Action
 //     // async logout(): Promise<void> {
 //         // 登出
 //     // }
-//     
+//
 //     // @Action
 //     // async fetchProfile(): Promise<void> {
 //         // 获取用户信息
@@ -409,26 +409,26 @@ console.log('=== 练习3：Vuex 状态管理 ===');
 //         // total: number;
 //         // totalPages: number;
 //     // } = { page: 1, limit: 10, total: 0, totalPages: 0 };
-//     
+//
 //     // TODO: 定义getters
 //     // get publishedArticles(): Article[] {
 //         // 获取已发布文章
 //     // }
-//     
+//
 //     // get draftArticles(): Article[] {
 //         // 获取草稿文章
 //     // }
-//     
+//
 //     // get filteredArticles(): Article[] {
 //         // 获取过滤后的文章
 //     // }
-//     
+//
 //     // get articleById() {
 //         // return (id: number): Article | undefined => {
 //             // 根据ID获取文章
 //         // };
 //     // }
-//     
+//
 //     // TODO: 定义mutations和actions
 //     // ...
 // }
@@ -449,7 +449,7 @@ console.log('=== 练习3：Vuex 状态管理 ===');
 // 练习4：Vue 组件开发
 // ============================================================================
 
-console.log('=== 练习4：Vue 组件开发 ===');
+console.log("=== 练习4：Vue 组件开发 ===");
 
 // TODO: 实现博客系统的核心组件
 
@@ -731,7 +731,7 @@ console.log('=== 练习4：Vue 组件开发 ===');
 // 练习5：工具函数和类型守卫
 // ============================================================================
 
-console.log('=== 练习5：工具函数和类型守卫 ===');
+console.log("=== 练习5：工具函数和类型守卫 ===");
 
 // TODO: 实现博客系统的工具函数
 
@@ -846,7 +846,7 @@ console.log('=== 练习5：工具函数和类型守卫 ===');
 // 练习6：错误处理和测试
 // ============================================================================
 
-console.log('=== 练习6：错误处理和测试 ===');
+console.log("=== 练习6：错误处理和测试 ===");
 
 // TODO: 实现错误处理和测试
 
@@ -991,7 +991,7 @@ console.log('=== 练习6：错误处理和测试 ===');
 // 练习7：性能优化
 // ============================================================================
 
-console.log('=== 练习7：性能优化 ===');
+console.log("=== 练习7：性能优化 ===");
 
 // TODO: 实现性能优化
 

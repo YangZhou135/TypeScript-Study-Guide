@@ -12,7 +12,7 @@ export {};
 // 1. 类型别名 (Type Aliases)
 // ============================================================================
 
-console.log('=== 类型别名示例 ===');
+console.log("=== 类型别名示例 ===");
 
 // 基础类型别名
 type UserID = number;
@@ -33,31 +33,31 @@ type EventHandler = (event: string, data?: any) => void;
 type Validator = (value: string) => boolean;
 
 // 使用类型别名
-let currentUser: User = {
+const currentUser: User = {
     id: 1001,
     name: "张三",
     email: "zhangsan@example.com",
     age: 28,
-    isActive: true
+    isActive: true,
 };
 
-let clickHandler: EventHandler = (event: string, data?: any) => {
-    console.log(`处理事件: ${event}`, data ? `数据: ${JSON.stringify(data)}` : '');
+const clickHandler: EventHandler = (event: string, data?: any) => {
+    console.log(`处理事件: ${event}`, data ? `数据: ${JSON.stringify(data)}` : "");
 };
 
-let emailValidator: Validator = (email: string): boolean => {
-    return email.includes('@') && email.includes('.');
+const emailValidator: Validator = (email: string): boolean => {
+    return email.includes("@") && email.includes(".");
 };
 
-console.log('用户信息:', currentUser);
-clickHandler('click', { button: 'left', x: 100, y: 200 });
-console.log('邮箱验证结果:', emailValidator(currentUser.email));
+console.log("用户信息:", currentUser);
+clickHandler("click", { button: "left", x: 100, y: 200 });
+console.log("邮箱验证结果:", emailValidator(currentUser.email));
 
 // ============================================================================
 // 2. 接口 (Interfaces)
 // ============================================================================
 
-console.log('\n=== 接口示例 ===');
+console.log("\n=== 接口示例 ===");
 
 // 基础接口
 interface ProductInterface {
@@ -86,7 +86,7 @@ interface Calculator {
 }
 
 // 实现接口
-let laptop: ElectronicProduct = {
+const laptop: ElectronicProduct = {
     id: 2001,
     name: "MacBook Pro",
     price: 15999,
@@ -96,32 +96,32 @@ let laptop: ElectronicProduct = {
     warranty: 12,
     brand: "Apple",
     description: "专业级笔记本电脑",
-    powerConsumption: 65
+    powerConsumption: 65,
 };
 
-let basicCalculator: Calculator = {
+const basicCalculator: Calculator = {
     add: (a: number, b: number): number => a + b,
     subtract: (a: number, b: number): number => a - b,
     multiply: (a: number, b: number): number => a * b,
     divide: (a: number, b: number): number => {
         if (b === 0) throw new Error("除数不能为零");
         return a / b;
-    }
+    },
 };
 
-console.log('笔记本信息:', laptop);
-console.log('计算结果:', {
+console.log("笔记本信息:", laptop);
+console.log("计算结果:", {
     add: basicCalculator.add(10, 5),
     subtract: basicCalculator.subtract(10, 5),
     multiply: basicCalculator.multiply(10, 5),
-    divide: basicCalculator.divide(10, 5)
+    divide: basicCalculator.divide(10, 5),
 });
 
 // ============================================================================
 // 3. 联合类型 (Union Types)
 // ============================================================================
 
-console.log('\n=== 联合类型示例 ===');
+console.log("\n=== 联合类型示例 ===");
 
 // 字符串字面量联合类型
 type Status = "pending" | "success" | "error" | "cancelled";
@@ -133,7 +133,7 @@ type ID = string | number;
 type ApiResponse = string | number | boolean | null;
 
 // 对象联合类型
-type PaymentMethod = 
+type PaymentMethod =
     | { type: "credit_card"; cardNumber: string; expiryDate: string }
     | { type: "paypal"; email: string }
     | { type: "bank_transfer"; accountNumber: string; routingNumber: string };
@@ -160,7 +160,7 @@ function formatID(id: ID): string {
     if (typeof id === "string") {
         return `ID: ${id.toUpperCase()}`;
     } else {
-        return `ID: ${id.toString().padStart(6, '0')}`;
+        return `ID: ${id.toString().padStart(6, "0")}`;
     }
 }
 
@@ -179,31 +179,31 @@ function processPayment(method: PaymentMethod): string {
 }
 
 // 测试联合类型
-let currentStatus: Status = "success";
-let userId: ID = "USER_12345";
-let numericId: ID = 67890;
+const currentStatus: Status = "success";
+const userId: ID = "USER_12345";
+const numericId: ID = 67890;
 
-let payment1: PaymentMethod = {
+const payment1: PaymentMethod = {
     type: "credit_card",
     cardNumber: "1234567890123456",
-    expiryDate: "12/25"
+    expiryDate: "12/25",
 };
 
-let payment2: PaymentMethod = {
+const payment2: PaymentMethod = {
     type: "paypal",
-    email: "user@example.com"
+    email: "user@example.com",
 };
 
-console.log('状态处理:', processStatus(currentStatus));
-console.log('ID格式化:', formatID(userId), '|', formatID(numericId));
-console.log('支付方式:', processPayment(payment1));
-console.log('支付方式:', processPayment(payment2));
+console.log("状态处理:", processStatus(currentStatus));
+console.log("ID格式化:", formatID(userId), "|", formatID(numericId));
+console.log("支付方式:", processPayment(payment1));
+console.log("支付方式:", processPayment(payment2));
 
 // ============================================================================
 // 4. 交叉类型 (Intersection Types)
 // ============================================================================
 
-console.log('\n=== 交叉类型示例 ===');
+console.log("\n=== 交叉类型示例 ===");
 
 // 基础类型定义
 type Person = {
@@ -229,7 +229,7 @@ type Staff = Person & Employee; // 员工 = 个人信息 + 员工信息
 type TeamLead = Person & Employee & Manager; // 团队负责人 = 个人 + 员工 + 管理者
 
 // 使用交叉类型
-let developer: Staff = {
+const developer: Staff = {
     // Person 属性
     name: "李四",
     age: 30,
@@ -238,10 +238,10 @@ let developer: Staff = {
     employeeId: "EMP001",
     department: "技术部",
     salary: 15000,
-    startDate: new Date("2022-01-15")
+    startDate: new Date("2022-01-15"),
 };
 
-let teamLeader: TeamLead = {
+const teamLeader: TeamLead = {
     // Person 属性
     name: "王五",
     age: 35,
@@ -253,36 +253,36 @@ let teamLeader: TeamLead = {
     startDate: new Date("2020-03-01"),
     // Manager 属性
     teamSize: 8,
-    budget: 500000
+    budget: 500000,
 };
 
-console.log('开发者信息:', {
+console.log("开发者信息:", {
     name: developer.name,
     department: developer.department,
-    salary: developer.salary
+    salary: developer.salary,
 });
 
-console.log('团队负责人信息:', {
+console.log("团队负责人信息:", {
     name: teamLeader.name,
     department: teamLeader.department,
     teamSize: teamLeader.teamSize,
-    budget: teamLeader.budget
+    budget: teamLeader.budget,
 });
 
 // ============================================================================
 // 5. 类型断言 (Type Assertions)
 // ============================================================================
 
-console.log('\n=== 类型断言示例 ===');
+console.log("\n=== 类型断言示例 ===");
 
 // 从 unknown 类型断言
-let userInput: unknown = '{"name": "张三", "age": 25}';
+const userInput: unknown = '{"name": "张三", "age": 25}';
 
 // 使用 as 语法进行类型断言
-let userJson = userInput as string;
-let userData = JSON.parse(userJson) as { name: string; age: number };
+const userJson = userInput as string;
+const userData = JSON.parse(userJson) as { name: string; age: number };
 
-console.log('解析的用户数据:', userData);
+console.log("解析的用户数据:", userData);
 
 // DOM 元素类型断言（在浏览器环境中）
 // let inputElement = document.getElementById('username') as HTMLInputElement;
@@ -297,17 +297,17 @@ function findUserById(id: number): User | undefined {
     return undefined;
 }
 
-let foundUser = findUserById(1001);
+const foundUser = findUserById(1001);
 // 如果我们确定用户存在，可以使用非空断言
-let userName = foundUser!.name; // 告诉 TypeScript foundUser 不是 undefined
+const userName = foundUser!.name; // 告诉 TypeScript foundUser 不是 undefined
 
-console.log('找到的用户名:', userName);
+console.log("找到的用户名:", userName);
 
 // ============================================================================
 // 6. 类型守卫 (Type Guards)
 // ============================================================================
 
-console.log('\n=== 类型守卫示例 ===');
+console.log("\n=== 类型守卫示例 ===");
 
 // 自定义类型守卫
 function isString(value: unknown): value is string {
@@ -319,12 +319,14 @@ function isNumber(value: unknown): value is number {
 }
 
 function isUser(obj: any): obj is User {
-    return obj && 
-           typeof obj.id === "number" &&
-           typeof obj.name === "string" &&
-           typeof obj.email === "string" &&
-           typeof obj.age === "number" &&
-           typeof obj.isActive === "boolean";
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.name === "string" &&
+        typeof obj.email === "string" &&
+        typeof obj.age === "number" &&
+        typeof obj.isActive === "boolean"
+    );
 }
 
 // 使用类型守卫
@@ -373,4 +375,4 @@ function processPaymentWithGuard(method: PaymentMethod): string {
 
 console.log(processPaymentWithGuard(payment1));
 
-console.log('\n=== 第2章示例代码执行完成 ===');
+console.log("\n=== 第2章示例代码执行完成 ===");

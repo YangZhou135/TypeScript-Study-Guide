@@ -33,7 +33,7 @@ interface User {
 }
 
 type ReadonlyUser = Readonly<User>; // 所有属性变为只读
-type PartialUser = Partial<User>;   // 所有属性变为可选
+type PartialUser = Partial<User>; // 所有属性变为可选
 ```
 
 ### 4.2 条件类型 (Conditional Types)
@@ -65,10 +65,10 @@ interface User {
 }
 
 // Pick - 选择部分属性
-type UserSummary = Pick<User, 'id' | 'name'>; // { id: number; name: string; }
+type UserSummary = Pick<User, "id" | "name">; // { id: number; name: string; }
 
 // Omit - 排除部分属性
-type UserWithoutId = Omit<User, 'id'>; // { name: string; email: string; age: number; }
+type UserWithoutId = Omit<User, "id">; // { name: string; email: string; age: number; }
 
 // Record - 创建记录类型
 type UserRoles = Record<string, User>; // { [key: string]: User; }
@@ -84,16 +84,16 @@ type RequiredUser = Required<Partial<User>>;
 ```typescript
 // 基础模板字面量类型
 type Greeting = `Hello ${string}`;
-type SpecificGreeting = `Hello ${'World' | 'TypeScript'}`;
+type SpecificGreeting = `Hello ${"World" | "TypeScript"}`;
 
 // 实用示例
 type EventName<T extends string> = `on${Capitalize<T>}`;
-type ClickEvent = EventName<'click'>; // 'onClick'
+type ClickEvent = EventName<"click">; // 'onClick'
 
 // 组合使用
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 type ApiEndpoint<T extends string> = `api/${T}`;
-type UserEndpoint = ApiEndpoint<'users'>; // 'api/users'
+type UserEndpoint = ApiEndpoint<"users">; // 'api/users'
 ```
 
 ### 4.5 keyof 和 typeof 操作符
@@ -109,7 +109,7 @@ interface User {
 type UserKeys = keyof User; // 'id' | 'name' | 'email'
 
 // typeof - 获取值的类型
-const user = { id: 1, name: 'John', email: 'john@example.com' };
+const user = { id: 1, name: "John", email: "john@example.com" };
 type UserType = typeof user; // { id: number; name: string; email: string; }
 
 // 组合使用
@@ -128,14 +128,14 @@ interface User {
         avatar: string;
     };
     preferences: {
-        theme: 'light' | 'dark';
+        theme: "light" | "dark";
         language: string;
     };
 }
 
 // 访问嵌套类型
-type UserProfile = User['profile']; // { name: string; avatar: string; }
-type Theme = User['preferences']['theme']; // 'light' | 'dark'
+type UserProfile = User["profile"]; // { name: string; avatar: string; }
+type Theme = User["preferences"]["theme"]; // 'light' | 'dark'
 
 // 数组元素类型
 type StringArray = string[];

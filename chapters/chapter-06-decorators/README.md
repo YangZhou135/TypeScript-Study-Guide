@@ -43,11 +43,11 @@ class Greeter {
 类装饰器在类声明之前被声明：
 
 ```typescript
-function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
+function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
         newProperty = "new property";
         hello = "override";
-    }
+    };
 }
 
 @classDecorator
@@ -105,7 +105,7 @@ function format(formatString: string) {
             get: getter,
             set: setter,
             enumerable: true,
-            configurable: true
+            configurable: true,
         });
     };
 }
@@ -122,7 +122,8 @@ class Greeter {
 
 ```typescript
 function required(target: any, propertyKey: string, parameterIndex: number) {
-    let existingRequiredParameters: number[] = Reflect.getOwnMetadata("required", target, propertyKey) || [];
+    let existingRequiredParameters: number[] =
+        Reflect.getOwnMetadata("required", target, propertyKey) || [];
     existingRequiredParameters.push(parameterIndex);
     Reflect.defineMetadata("required", existingRequiredParameters, target, propertyKey);
 }
@@ -145,10 +146,12 @@ class Greeter {
 装饰器工厂就是一个简单的函数，它返回一个装饰器：
 
 ```typescript
-function color(value: string) { // 这是一个装饰器工厂
-    return function (target: any) { // 这是装饰器
+function color(value: string) {
+    // 这是一个装饰器工厂
+    return function (target: any) {
+        // 这是装饰器
         // do something with "target" and "value"...
-    }
+    };
 }
 
 @color("red")

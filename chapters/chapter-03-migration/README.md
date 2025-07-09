@@ -2,6 +2,29 @@
 
 > 学习如何将现有的 JavaScript 项目逐步迁移到 TypeScript
 
+## 🔄 前置知识回顾
+
+在开始迁移学习前，请确保您已经掌握：
+
+- ✅ **基础类型系统**：能够为变量、函数、对象添加类型声明
+- ✅ **类型别名和接口**：知道何时使用 `type` 和 `interface`
+- ✅ **联合类型和交叉类型**：理解复杂类型的组合方式
+- ✅ **类型断言和类型守卫**：掌握类型安全编程技巧
+
+💡 **实战检验**：能否为以下 JavaScript 代码添加类型？
+
+```javascript
+// JavaScript 代码
+const users = [
+    { id: 1, name: "张三", roles: ["admin", "user"] },
+    { id: 2, name: "李四", roles: ["user"] },
+];
+
+function getUsersByRole(users, role) {
+    return users.filter((user) => user.roles.includes(role));
+}
+```
+
 ## 🎯 学习目标
 
 - 掌握 JavaScript 到 TypeScript 的迁移策略
@@ -14,12 +37,14 @@
 ### 3.1 迁移策略
 
 #### 渐进式迁移
+
 1. **文件重命名**: `.js` → `.ts`
 2. **添加类型声明**: 逐步为变量、函数添加类型
 3. **启用严格模式**: 逐步开启 TypeScript 严格检查
 4. **重构优化**: 利用类型系统重构代码
 
 #### 迁移步骤
+
 ```bash
 # 1. 安装 TypeScript
 npm install -D typescript @types/node
@@ -36,44 +61,47 @@ mv app.js app.ts
 ### 3.2 TypeScript 配置
 
 #### 基础配置 (tsconfig.json)
+
 ```json
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": false,  // 初期设为 false
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": false, // 初期设为 false
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }
 ```
 
 #### 渐进式严格配置
+
 ```json
 {
-  "compilerOptions": {
-    // 第一阶段：基础配置
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    
-    // 第二阶段：启用部分严格检查
-    "noImplicitAny": true,
-    "strictNullChecks": false,
-    
-    // 第三阶段：完全严格模式
-    "strict": true
-  }
+    "compilerOptions": {
+        // 第一阶段：基础配置
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+
+        // 第二阶段：启用部分严格检查
+        "noImplicitAny": true,
+        "strictNullChecks": false,
+
+        // 第三阶段：完全严格模式
+        "strict": true
+    }
 }
 ```
 
 ### 3.3 常见迁移模式
 
 #### 模式1：函数迁移
+
 ```javascript
 // JavaScript 原代码
 function calculatePrice(basePrice, discount, tax) {
@@ -84,17 +112,14 @@ function calculatePrice(basePrice, discount, tax) {
 
 ```typescript
 // TypeScript 迁移后
-function calculatePrice(
-    basePrice: number, 
-    discount: number, 
-    tax: number
-): number {
+function calculatePrice(basePrice: number, discount: number, tax: number): number {
     const discountedPrice: number = basePrice * (1 - discount);
     return discountedPrice * (1 + tax);
 }
 ```
 
 #### 模式2：对象迁移
+
 ```javascript
 // JavaScript 原代码
 const user = {
@@ -103,8 +128,8 @@ const user = {
     email: "zhangsan@example.com",
     preferences: {
         theme: "dark",
-        language: "zh-CN"
-    }
+        language: "zh-CN",
+    },
 };
 ```
 
@@ -128,14 +153,15 @@ const user: User = {
     email: "zhangsan@example.com",
     preferences: {
         theme: "dark",
-        language: "zh-CN"
-    }
+        language: "zh-CN",
+    },
 };
 ```
 
 ### 3.4 处理第三方库
 
 #### 安装类型声明
+
 ```bash
 # 安装常用库的类型声明
 npm install -D @types/lodash
@@ -144,9 +170,10 @@ npm install -D @types/node
 ```
 
 #### 自定义类型声明
+
 ```typescript
 // types/custom.d.ts
-declare module 'some-library' {
+declare module "some-library" {
     export function someFunction(param: string): number;
 }
 ```

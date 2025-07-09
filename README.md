@@ -9,16 +9,19 @@
 ## 📚 学习路径
 
 ### 🌱 基础阶段 (第1-3章)
+
 - **第1章**: TypeScript 基础语法入门
-- **第2章**: 类型系统深入理解  
+- **第2章**: 类型系统深入理解
 - **第3章**: 从 JavaScript 到 TypeScript 迁移
 
 ### 🚀 进阶阶段 (第4-6章)
+
 - **第4章**: 高级类型与类型操作
 - **第5章**: 泛型编程实践
 - **第6章**: 装饰器与元编程
 
 ### 🎨 Vue 集成阶段 (第7-9章)
+
 - **第7章**: Vue 2 + TypeScript 项目集成
 - **第8章**: Vue 组件的 TypeScript 开发
 - **第9章**: 完整项目实战
@@ -44,6 +47,11 @@ TypeScript-study-guide/
 ├── src/                        # 源代码目录
 ├── examples/                   # 完整示例项目
 ├── docs/                       # 补充文档
+│   ├── quick-start.md          # 5分钟快速开始
+│   ├── learning-progress.md    # 学习进度跟踪
+│   ├── project-summary.md      # 项目总结
+│   ├── code-style-guide.md     # 🆕 代码风格和注释规范
+│   └── real-world-project-example.md  # 🆕 实战项目案例
 └── assets/                     # 学习资源
 ```
 
@@ -54,9 +62,9 @@ TypeScript-study-guide/
 1. **安装 Node.js** (推荐 v16 或更高版本)
 2. **克隆项目** 到本地
 3. **安装依赖**:
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
 ### 5分钟快速体验
 
@@ -116,11 +124,20 @@ npx tsc --noEmit
 2. **动手实践**: 理论结合实践，多写代码多调试
 3. **对比学习**: 每个概念都会提供 JavaScript 对比，便于理解
 4. **项目导向**: 最终目标是能在 Vue 项目中熟练使用 TypeScript
+5. **🆕 遵循规范**: 查看 [代码风格指南](docs/code-style-guide.md) 养成良好编码习惯
+6. **🆕 实战练习**: 参考 [实战项目案例](docs/real-world-project-example.md) 了解真实项目应用
+
+### 学习资源
+
+- **基础学习**: 从 [第1章](chapters/chapter-01-basics/README.md) 开始系统学习
+- **错误排查**: 各章节都有 `troubleshooting.md` 文件帮助解决常见问题
+- **进度跟踪**: 使用 [学习进度表](docs/learning-progress.md) 记录学习过程
+- **实践项目**: 查看 [实战案例](docs/real-world-project-example.md) 了解企业级应用
 
 ### 学习时间安排
 
 - **基础阶段**: 建议 1-2 周，每天 1-2 小时
-- **进阶阶段**: 建议 2-3 周，每天 1-2 小时  
+- **进阶阶段**: 建议 2-3 周，每天 1-2 小时
 - **Vue 集成阶段**: 建议 1-2 周，每天 2-3 小时
 
 ## 🎯 学习成果
@@ -150,6 +167,7 @@ MIT License
 ✅ **文档已完善** - 包含完整的学习指南和进度跟踪
 
 ### 快速验证项目
+
 ```bash
 # 运行第一个示例
 npx ts-node chapters/chapter-01-basics/examples.ts

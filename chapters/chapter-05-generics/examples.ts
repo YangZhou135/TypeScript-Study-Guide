@@ -1,6 +1,6 @@
 /**
  * 第5章：TypeScript 泛型编程示例
- * 
+ *
  * 本文件展示了 TypeScript 泛型的各种用法
  * 包括泛型函数、泛型接口、泛型类、泛型约束等
  */
@@ -12,7 +12,7 @@ export {};
 // 1. 泛型基础
 // ============================================================================
 
-console.log('=== 泛型基础示例 ===');
+console.log("=== 泛型基础示例 ===");
 
 // 问题：没有泛型的重复代码
 function identityString(arg: string): string {
@@ -37,9 +37,9 @@ const str = identity<string>("Hello TypeScript");
 const num = identity<number>(42);
 const bool = identity(true); // 类型推断，不需要显式指定类型
 
-console.log('字符串身份:', str);
-console.log('数字身份:', num);
-console.log('布尔身份:', bool);
+console.log("字符串身份:", str);
+console.log("数字身份:", num);
+console.log("布尔身份:", bool);
 
 // 泛型数组操作
 function getFirst<T>(array: T[]): T | undefined {
@@ -53,14 +53,14 @@ function getLast<T>(array: T[]): T | undefined {
 const numbers = [1, 2, 3, 4, 5];
 const strings = ["apple", "banana", "cherry"];
 
-console.log('第一个数字:', getFirst(numbers)); // number | undefined
-console.log('最后一个字符串:', getLast(strings)); // string | undefined
+console.log("第一个数字:", getFirst(numbers)); // number | undefined
+console.log("最后一个字符串:", getLast(strings)); // string | undefined
 
 // ============================================================================
 // 2. 泛型函数
 // ============================================================================
 
-console.log('\n=== 泛型函数示例 ===');
+console.log("\n=== 泛型函数示例 ===");
 
 // 交换元组元素
 function swap<T, U>(tuple: [T, U]): [U, T] {
@@ -70,30 +70,30 @@ function swap<T, U>(tuple: [T, U]): [U, T] {
 const originalTuple: [string, number] = ["hello", 42];
 const swappedTuple = swap(originalTuple); // [number, string]
 
-console.log('原始元组:', originalTuple);
-console.log('交换后元组:', swappedTuple);
+console.log("原始元组:", originalTuple);
+console.log("交换后元组:", swappedTuple);
 
 // 泛型过滤函数
 function filter<T>(array: T[], predicate: (item: T) => boolean): T[] {
     return array.filter(predicate);
 }
 
-const evenNumbers = filter(numbers, n => n % 2 === 0);
-const longStrings = filter(strings, s => s.length > 5);
+const evenNumbers = filter(numbers, (n) => n % 2 === 0);
+const longStrings = filter(strings, (s) => s.length > 5);
 
-console.log('偶数:', evenNumbers);
-console.log('长字符串:', longStrings);
+console.log("偶数:", evenNumbers);
+console.log("长字符串:", longStrings);
 
 // 泛型映射函数
 function map<T, U>(array: T[], transform: (item: T) => U): U[] {
     return array.map(transform);
 }
 
-const doubled = map(numbers, n => n * 2);
-const lengths = map(strings, s => s.length);
+const doubled = map(numbers, (n) => n * 2);
+const lengths = map(strings, (s) => s.length);
 
-console.log('翻倍数字:', doubled);
-console.log('字符串长度:', lengths);
+console.log("翻倍数字:", doubled);
+console.log("字符串长度:", lengths);
 
 // 泛型归约函数
 function reduce<T, U>(array: T[], reducer: (acc: U, current: T) => U, initial: U): U {
@@ -103,14 +103,14 @@ function reduce<T, U>(array: T[], reducer: (acc: U, current: T) => U, initial: U
 const sum = reduce(numbers, (acc, n) => acc + n, 0);
 const concatenated = reduce(strings, (acc, s) => acc + s, "");
 
-console.log('数字总和:', sum);
-console.log('连接字符串:', concatenated);
+console.log("数字总和:", sum);
+console.log("连接字符串:", concatenated);
 
 // ============================================================================
 // 3. 泛型接口
 // ============================================================================
 
-console.log('\n=== 泛型接口示例 ===');
+console.log("\n=== 泛型接口示例 ===");
 
 // 泛型容器接口
 interface Container<T> {
@@ -140,8 +140,8 @@ class SimpleContainer<T> implements Container<T> {
 const stringContainer = new SimpleContainer<string>("Hello");
 const numberContainer = new SimpleContainer<number>(42);
 
-console.log('字符串容器值:', stringContainer.getValue());
-console.log('数字容器值:', numberContainer.getValue());
+console.log("字符串容器值:", stringContainer.getValue());
+console.log("数字容器值:", numberContainer.getValue());
 
 // 泛型函数接口
 interface Transformer<T, U> {
@@ -155,8 +155,8 @@ interface Validator<T> {
 const stringToNumber: Transformer<string, number> = (str) => parseInt(str, 10);
 const isPositive: Validator<number> = (num) => num > 0;
 
-console.log('字符串转数字:', stringToNumber("123"));
-console.log('是否为正数:', isPositive(42));
+console.log("字符串转数字:", stringToNumber("123"));
+console.log("是否为正数:", isPositive(42));
 
 // 泛型键值对接口
 interface KeyValuePair<K, V> {
@@ -170,23 +170,23 @@ interface Dictionary<T> {
 
 const userAge: KeyValuePair<string, number> = {
     key: "age",
-    value: 25
+    value: 25,
 };
 
 const userInfo: Dictionary<string | number> = {
     name: "张三",
     age: 25,
-    city: "北京"
+    city: "北京",
 };
 
-console.log('键值对:', userAge);
-console.log('用户信息:', userInfo);
+console.log("键值对:", userAge);
+console.log("用户信息:", userInfo);
 
 // ============================================================================
 // 4. 泛型类
 // ============================================================================
 
-console.log('\n=== 泛型类示例 ===');
+console.log("\n=== 泛型类示例 ===");
 
 // 泛型列表类
 class GenericList<T> {
@@ -235,9 +235,12 @@ numberList.add(1);
 numberList.add(2);
 numberList.add(3);
 
-console.log('字符串列表:', stringList.getAll());
-console.log('数字列表:', numberList.getAll());
-console.log('找到的水果:', stringList.find(fruit => fruit.startsWith('b')));
+console.log("字符串列表:", stringList.getAll());
+console.log("数字列表:", numberList.getAll());
+console.log(
+    "找到的水果:",
+    stringList.find((fruit) => fruit.startsWith("b"))
+);
 
 // 泛型栈类
 class Stack<T> {
@@ -269,15 +272,15 @@ numberStack.push(1);
 numberStack.push(2);
 numberStack.push(3);
 
-console.log('栈顶元素:', numberStack.peek());
-console.log('弹出元素:', numberStack.pop());
-console.log('栈大小:', numberStack.size());
+console.log("栈顶元素:", numberStack.peek());
+console.log("弹出元素:", numberStack.pop());
+console.log("栈大小:", numberStack.size());
 
 // ============================================================================
 // 5. 泛型约束
 // ============================================================================
 
-console.log('\n=== 泛型约束示例 ===');
+console.log("\n=== 泛型约束示例 ===");
 
 // 长度约束
 interface Lengthwise {
@@ -302,15 +305,15 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 const person = {
     name: "张三",
     age: 25,
-    city: "北京"
+    city: "北京",
 };
 
 const personName = getProperty(person, "name"); // string
 const personAge = getProperty(person, "age"); // number
 // const invalid = getProperty(person, "invalid"); // 编译错误
 
-console.log('人员姓名:', personName);
-console.log('人员年龄:', personAge);
+console.log("人员姓名:", personName);
+console.log("人员年龄:", personAge);
 
 // 类型约束
 interface Comparable<T> {
@@ -333,20 +336,19 @@ function sort<T extends Comparable<T>>(items: T[]): T[] {
     return items.sort((a, b) => a.compareTo(b));
 }
 
-const versions = [
-    new Version("1.2.0"),
-    new Version("1.1.0"),
-    new Version("1.3.0")
-];
+const versions = [new Version("1.2.0"), new Version("1.1.0"), new Version("1.3.0")];
 
 const sortedVersions = sort(versions);
-console.log('排序后的版本:', sortedVersions.map(v => v.toString()));
+console.log(
+    "排序后的版本:",
+    sortedVersions.map((v) => v.toString())
+);
 
 // ============================================================================
 // 6. 条件泛型
 // ============================================================================
 
-console.log('\n=== 条件泛型示例 ===');
+console.log("\n=== 条件泛型示例 ===");
 
 // 基础条件类型
 type IsString<T> = T extends string ? true : false;
@@ -380,10 +382,12 @@ type StringReturn = MyReturnType<typeof getString>; // string
 type NumberReturn = MyReturnType<typeof getNumber>; // number
 
 // 实际使用条件泛型
-function processValue<T>(value: T): T extends string ? string : T extends number ? number : unknown {
-    if (typeof value === 'string') {
+function processValue<T>(
+    value: T
+): T extends string ? string : T extends number ? number : unknown {
+    if (typeof value === "string") {
         return value.toUpperCase() as any;
-    } else if (typeof value === 'number') {
+    } else if (typeof value === "number") {
         return (value * 2) as any;
     }
     return value as any;
@@ -393,15 +397,15 @@ const processedString = processValue("hello"); // string
 const processedNumber = processValue(42); // number
 const processedOther = processValue(true); // unknown
 
-console.log('处理后的字符串:', processedString);
-console.log('处理后的数字:', processedNumber);
-console.log('处理后的其他:', processedOther);
+console.log("处理后的字符串:", processedString);
+console.log("处理后的数字:", processedNumber);
+console.log("处理后的其他:", processedOther);
 
 // ============================================================================
 // 7. 实际应用：API 客户端
 // ============================================================================
 
-console.log('\n=== 实际应用示例：泛型 API 客户端 ===');
+console.log("\n=== 实际应用示例：泛型 API 客户端 ===");
 
 // API 响应类型
 interface ApiResponse<T> {
@@ -430,18 +434,18 @@ class ApiClient {
         try {
             // 模拟 API 调用
             console.log(`GET ${this.baseUrl}${endpoint}`);
-            
+
             // 模拟成功响应
             return {
                 success: true,
                 data: {} as T, // 实际应用中这里会是真实的 API 响应
-                message: "请求成功"
+                message: "请求成功",
             };
         } catch (error) {
             return {
                 success: false,
                 error: "网络错误",
-                code: 500
+                code: 500,
             };
         }
     }
@@ -449,17 +453,17 @@ class ApiClient {
     async post<T, U>(endpoint: string, data: T): Promise<ApiResult<U>> {
         try {
             console.log(`POST ${this.baseUrl}${endpoint}`, data);
-            
+
             return {
                 success: true,
                 data: {} as U,
-                message: "创建成功"
+                message: "创建成功",
             };
         } catch (error) {
             return {
                 success: false,
                 error: "创建失败",
-                code: 400
+                code: 400,
             };
         }
     }
@@ -484,12 +488,12 @@ async function demonstrateApiClient() {
     const userResult = await apiClient.get<User>("/users/1");
     const createResult = await apiClient.post<CreateUserRequest, User>("/users", {
         name: "新用户",
-        email: "newuser@example.com"
+        email: "newuser@example.com",
     });
 
-    console.log('API 客户端演示完成');
+    console.log("API 客户端演示完成");
 }
 
 demonstrateApiClient();
 
-console.log('\n=== 第5章示例代码执行完成 ===');
+console.log("\n=== 第5章示例代码执行完成 ===");

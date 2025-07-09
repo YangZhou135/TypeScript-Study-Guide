@@ -1,6 +1,6 @@
 /**
  * 第4章：高级类型与类型操作练习题解答
- * 
+ *
  * 这里提供了 practice.ts 中所有练习题的正确答案
  * 展示了高级类型操作的正确实现方式
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：映射类型练习 - 解答
 // ============================================================================
 
-console.log('=== 练习1：映射类型练习 - 解答 ===');
+console.log("=== 练习1：映射类型练习 - 解答 ===");
 
 // 基础接口
 interface User {
@@ -75,17 +75,17 @@ const readonlyUser: ReadonlyUser = {
     name: "李四",
     email: "lisi@example.com",
     age: 25,
-    isActive: true
+    isActive: true,
 };
 // readonlyUser.name = "王五"; // 错误：无法分配到只读属性
 
-console.log('映射类型示例:', { optionalUser, readonlyUser });
+console.log("映射类型示例:", { optionalUser, readonlyUser });
 
 // ============================================================================
 // 练习2：条件类型练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习2：条件类型练习 - 解答 ===');
+console.log("\n=== 练习2：条件类型练习 - 解答 ===");
 
 // 1. 实现 IsArray<T> - 判断类型是否为数组
 type IsArray<T> = T extends any[] ? true : false;
@@ -122,13 +122,13 @@ const testArray: TestArray = true;
 const testFunction: TestFunction = true;
 const testReturn: TestReturn = true;
 
-console.log('条件类型验证:', { testArray, testFunction, testReturn });
+console.log("条件类型验证:", { testArray, testFunction, testReturn });
 
 // ============================================================================
 // 练习3：工具类型应用练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习3：工具类型应用练习 - 解答 ===');
+console.log("\n=== 练习3：工具类型应用练习 - 解答 ===");
 
 interface Product {
     id: number;
@@ -143,16 +143,16 @@ interface Product {
 }
 
 // 1. 创建产品摘要类型（只包含 id, name, price）
-type ProductSummary = Pick<Product, 'id' | 'name' | 'price'>;
+type ProductSummary = Pick<Product, "id" | "name" | "price">;
 
 // 2. 创建产品创建类型（排除 id, createdAt, updatedAt）
-type CreateProduct = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
+type CreateProduct = Omit<Product, "id" | "createdAt" | "updatedAt">;
 
 // 3. 创建产品更新类型（所有字段可选，但排除 id, createdAt, updatedAt）
-type UpdateProduct = Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>;
+type UpdateProduct = Partial<Omit<Product, "id" | "createdAt" | "updatedAt">>;
 
 // 4. 创建产品状态类型（只包含 id, inStock, updatedAt）
-type ProductStatus = Pick<Product, 'id' | 'inStock' | 'updatedAt'>;
+type ProductStatus = Pick<Product, "id" | "inStock" | "updatedAt">;
 
 // 5. 创建产品分类映射类型
 type ProductsByCategory = Record<string, Product[]>;
@@ -163,7 +163,7 @@ function createProduct(productData: CreateProduct): Product {
         id: Date.now(),
         createdAt: new Date(),
         updatedAt: new Date(),
-        ...productData
+        ...productData,
     };
 }
 
@@ -171,7 +171,7 @@ function updateProduct(id: number, updates: UpdateProduct): Partial<Product> {
     return {
         id,
         updatedAt: new Date(),
-        ...updates
+        ...updates,
     };
 }
 
@@ -179,7 +179,7 @@ function getProductSummary(product: Product): ProductSummary {
     return {
         id: product.id,
         name: product.name,
-        price: product.price
+        price: product.price,
     };
 }
 
@@ -190,17 +190,17 @@ const newProduct = createProduct({
     description: "学习 TypeScript 的最佳指南",
     category: "书籍",
     inStock: true,
-    tags: ["编程", "TypeScript", "前端"]
+    tags: ["编程", "TypeScript", "前端"],
 });
 
 const productSummary = getProductSummary(newProduct);
-console.log('产品摘要:', productSummary);
+console.log("产品摘要:", productSummary);
 
 // ============================================================================
 // 练习4：模板字面量类型练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习4：模板字面量类型练习 - 解答 ===');
+console.log("\n=== 练习4：模板字面量类型练习 - 解答 ===");
 
 // 1. 实现事件名称生成器
 type EventName<T extends string> = `on${Capitalize<T>}`;
@@ -215,42 +215,42 @@ type ApiEndpoint<T extends string> = `/api/v1/${T}`;
 type ExtractParams<T extends string> = T extends `${string}:${infer P}/${infer Rest}`
     ? P | ExtractParams<Rest>
     : T extends `${string}:${infer P}`
-    ? P
-    : never;
+      ? P
+      : never;
 
 // 5. 实现 Getter 方法名生成器
 type GetterName<T extends string> = `get${Capitalize<T>}`;
 
 // 使用模板字面量类型
-type ClickEvent = EventName<'click'>; // 'onClick'
-type ButtonClass = CSSClass<'button'>; // 'btn-button'
-type UsersEndpoint = ApiEndpoint<'users'>; // '/api/v1/users'
-type UserParams = ExtractParams<'/users/:id/profile/:section'>; // 'id' | 'section'
-type GetUserName = GetterName<'userName'>; // 'getUserName'
+type ClickEvent = EventName<"click">; // 'onClick'
+type ButtonClass = CSSClass<"button">; // 'btn-button'
+type UsersEndpoint = ApiEndpoint<"users">; // '/api/v1/users'
+type UserParams = ExtractParams<"/users/:id/profile/:section">; // 'id' | 'section'
+type GetUserName = GetterName<"userName">; // 'getUserName'
 
 // 实际应用示例
 interface EventHandlers {
-    [K in EventName<'click' | 'hover' | 'focus'>]: () => void;
+    [K in EventName<"click" | "hover" | "focus">]: () => void;
 }
 
 const eventHandlers: EventHandlers = {
-    onClick: () => console.log('点击事件'),
-    onHover: () => console.log('悬停事件'),
-    onFocus: () => console.log('焦点事件')
+    onClick: () => console.log("点击事件"),
+    onHover: () => console.log("悬停事件"),
+    onFocus: () => console.log("焦点事件"),
 };
 
 // 验证类型
-const clickEvent: ClickEvent = 'onClick';
-const buttonClass: ButtonClass = 'btn-button';
-const usersEndpoint: UsersEndpoint = '/api/v1/users';
+const clickEvent: ClickEvent = "onClick";
+const buttonClass: ButtonClass = "btn-button";
+const usersEndpoint: UsersEndpoint = "/api/v1/users";
 
-console.log('模板字面量类型:', { clickEvent, buttonClass, usersEndpoint });
+console.log("模板字面量类型:", { clickEvent, buttonClass, usersEndpoint });
 
 // ============================================================================
 // 练习5：综合应用练习 - 解答
 // ============================================================================
 
-console.log('\n=== 练习5：综合应用练习 - 解答 ===');
+console.log("\n=== 练习5：综合应用练习 - 解答 ===");
 
 // 场景：实现一个类型安全的状态管理系统
 interface AppState {
@@ -270,7 +270,7 @@ interface AppState {
     ui: {
         loading: boolean;
         error: string | null;
-        theme: 'light' | 'dark';
+        theme: "light" | "dark";
     };
 }
 
@@ -294,37 +294,37 @@ type ActionCreator<T extends string, P = void> = P extends void
     : (payload: P) => { type: T; payload: P };
 
 // 使用类型
-type UserState = DeepPick<AppState, 'user'>;
-type CartState = DeepPick<AppState, 'cart'>;
+type UserState = DeepPick<AppState, "user">;
+type CartState = DeepPick<AppState, "cart">;
 
-type SetUserAction = ActionType<'SET_USER'>;
-type AddToCartAction = ActionType<'ADD_TO_CART'>;
+type SetUserAction = ActionType<"SET_USER">;
+type AddToCartAction = ActionType<"ADD_TO_CART">;
 
-type SetUserCreator = ActionCreator<'SET_USER', AppState['user']>;
-type AddToCartCreator = ActionCreator<'ADD_TO_CART', { productId: number; quantity: number }>;
+type SetUserCreator = ActionCreator<"SET_USER", AppState["user"]>;
+type AddToCartCreator = ActionCreator<"ADD_TO_CART", { productId: number; quantity: number }>;
 
 // 实现状态管理器
 class StateManager<T> {
     private state: T;
     private listeners: Array<(state: T) => void> = [];
-    
+
     constructor(initialState: T) {
         this.state = initialState;
     }
-    
+
     getState(): T {
         return this.state;
     }
-    
+
     setState(updates: Partial<T>): void {
         this.state = { ...this.state, ...updates };
-        this.listeners.forEach(listener => listener(this.state));
+        this.listeners.forEach((listener) => listener(this.state));
     }
-    
+
     select<K extends keyof T>(key: K): T[K] {
         return this.state[key];
     }
-    
+
     subscribe(listener: (state: T) => void): () => void {
         this.listeners.push(listener);
         return () => {
@@ -334,7 +334,7 @@ class StateManager<T> {
             }
         };
     }
-    
+
     createSelector<K extends keyof T>(key: K): StateSelector<T, K> {
         return (state: T) => state[key];
     }
@@ -342,13 +342,13 @@ class StateManager<T> {
 
 // 动作创建器实现
 const setUser: SetUserCreator = (payload) => ({
-    type: 'SET_USER',
-    payload
+    type: "SET_USER",
+    payload,
 });
 
 const addToCart: AddToCartCreator = (payload) => ({
-    type: 'ADD_TO_CART',
-    payload
+    type: "ADD_TO_CART",
+    payload,
 });
 
 // 测试状态管理器
@@ -357,49 +357,49 @@ const initialState: AppState = {
     products: [],
     cart: {
         items: [],
-        total: 0
+        total: 0,
     },
     ui: {
         loading: false,
         error: null,
-        theme: 'light'
-    }
+        theme: "light",
+    },
 };
 
 const stateManager = new StateManager(initialState);
 
 // 创建选择器
-const userSelector = stateManager.createSelector('user');
-const uiSelector = stateManager.createSelector('ui');
+const userSelector = stateManager.createSelector("user");
+const uiSelector = stateManager.createSelector("ui");
 
 // 订阅状态变化
 const unsubscribe = stateManager.subscribe((state) => {
-    console.log('状态更新:', state.ui.theme);
+    console.log("状态更新:", state.ui.theme);
 });
 
 // 更新状态
 stateManager.setState({
-    user: { id: 1, name: '张三', email: 'zhangsan@example.com' }
+    user: { id: 1, name: "张三", email: "zhangsan@example.com" },
 });
 
 stateManager.setState({
-    ui: { ...stateManager.select('ui'), theme: 'dark' }
+    ui: { ...stateManager.select("ui"), theme: "dark" },
 });
 
-console.log('当前用户:', userSelector(stateManager.getState()));
-console.log('当前主题:', uiSelector(stateManager.getState()).theme);
+console.log("当前用户:", userSelector(stateManager.getState()));
+console.log("当前主题:", uiSelector(stateManager.getState()).theme);
 
 // 测试动作创建器
-const userAction = setUser({ id: 2, name: '李四', email: 'lisi@example.com' });
+const userAction = setUser({ id: 2, name: "李四", email: "lisi@example.com" });
 const cartAction = addToCart({ productId: 1, quantity: 2 });
 
-console.log('用户动作:', userAction);
-console.log('购物车动作:', cartAction);
+console.log("用户动作:", userAction);
+console.log("购物车动作:", cartAction);
 
-console.log('\n=== 解答完成！ ===');
-console.log('💡 学习要点:');
-console.log('1. 映射类型用于转换现有类型的结构');
-console.log('2. 条件类型提供类型级别的逻辑判断');
-console.log('3. 工具类型是 TypeScript 内置的强大类型操作工具');
-console.log('4. 模板字面量类型增强字符串类型的表达能力');
-console.log('5. 高级类型组合使用可以构建复杂的类型系统');
+console.log("\n=== 解答完成！ ===");
+console.log("💡 学习要点:");
+console.log("1. 映射类型用于转换现有类型的结构");
+console.log("2. 条件类型提供类型级别的逻辑判断");
+console.log("3. 工具类型是 TypeScript 内置的强大类型操作工具");
+console.log("4. 模板字面量类型增强字符串类型的表达能力");
+console.log("5. 高级类型组合使用可以构建复杂的类型系统");

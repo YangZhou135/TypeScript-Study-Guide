@@ -1,6 +1,6 @@
 /**
  * 第4章：高级类型与类型操作练习题
- * 
+ *
  * 请完成以下练习，实现各种高级类型操作
  * 包括映射类型、条件类型、工具类型、模板字面量类型等
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：映射类型练习
 // ============================================================================
 
-console.log('=== 练习1：映射类型练习 ===');
+console.log("=== 练习1：映射类型练习 ===");
 
 // 基础接口
 interface User {
@@ -60,13 +60,13 @@ interface NestedObject {
 
 // type DeepReadonlyNested = DeepReadonly<NestedObject>;
 
-console.log('映射类型练习 - 请实现上述类型');
+console.log("映射类型练习 - 请实现上述类型");
 
 // ============================================================================
 // 练习2：条件类型练习
 // ============================================================================
 
-console.log('\n=== 练习2：条件类型练习 ===');
+console.log("\n=== 练习2：条件类型练习 ===");
 
 // TODO: 实现以下条件类型
 
@@ -100,13 +100,13 @@ function testFunction(a: string, b: number): boolean {
 // type TestParams = FunctionParameters<typeof testFunction>; // 应该是 [string, number]
 // type TestNonNull = MyNonNullable<string | null | undefined>; // 应该是 string
 
-console.log('条件类型练习 - 请实现上述类型');
+console.log("条件类型练习 - 请实现上述类型");
 
 // ============================================================================
 // 练习3：工具类型应用练习
 // ============================================================================
 
-console.log('\n=== 练习3：工具类型应用练习 ===');
+console.log("\n=== 练习3：工具类型应用练习 ===");
 
 interface Product {
     id: number;
@@ -145,7 +145,7 @@ function createProduct(productData: any): Product {
         id: Date.now(),
         createdAt: new Date(),
         updatedAt: new Date(),
-        ...productData
+        ...productData,
     };
 }
 
@@ -154,7 +154,7 @@ function updateProduct(id: number, updates: any): Partial<Product> {
     return {
         id,
         updatedAt: new Date(),
-        ...updates
+        ...updates,
     };
 }
 
@@ -163,7 +163,7 @@ function getProductSummary(product: Product): any {
     return {
         id: product.id,
         name: product.name,
-        price: product.price
+        price: product.price,
     };
 }
 
@@ -174,16 +174,16 @@ const newProduct = createProduct({
     description: "学习 TypeScript 的最佳指南",
     category: "书籍",
     inStock: true,
-    tags: ["编程", "TypeScript", "前端"]
+    tags: ["编程", "TypeScript", "前端"],
 });
 
-console.log('创建产品:', newProduct.name);
+console.log("创建产品:", newProduct.name);
 
 // ============================================================================
 // 练习4：模板字面量类型练习
 // ============================================================================
 
-console.log('\n=== 练习4：模板字面量类型练习 ===');
+console.log("\n=== 练习4：模板字面量类型练习 ===");
 
 // TODO: 实现以下模板字面量类型
 
@@ -221,13 +221,13 @@ interface EventHandlers {
     // [K in EventName<'click' | 'hover' | 'focus'>]: () => void;
 }
 
-console.log('模板字面量类型练习 - 请实现上述类型');
+console.log("模板字面量类型练习 - 请实现上述类型");
 
 // ============================================================================
 // 练习5：综合应用练习
 // ============================================================================
 
-console.log('\n=== 练习5：综合应用练习 ===');
+console.log("\n=== 练习5：综合应用练习 ===");
 
 // 场景：实现一个类型安全的状态管理系统
 
@@ -248,7 +248,7 @@ interface AppState {
     ui: {
         loading: boolean;
         error: string | null;
-        theme: 'light' | 'dark';
+        theme: "light" | "dark";
     };
 }
 
@@ -285,22 +285,22 @@ interface AppState {
 // 实现状态管理器
 class StateManager<T> {
     private state: T;
-    
+
     constructor(initialState: T) {
         this.state = initialState;
     }
-    
+
     // TODO: 添加类型安全的 getState 方法
     getState(): T {
         return this.state;
     }
-    
+
     // TODO: 添加类型安全的 setState 方法
     setState(updates: any): void {
         // TODO: 实现类型安全的状态更新
         this.state = { ...this.state, ...updates };
     }
-    
+
     // TODO: 添加类型安全的 select 方法
     select<K extends keyof T>(key: K): T[K] {
         return this.state[key];
@@ -313,17 +313,19 @@ const initialState: AppState = {
     products: [],
     cart: {
         items: [],
-        total: 0
+        total: 0,
     },
     ui: {
         loading: false,
         error: null,
-        theme: 'light'
-    }
+        theme: "light",
+    },
 };
 
 const stateManager = new StateManager(initialState);
-console.log('初始状态:', stateManager.select('ui').theme);
+console.log("初始状态:", stateManager.select("ui").theme);
 
-console.log('\n=== 练习完成！请检查类型实现是否正确 ===');
-console.log('运行命令: npx tsc chapters/chapter-04-advanced-types/practice.ts --noEmit 来检查类型错误');
+console.log("\n=== 练习完成！请检查类型实现是否正确 ===");
+console.log(
+    "运行命令: npx tsc chapters/chapter-04-advanced-types/practice.ts --noEmit 来检查类型错误"
+);

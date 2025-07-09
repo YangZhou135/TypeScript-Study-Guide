@@ -1,9 +1,9 @@
 /**
  * 第6章：装饰器与元编程练习题
- * 
+ *
  * 请完成以下练习，实现各种类型的装饰器
  * 包括类装饰器、方法装饰器、属性装饰器、参数装饰器等
- * 
+ *
  * 注意：需要在 tsconfig.json 中启用 experimentalDecorators 和 emitDecoratorMetadata
  */
 
@@ -14,7 +14,7 @@ export {};
 // 练习1：类装饰器练习
 // ============================================================================
 
-console.log('=== 练习1：类装饰器练习 ===');
+console.log("=== 练习1：类装饰器练习 ===");
 
 // TODO: 实现以下类装饰器
 
@@ -47,11 +47,11 @@ console.log('=== 练习1：类装饰器练习 ===');
 // @serializable
 // class ConfigManager {
 //     constructor(public config: Record<string, any> = {}) {}
-//     
+//
 //     get(key: string): any {
 //         return this.config[key];
 //     }
-//     
+//
 //     set(key: string, value: any): void {
 //         this.config[key] = value;
 //     }
@@ -69,13 +69,13 @@ console.log('=== 练习1：类装饰器练习 ===');
 // const config2 = new ConfigManager();
 // console.log('是否为同一实例:', config1 === config2); // 应该是 true（单例）
 
-console.log('类装饰器练习 - 请实现上述装饰器');
+console.log("类装饰器练习 - 请实现上述装饰器");
 
 // ============================================================================
 // 练习2：方法装饰器练习
 // ============================================================================
 
-console.log('\n=== 练习2：方法装饰器练习 ===');
+console.log("\n=== 练习2：方法装饰器练习 ===");
 
 // TODO: 实现以下方法装饰器
 
@@ -119,12 +119,12 @@ class SearchService {
     search(query: string): void {
         console.log(`搜索: ${query}`);
     }
-    
+
     // @throttle(1000)
     updateStats(): void {
-        console.log('更新统计信息');
+        console.log("更新统计信息");
     }
-    
+
     // @memoize
     expensiveCalculation(n: number): number {
         console.log(`计算 ${n} 的阶乘`);
@@ -134,14 +134,14 @@ class SearchService {
         }
         return result;
     }
-    
+
     // @timeout(5000)
     async fetchData(url: string): Promise<string> {
         // 模拟长时间运行的操作
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         return `从 ${url} 获取的数据`;
     }
-    
+
     // @authorize(['admin', 'moderator'])
     deleteUser(userId: string): void {
         console.log(`删除用户: ${userId}`);
@@ -160,13 +160,13 @@ const searchService = new SearchService();
 // console.log('第一次计算:', searchService.expensiveCalculation(5));
 // console.log('第二次计算:', searchService.expensiveCalculation(5)); // 应该使用缓存
 
-console.log('方法装饰器练习 - 请实现上述装饰器');
+console.log("方法装饰器练习 - 请实现上述装饰器");
 
 // ============================================================================
 // 练习3：属性装饰器练习
 // ============================================================================
 
-console.log('\n=== 练习3：属性装饰器练习 ===');
+console.log("\n=== 练习3：属性装饰器练习 ===");
 
 // TODO: 实现以下属性装饰器
 
@@ -210,22 +210,22 @@ console.log('\n=== 练习3：属性装饰器练习 ===');
 class UserProfile {
     // @length(2, 50)
     // @transform((value: string) => value.trim())
-    name: string = '';
-    
+    name: string = "";
+
     // @range(0, 150)
     age: number = 0;
-    
+
     // @pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, '邮箱格式不正确')
-    email: string = '';
-    
+    email: string = "";
+
     // @pattern(/^1[3-9]\d{9}$/, '手机号格式不正确')
-    phone: string = '';
-    
+    phone: string = "";
+
     // @computed(['name', 'age'])
     get displayName(): string {
         return `${this.name} (${this.age}岁)`;
     }
-    
+
     constructor(name: string, age: number, email: string, phone: string) {
         this.name = name;
         this.age = age;
@@ -244,13 +244,13 @@ class UserProfile {
 //     console.log('年龄验证错误:', error.message);
 // }
 
-console.log('属性装饰器练习 - 请实现上述装饰器');
+console.log("属性装饰器练习 - 请实现上述装饰器");
 
 // ============================================================================
 // 练习4：参数装饰器练习
 // ============================================================================
 
-console.log('\n=== 练习4：参数装饰器练习 ===');
+console.log("\n=== 练习4：参数装饰器练习 ===");
 
 // TODO: 实现以下参数装饰器
 
@@ -297,7 +297,7 @@ class OrderService {
     ): void {
         console.log(`创建订单: ${orderId}, 客户: ${customerEmail}, 金额: ${amount}`);
     }
-    
+
     // @validateParams
     updateOrderStatus(
         // @notNull @min(1) orderId: number,
@@ -322,13 +322,13 @@ const orderService = new OrderService();
 //     console.log('参数验证错误:', error.message);
 // }
 
-console.log('参数装饰器练习 - 请实现上述装饰器');
+console.log("参数装饰器练习 - 请实现上述装饰器");
 
 // ============================================================================
 // 练习5：综合应用练习
 // ============================================================================
 
-console.log('\n=== 练习5：综合应用练习 ===');
+console.log("\n=== 练习5：综合应用练习 ===");
 
 // 场景：实现一个完整的 API 控制器装饰器系统
 
@@ -375,11 +375,11 @@ console.log('\n=== 练习5：综合应用练习 ===');
 // 5. 实现路由注册系统
 // class Router {
 //     private routes: Map<string, any> = new Map();
-//     
+//
 //     register(controller: any): void {
 //         // TODO: 注册控制器的所有路由
 //     }
-//     
+//
 //     getRoutes(): Map<string, any> {
 //         return this.routes;
 //     }
@@ -389,7 +389,7 @@ console.log('\n=== 练习5：综合应用练习 ===');
 
 // 中间件函数
 const authMiddleware = (req: any, res: any, next: Function) => {
-    console.log('执行认证检查');
+    console.log("执行认证检查");
     next();
 };
 
@@ -403,9 +403,9 @@ class ProductController {
     // @Get('/')
     // @Middleware(logMiddleware)
     getAllProducts(): any {
-        return { products: ['产品1', '产品2', '产品3'] };
+        return { products: ["产品1", "产品2", "产品3"] };
     }
-    
+
     // @Get('/:id')
     // @Middleware(authMiddleware)
     getProductById(
@@ -414,7 +414,7 @@ class ProductController {
     ): any {
         return { id, name: `产品${id}`, price: 99.99 };
     }
-    
+
     // @Post('/')
     // @Middleware(authMiddleware)
     createProduct(
@@ -430,8 +430,8 @@ class ProductController {
 // router.register(ProductController);
 // console.log('注册的路由:', Array.from(router.getRoutes().keys()));
 
-console.log('综合应用练习 - 请实现完整的装饰器系统');
+console.log("综合应用练习 - 请实现完整的装饰器系统");
 
-console.log('\n=== 练习完成！请检查装饰器实现是否正确 ===');
-console.log('运行命令: npx tsc chapters/chapter-06-decorators/practice.ts --noEmit 来检查类型错误');
-console.log('注意：某些装饰器功能需要 reflect-metadata 库支持');
+console.log("\n=== 练习完成！请检查装饰器实现是否正确 ===");
+console.log("运行命令: npx tsc chapters/chapter-06-decorators/practice.ts --noEmit 来检查类型错误");
+console.log("注意：某些装饰器功能需要 reflect-metadata 库支持");

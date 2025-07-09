@@ -1,6 +1,6 @@
 /**
  * 第9章：完整项目实战示例
- * 
+ *
  * 本文件展示了一个完整的任务管理系统的 TypeScript 实现
  * 整合了前面所有章节的知识点，展示最佳实践
  */
@@ -12,7 +12,7 @@ export {};
 // 1. 核心类型定义
 // ============================================================================
 
-console.log('=== 1. 核心类型定义 ===');
+console.log("=== 1. 核心类型定义 ===");
 
 // 用户相关类型
 interface User {
@@ -27,9 +27,9 @@ interface User {
 }
 
 enum UserRole {
-    ADMIN = 'admin',
-    MANAGER = 'manager',
-    USER = 'user'
+    ADMIN = "admin",
+    MANAGER = "manager",
+    USER = "user",
 }
 
 // 项目相关类型
@@ -46,9 +46,9 @@ interface Project {
 }
 
 enum ProjectStatus {
-    ACTIVE = 'active',
-    ARCHIVED = 'archived',
-    DELETED = 'deleted'
+    ACTIVE = "active",
+    ARCHIVED = "archived",
+    DELETED = "deleted",
 }
 
 // 任务相关类型
@@ -68,17 +68,17 @@ interface Task {
 }
 
 enum TaskStatus {
-    TODO = 'todo',
-    IN_PROGRESS = 'in_progress',
-    REVIEW = 'review',
-    DONE = 'done'
+    TODO = "todo",
+    IN_PROGRESS = "in_progress",
+    REVIEW = "review",
+    DONE = "done",
 }
 
 enum TaskPriority {
-    LOW = 'low',
-    MEDIUM = 'medium',
-    HIGH = 'high',
-    URGENT = 'urgent'
+    LOW = "low",
+    MEDIUM = "medium",
+    HIGH = "high",
+    URGENT = "urgent",
 }
 
 // API 响应类型
@@ -124,7 +124,7 @@ interface ProjectForm {
 // 2. API 客户端实现
 // ============================================================================
 
-console.log('=== 2. API 客户端实现 ===');
+console.log("=== 2. API 客户端实现 ===");
 
 // HTTP 客户端类
 class ApiClient {
@@ -133,29 +133,26 @@ class ApiClient {
 
     constructor(baseURL: string) {
         this.baseURL = baseURL;
-        this.token = localStorage.getItem('auth_token');
+        this.token = localStorage.getItem("auth_token");
     }
 
     // 设置认证令牌
     setToken(token: string): void {
         this.token = token;
-        localStorage.setItem('auth_token', token);
+        localStorage.setItem("auth_token", token);
     }
 
     // 清除认证令牌
     clearToken(): void {
         this.token = null;
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem("auth_token");
     }
 
     // 通用请求方法
-    private async request<T>(
-        endpoint: string,
-        options: RequestInit = {}
-    ): Promise<ApiResponse<T>> {
+    private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
         const url = `${this.baseURL}${endpoint}`;
         const headers: HeadersInit = {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             ...options.headers,
         };
 
@@ -172,25 +169,25 @@ class ApiClient {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Request failed');
+                throw new Error(data.message || "Request failed");
             }
 
             return data;
         } catch (error) {
-            console.error('API request failed:', error);
+            console.error("API request failed:", error);
             throw error;
         }
     }
 
     // GET 请求
     async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-        return this.request<T>(endpoint, { method: 'GET' });
+        return this.request<T>(endpoint, { method: "GET" });
     }
 
     // POST 请求
     async post<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, {
-            method: 'POST',
+            method: "POST",
             body: data ? JSON.stringify(data) : undefined,
         });
     }
@@ -198,51 +195,55 @@ class ApiClient {
     // PUT 请求
     async put<T, U = any>(endpoint: string, data?: U): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, {
-            method: 'PUT',
+            method: "PUT",
             body: data ? JSON.stringify(data) : undefined,
         });
     }
 
     // DELETE 请求
     async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
-        return this.request<T>(endpoint, { method: 'DELETE' });
+        return this.request<T>(endpoint, { method: "DELETE" });
     }
 }
 
 // 创建 API 客户端实例
-const apiClient = new ApiClient('http://localhost:3000/api');
+const apiClient = new ApiClient("http://localhost:3000/api");
 
 // ============================================================================
 // 3. 具体 API 服务
 // ============================================================================
 
-console.log('=== 3. 具体 API 服务 ===');
+console.log("=== 3. 具体 API 服务 ===");
 
 // 认证 API
 class AuthApi {
     // 登录
-    static async login(credentials: LoginForm): Promise<ApiResponse<{ user: User; token: string }>> {
-        return apiClient.post<{ user: User; token: string }, LoginForm>('/auth/login', credentials);
+    static async login(
+        credentials: LoginForm
+    ): Promise<ApiResponse<{ user: User; token: string }>> {
+        return apiClient.post<{ user: User; token: string }, LoginForm>("/auth/login", credentials);
     }
 
     // 注册
-    static async register(userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<User>> {
-        return apiClient.post<User>('/auth/register', userData);
+    static async register(
+        userData: Omit<User, "id" | "createdAt" | "updatedAt">
+    ): Promise<ApiResponse<User>> {
+        return apiClient.post<User>("/auth/register", userData);
     }
 
     // 获取当前用户信息
     static async getProfile(): Promise<ApiResponse<User>> {
-        return apiClient.get<User>('/auth/profile');
+        return apiClient.get<User>("/auth/profile");
     }
 
     // 登出
     static async logout(): Promise<ApiResponse<null>> {
-        return apiClient.post<null>('/auth/logout');
+        return apiClient.post<null>("/auth/logout");
     }
 
     // 刷新令牌
     static async refreshToken(): Promise<ApiResponse<{ token: string }>> {
-        return apiClient.post<{ token: string }>('/auth/refresh');
+        return apiClient.post<{ token: string }>("/auth/refresh");
     }
 }
 
@@ -254,8 +255,8 @@ class UserApi {
         limit?: number;
         search?: string;
     }): Promise<PaginatedResponse<User>> {
-        const queryString = params ? new URLSearchParams(params as any).toString() : '';
-        return apiClient.get<User[]>(`/users${queryString ? `?${queryString}` : ''}`);
+        const queryString = params ? new URLSearchParams(params as any).toString() : "";
+        return apiClient.get<User[]>(`/users${queryString ? `?${queryString}` : ""}`);
     }
 
     // 获取单个用户
@@ -282,8 +283,8 @@ class ProjectApi {
         limit?: number;
         status?: ProjectStatus;
     }): Promise<PaginatedResponse<Project>> {
-        const queryString = params ? new URLSearchParams(params as any).toString() : '';
-        return apiClient.get<Project[]>(`/projects${queryString ? `?${queryString}` : ''}`);
+        const queryString = params ? new URLSearchParams(params as any).toString() : "";
+        return apiClient.get<Project[]>(`/projects${queryString ? `?${queryString}` : ""}`);
     }
 
     // 获取单个项目
@@ -293,11 +294,14 @@ class ProjectApi {
 
     // 创建项目
     static async createProject(projectData: ProjectForm): Promise<ApiResponse<Project>> {
-        return apiClient.post<Project, ProjectForm>('/projects', projectData);
+        return apiClient.post<Project, ProjectForm>("/projects", projectData);
     }
 
     // 更新项目
-    static async updateProject(id: number, projectData: Partial<ProjectForm>): Promise<ApiResponse<Project>> {
+    static async updateProject(
+        id: number,
+        projectData: Partial<ProjectForm>
+    ): Promise<ApiResponse<Project>> {
         return apiClient.put<Project>(`/projects/${id}`, projectData);
     }
 
@@ -327,8 +331,8 @@ class TaskApi {
         status?: TaskStatus;
         assigneeId?: number;
     }): Promise<PaginatedResponse<Task>> {
-        const queryString = params ? new URLSearchParams(params as any).toString() : '';
-        return apiClient.get<Task[]>(`/tasks${queryString ? `?${queryString}` : ''}`);
+        const queryString = params ? new URLSearchParams(params as any).toString() : "";
+        return apiClient.get<Task[]>(`/tasks${queryString ? `?${queryString}` : ""}`);
     }
 
     // 获取单个任务
@@ -337,8 +341,10 @@ class TaskApi {
     }
 
     // 创建任务
-    static async createTask(taskData: TaskForm & { projectId: number }): Promise<ApiResponse<Task>> {
-        return apiClient.post<Task>('/tasks', taskData);
+    static async createTask(
+        taskData: TaskForm & { projectId: number }
+    ): Promise<ApiResponse<Task>> {
+        return apiClient.post<Task>("/tasks", taskData);
     }
 
     // 更新任务
@@ -366,10 +372,10 @@ class TaskApi {
 // 4. Vuex 状态管理
 // ============================================================================
 
-console.log('=== 4. Vuex 状态管理 ===');
+console.log("=== 4. Vuex 状态管理 ===");
 
 // 模拟 Vuex 相关导入
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 
 // 认证模块状态
 interface AuthState {
@@ -383,7 +389,7 @@ interface AuthState {
 @Module({ namespaced: true })
 class AuthModule extends VuexModule implements AuthState {
     user: User | null = null;
-    token: string | null = localStorage.getItem('auth_token');
+    token: string | null = localStorage.getItem("auth_token");
     isLoading: boolean = false;
 
     // Getters
@@ -392,7 +398,7 @@ class AuthModule extends VuexModule implements AuthState {
     }
 
     get userName(): string {
-        return this.user?.username || 'Guest';
+        return this.user?.username || "Guest";
     }
 
     get userRole(): UserRole | null {
@@ -416,7 +422,7 @@ class AuthModule extends VuexModule implements AuthState {
     @Mutation
     SET_TOKEN(token: string): void {
         this.token = token;
-        localStorage.setItem('auth_token', token);
+        localStorage.setItem("auth_token", token);
         apiClient.setToken(token);
     }
 
@@ -429,7 +435,7 @@ class AuthModule extends VuexModule implements AuthState {
     CLEAR_AUTH(): void {
         this.user = null;
         this.token = null;
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem("auth_token");
         apiClient.clearToken();
     }
 
@@ -503,28 +509,28 @@ class ProjectModule extends VuexModule implements ProjectState {
         page: 1,
         limit: 10,
         total: 0,
-        totalPages: 0
+        totalPages: 0,
     };
 
     // Getters
     get activeProjects(): Project[] {
-        return this.projects.filter(p => p.status === ProjectStatus.ACTIVE);
+        return this.projects.filter((p) => p.status === ProjectStatus.ACTIVE);
     }
 
     get archivedProjects(): Project[] {
-        return this.projects.filter(p => p.status === ProjectStatus.ARCHIVED);
+        return this.projects.filter((p) => p.status === ProjectStatus.ARCHIVED);
     }
 
     get projectById() {
         return (id: number): Project | undefined => {
-            return this.projects.find(p => p.id === id);
+            return this.projects.find((p) => p.id === id);
         };
     }
 
     get userProjects() {
         return (userId: number): Project[] => {
-            return this.projects.filter(p =>
-                p.ownerId === userId || p.memberIds.includes(userId)
+            return this.projects.filter(
+                (p) => p.ownerId === userId || p.memberIds.includes(userId)
             );
         };
     }
@@ -547,7 +553,7 @@ class ProjectModule extends VuexModule implements ProjectState {
 
     @Mutation
     UPDATE_PROJECT(updatedProject: Project): void {
-        const index = this.projects.findIndex(p => p.id === updatedProject.id);
+        const index = this.projects.findIndex((p) => p.id === updatedProject.id);
         if (index > -1) {
             this.projects.splice(index, 1, updatedProject);
         }
@@ -555,7 +561,7 @@ class ProjectModule extends VuexModule implements ProjectState {
 
     @Mutation
     REMOVE_PROJECT(projectId: number): void {
-        const index = this.projects.findIndex(p => p.id === projectId);
+        const index = this.projects.findIndex((p) => p.id === projectId);
         if (index > -1) {
             this.projects.splice(index, 1);
         }
@@ -567,13 +573,17 @@ class ProjectModule extends VuexModule implements ProjectState {
     }
 
     @Mutation
-    SET_PAGINATION(pagination: ProjectState['pagination']): void {
+    SET_PAGINATION(pagination: ProjectState["pagination"]): void {
         this.pagination = pagination;
     }
 
     // Actions
     @Action
-    async fetchProjects(params?: { page?: number; limit?: number; status?: ProjectStatus }): Promise<void> {
+    async fetchProjects(params?: {
+        page?: number;
+        limit?: number;
+        status?: ProjectStatus;
+    }): Promise<void> {
         this.SET_LOADING(true);
         try {
             const response = await ProjectApi.getProjects(params);
@@ -603,7 +613,13 @@ class ProjectModule extends VuexModule implements ProjectState {
     }
 
     @Action
-    async updateProject({ id, data }: { id: number; data: Partial<ProjectForm> }): Promise<Project> {
+    async updateProject({
+        id,
+        data,
+    }: {
+        id: number;
+        data: Partial<ProjectForm>;
+    }): Promise<Project> {
         const response = await ProjectApi.updateProject(id, data);
         this.UPDATE_PROJECT(response.data);
         return response.data;
@@ -622,7 +638,13 @@ class ProjectModule extends VuexModule implements ProjectState {
     }
 
     @Action
-    async removeMember({ projectId, userId }: { projectId: number; userId: number }): Promise<void> {
+    async removeMember({
+        projectId,
+        userId,
+    }: {
+        projectId: number;
+        userId: number;
+    }): Promise<void> {
         const response = await ProjectApi.removeMember(projectId, userId);
         this.UPDATE_PROJECT(response.data);
     }
@@ -653,20 +675,21 @@ class TaskModule extends VuexModule implements TaskState {
     tasks: Task[] = [];
     currentTask: Task | null = null;
     isLoading: boolean = false;
-    filters: TaskState['filters'] = {};
+    filters: TaskState["filters"] = {};
     pagination = {
         page: 1,
         limit: 20,
         total: 0,
-        totalPages: 0
+        totalPages: 0,
     };
 
     // Getters
     get filteredTasks(): Task[] {
-        return this.tasks.filter(task => {
+        return this.tasks.filter((task) => {
             if (this.filters.projectId && task.projectId !== this.filters.projectId) return false;
             if (this.filters.status && task.status !== this.filters.status) return false;
-            if (this.filters.assigneeId && task.assigneeId !== this.filters.assigneeId) return false;
+            if (this.filters.assigneeId && task.assigneeId !== this.filters.assigneeId)
+                return false;
             if (this.filters.priority && task.priority !== this.filters.priority) return false;
             return true;
         });
@@ -674,37 +697,43 @@ class TaskModule extends VuexModule implements TaskState {
 
     get tasksByStatus() {
         return (status: TaskStatus): Task[] => {
-            return this.tasks.filter(task => task.status === status);
+            return this.tasks.filter((task) => task.status === status);
         };
     }
 
     get tasksByProject() {
         return (projectId: number): Task[] => {
-            return this.tasks.filter(task => task.projectId === projectId);
+            return this.tasks.filter((task) => task.projectId === projectId);
         };
     }
 
     get tasksByAssignee() {
         return (assigneeId: number): Task[] => {
-            return this.tasks.filter(task => task.assigneeId === assigneeId);
+            return this.tasks.filter((task) => task.assigneeId === assigneeId);
         };
     }
 
     get overdueTasks(): Task[] {
         const now = new Date();
-        return this.tasks.filter(task => {
+        return this.tasks.filter((task) => {
             if (!task.dueDate || task.status === TaskStatus.DONE) return false;
             return new Date(task.dueDate) < now;
         });
     }
 
-    get taskStats(): { total: number; todo: number; inProgress: number; review: number; done: number } {
+    get taskStats(): {
+        total: number;
+        todo: number;
+        inProgress: number;
+        review: number;
+        done: number;
+    } {
         return {
             total: this.tasks.length,
             todo: this.tasksByStatus(TaskStatus.TODO).length,
             inProgress: this.tasksByStatus(TaskStatus.IN_PROGRESS).length,
             review: this.tasksByStatus(TaskStatus.REVIEW).length,
-            done: this.tasksByStatus(TaskStatus.DONE).length
+            done: this.tasksByStatus(TaskStatus.DONE).length,
         };
     }
 
@@ -726,7 +755,7 @@ class TaskModule extends VuexModule implements TaskState {
 
     @Mutation
     UPDATE_TASK(updatedTask: Task): void {
-        const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+        const index = this.tasks.findIndex((t) => t.id === updatedTask.id);
         if (index > -1) {
             this.tasks.splice(index, 1, updatedTask);
         }
@@ -734,7 +763,7 @@ class TaskModule extends VuexModule implements TaskState {
 
     @Mutation
     REMOVE_TASK(taskId: number): void {
-        const index = this.tasks.findIndex(t => t.id === taskId);
+        const index = this.tasks.findIndex((t) => t.id === taskId);
         if (index > -1) {
             this.tasks.splice(index, 1);
         }
@@ -746,7 +775,7 @@ class TaskModule extends VuexModule implements TaskState {
     }
 
     @Mutation
-    SET_FILTERS(filters: TaskState['filters']): void {
+    SET_FILTERS(filters: TaskState["filters"]): void {
         this.filters = { ...this.filters, ...filters };
     }
 
@@ -756,7 +785,7 @@ class TaskModule extends VuexModule implements TaskState {
     }
 
     @Mutation
-    SET_PAGINATION(pagination: TaskState['pagination']): void {
+    SET_PAGINATION(pagination: TaskState["pagination"]): void {
         this.pagination = pagination;
     }
 
@@ -825,7 +854,7 @@ class TaskModule extends VuexModule implements TaskState {
     }
 
     @Action
-    setFilters(filters: TaskState['filters']): void {
+    setFilters(filters: TaskState["filters"]): void {
         this.SET_FILTERS(filters);
     }
 
@@ -839,16 +868,16 @@ class TaskModule extends VuexModule implements TaskState {
 // 5. Vue 组件示例
 // ============================================================================
 
-console.log('=== 5. Vue 组件示例 ===');
+console.log("=== 5. Vue 组件示例 ===");
 
 // 模拟 Vue 相关导入
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { Vue, Component, Prop, Emit, Watch } from "vue-property-decorator";
+import { namespace } from "vuex-class";
 
 // 获取 Vuex 模块
-const authModule = namespace('auth');
-const projectModule = namespace('projects');
-const taskModule = namespace('tasks');
+const authModule = namespace("auth");
+const projectModule = namespace("projects");
+const taskModule = namespace("tasks");
 
 // 任务卡片组件
 @Component
@@ -868,20 +897,20 @@ class TaskCard extends Vue {
     // 计算属性
     get priorityClass(): string {
         const classMap = {
-            [TaskPriority.LOW]: 'priority-low',
-            [TaskPriority.MEDIUM]: 'priority-medium',
-            [TaskPriority.HIGH]: 'priority-high',
-            [TaskPriority.URGENT]: 'priority-urgent'
+            [TaskPriority.LOW]: "priority-low",
+            [TaskPriority.MEDIUM]: "priority-medium",
+            [TaskPriority.HIGH]: "priority-high",
+            [TaskPriority.URGENT]: "priority-urgent",
         };
         return classMap[this.task.priority];
     }
 
     get statusClass(): string {
         const classMap = {
-            [TaskStatus.TODO]: 'status-todo',
-            [TaskStatus.IN_PROGRESS]: 'status-progress',
-            [TaskStatus.REVIEW]: 'status-review',
-            [TaskStatus.DONE]: 'status-done'
+            [TaskStatus.TODO]: "status-todo",
+            [TaskStatus.IN_PROGRESS]: "status-progress",
+            [TaskStatus.REVIEW]: "status-review",
+            [TaskStatus.DONE]: "status-done",
         };
         return classMap[this.task.status];
     }
@@ -892,7 +921,7 @@ class TaskCard extends Vue {
     }
 
     get dueDateText(): string {
-        if (!this.task.dueDate) return '';
+        if (!this.task.dueDate) return "";
 
         const dueDate = new Date(this.task.dueDate);
         const now = new Date();
@@ -900,83 +929,83 @@ class TaskCard extends Vue {
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays < 0) return `逾期 ${Math.abs(diffDays)} 天`;
-        if (diffDays === 0) return '今天到期';
-        if (diffDays === 1) return '明天到期';
+        if (diffDays === 0) return "今天到期";
+        if (diffDays === 1) return "明天到期";
         return `${diffDays} 天后到期`;
     }
 
     get priorityText(): string {
         const textMap = {
-            [TaskPriority.LOW]: '低',
-            [TaskPriority.MEDIUM]: '中',
-            [TaskPriority.HIGH]: '高',
-            [TaskPriority.URGENT]: '紧急'
+            [TaskPriority.LOW]: "低",
+            [TaskPriority.MEDIUM]: "中",
+            [TaskPriority.HIGH]: "高",
+            [TaskPriority.URGENT]: "紧急",
         };
         return textMap[this.task.priority];
     }
 
     get statusText(): string {
         const textMap = {
-            [TaskStatus.TODO]: '待办',
-            [TaskStatus.IN_PROGRESS]: '进行中',
-            [TaskStatus.REVIEW]: '待审核',
-            [TaskStatus.DONE]: '已完成'
+            [TaskStatus.TODO]: "待办",
+            [TaskStatus.IN_PROGRESS]: "进行中",
+            [TaskStatus.REVIEW]: "待审核",
+            [TaskStatus.DONE]: "已完成",
         };
         return textMap[this.task.status];
     }
 
     // 事件处理
-    @Emit('click')
+    @Emit("click")
     handleClick(): Task {
         return this.task;
     }
 
-    @Emit('edit')
+    @Emit("edit")
     handleEdit(): Task {
         return this.task;
     }
 
-    @Emit('delete')
+    @Emit("delete")
     handleDelete(): Task {
         return this.task;
     }
 
-    @Emit('status-change')
+    @Emit("status-change")
     handleStatusChange(newStatus: TaskStatus): { task: Task; status: TaskStatus } {
         return { task: this.task, status: newStatus };
     }
 
-    @Emit('assign')
+    @Emit("assign")
     handleAssign(assigneeId: number): { task: Task; assigneeId: number } {
         return { task: this.task, assigneeId };
     }
 
     // 拖拽事件
-    @Emit('drag-start')
+    @Emit("drag-start")
     handleDragStart(event: DragEvent): Task {
         if (event.dataTransfer) {
-            event.dataTransfer.setData('text/plain', this.task.id.toString());
+            event.dataTransfer.setData("text/plain", this.task.id.toString());
         }
         return this.task;
     }
 
-    @Emit('drag-end')
+    @Emit("drag-end")
     handleDragEnd(): Task {
         return this.task;
     }
 
     // 格式化日期
     formatDate(dateString: string): string {
-        return new Date(dateString).toLocaleDateString('zh-CN');
+        return new Date(dateString).toLocaleDateString("zh-CN");
     }
 
     // 获取优先级颜色
     getPriorityColor(): string {
         const colorMap = {
-            [TaskPriority.LOW]: '#52c41a',
-            [TaskPriority.MEDIUM]: '#faad14',
-            [TaskPriority.HIGH]: '#fa8c16',
-            [TaskPriority.URGENT]: '#f5222d'
+            [TaskPriority.LOW]: "#52c41a",
+            [TaskPriority.MEDIUM]: "#faad14",
+            [TaskPriority.HIGH]: "#fa8c16",
+            [TaskPriority.URGENT]: "#f5222d",
         };
         return colorMap[this.task.priority];
     }
@@ -984,7 +1013,7 @@ class TaskCard extends Vue {
 
 // 任务看板组件
 @Component({
-    components: { TaskCard }
+    components: { TaskCard },
 })
 class TaskBoard extends Vue {
     @Prop({ type: Number, required: true })
@@ -1032,10 +1061,10 @@ class TaskBoard extends Vue {
 
     get columns(): Array<{ status: TaskStatus; title: string; tasks: Task[] }> {
         return [
-            { status: TaskStatus.TODO, title: '待办', tasks: this.todoTasks },
-            { status: TaskStatus.IN_PROGRESS, title: '进行中', tasks: this.inProgressTasks },
-            { status: TaskStatus.REVIEW, title: '待审核', tasks: this.reviewTasks },
-            { status: TaskStatus.DONE, title: '已完成', tasks: this.doneTasks }
+            { status: TaskStatus.TODO, title: "待办", tasks: this.todoTasks },
+            { status: TaskStatus.IN_PROGRESS, title: "进行中", tasks: this.inProgressTasks },
+            { status: TaskStatus.REVIEW, title: "待审核", tasks: this.reviewTasks },
+            { status: TaskStatus.DONE, title: "已完成", tasks: this.doneTasks },
         ];
     }
 
@@ -1065,34 +1094,40 @@ class TaskBoard extends Vue {
         try {
             await this.updateTaskStatus({
                 id: this.draggedTask.id,
-                status: targetStatus
+                status: targetStatus,
             });
         } catch (error) {
-            console.error('更新任务状态失败:', error);
+            console.error("更新任务状态失败:", error);
         }
     }
 
     // 任务事件处理
-    @Emit('task-click')
+    @Emit("task-click")
     handleTaskClick(task: Task): Task {
         return task;
     }
 
-    @Emit('task-edit')
+    @Emit("task-edit")
     handleTaskEdit(task: Task): Task {
         return task;
     }
 
-    @Emit('task-delete')
+    @Emit("task-delete")
     handleTaskDelete(task: Task): Task {
         return task;
     }
 
-    async handleTaskStatusChange({ task, status }: { task: Task; status: TaskStatus }): Promise<void> {
+    async handleTaskStatusChange({
+        task,
+        status,
+    }: {
+        task: Task;
+        status: TaskStatus;
+    }): Promise<void> {
         try {
             await this.updateTaskStatus({ id: task.id, status });
         } catch (error) {
-            console.error('更新任务状态失败:', error);
+            console.error("更新任务状态失败:", error);
         }
     }
 }
@@ -1114,17 +1149,17 @@ class TaskForm extends Vue {
 
     // 表单数据
     private form: TaskForm = {
-        title: '',
-        description: '',
+        title: "",
+        description: "",
         priority: TaskPriority.MEDIUM,
         assigneeId: undefined,
-        dueDate: undefined
+        dueDate: undefined,
     };
 
     private errors: Record<string, string> = {};
 
     // 监听初始任务变化
-    @Watch('initialTask', { immediate: true })
+    @Watch("initialTask", { immediate: true })
     onInitialTaskChanged(task?: Task): void {
         if (task) {
             this.form = {
@@ -1132,7 +1167,7 @@ class TaskForm extends Vue {
                 description: task.description,
                 priority: task.priority,
                 assigneeId: task.assigneeId,
-                dueDate: task.dueDate
+                dueDate: task.dueDate,
             };
         }
     }
@@ -1143,22 +1178,22 @@ class TaskForm extends Vue {
     }
 
     get submitButtonText(): string {
-        return this.isEditing ? '更新任务' : '创建任务';
+        return this.isEditing ? "更新任务" : "创建任务";
     }
 
     get priorityOptions(): Array<{ value: TaskPriority; label: string }> {
         return [
-            { value: TaskPriority.LOW, label: '低' },
-            { value: TaskPriority.MEDIUM, label: '中' },
-            { value: TaskPriority.HIGH, label: '高' },
-            { value: TaskPriority.URGENT, label: '紧急' }
+            { value: TaskPriority.LOW, label: "低" },
+            { value: TaskPriority.MEDIUM, label: "中" },
+            { value: TaskPriority.HIGH, label: "高" },
+            { value: TaskPriority.URGENT, label: "紧急" },
         ];
     }
 
     get assigneeOptions(): Array<{ value: number; label: string }> {
-        return this.users.map(user => ({
+        return this.users.map((user) => ({
             value: user.id,
-            label: user.username
+            label: user.username,
         }));
     }
 
@@ -1167,22 +1202,22 @@ class TaskForm extends Vue {
         this.errors = {};
 
         if (!this.form.title.trim()) {
-            this.errors.title = '任务标题不能为空';
+            this.errors.title = "任务标题不能为空";
         }
 
         if (this.form.title.length > 100) {
-            this.errors.title = '任务标题不能超过100个字符';
+            this.errors.title = "任务标题不能超过100个字符";
         }
 
         if (this.form.description && this.form.description.length > 500) {
-            this.errors.description = '任务描述不能超过500个字符';
+            this.errors.description = "任务描述不能超过500个字符";
         }
 
         if (this.form.dueDate) {
             const dueDate = new Date(this.form.dueDate);
             const now = new Date();
             if (dueDate < now) {
-                this.errors.dueDate = '截止日期不能早于当前时间';
+                this.errors.dueDate = "截止日期不能早于当前时间";
             }
         }
 
@@ -1190,7 +1225,7 @@ class TaskForm extends Vue {
     }
 
     // 事件处理
-    @Emit('submit')
+    @Emit("submit")
     handleSubmit(): TaskForm | null {
         if (this.validateForm()) {
             return { ...this.form };
@@ -1198,7 +1233,7 @@ class TaskForm extends Vue {
         return null;
     }
 
-    @Emit('cancel')
+    @Emit("cancel")
     handleCancel(): void {
         this.resetForm();
     }
@@ -1206,11 +1241,11 @@ class TaskForm extends Vue {
     // 重置表单
     resetForm(): void {
         this.form = {
-            title: '',
-            description: '',
+            title: "",
+            description: "",
             priority: TaskPriority.MEDIUM,
             assigneeId: undefined,
-            dueDate: undefined
+            dueDate: undefined,
         };
         this.errors = {};
     }
@@ -1230,57 +1265,63 @@ class TaskForm extends Vue {
 // 6. 工具函数和类型守卫
 // ============================================================================
 
-console.log('=== 6. 工具函数和类型守卫 ===');
+console.log("=== 6. 工具函数和类型守卫 ===");
 
 // 类型守卫
 function isUser(obj: any): obj is User {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.username === 'string' &&
-           typeof obj.email === 'string' &&
-           Object.values(UserRole).includes(obj.role);
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.username === "string" &&
+        typeof obj.email === "string" &&
+        Object.values(UserRole).includes(obj.role)
+    );
 }
 
 function isTask(obj: any): obj is Task {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.title === 'string' &&
-           Object.values(TaskStatus).includes(obj.status) &&
-           Object.values(TaskPriority).includes(obj.priority);
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.title === "string" &&
+        Object.values(TaskStatus).includes(obj.status) &&
+        Object.values(TaskPriority).includes(obj.priority)
+    );
 }
 
 function isProject(obj: any): obj is Project {
-    return obj &&
-           typeof obj.id === 'number' &&
-           typeof obj.name === 'string' &&
-           Object.values(ProjectStatus).includes(obj.status);
+    return (
+        obj &&
+        typeof obj.id === "number" &&
+        typeof obj.name === "string" &&
+        Object.values(ProjectStatus).includes(obj.status)
+    );
 }
 
 // 日期工具函数
 class DateUtils {
     // 格式化日期
-    static formatDate(date: Date | string, format: string = 'YYYY-MM-DD'): string {
-        const d = typeof date === 'string' ? new Date(date) : date;
+    static formatDate(date: Date | string, format: string = "YYYY-MM-DD"): string {
+        const d = typeof date === "string" ? new Date(date) : date;
 
         const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        const seconds = String(d.getSeconds()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        const hours = String(d.getHours()).padStart(2, "0");
+        const minutes = String(d.getMinutes()).padStart(2, "0");
+        const seconds = String(d.getSeconds()).padStart(2, "0");
 
         return format
-            .replace('YYYY', year.toString())
-            .replace('MM', month)
-            .replace('DD', day)
-            .replace('HH', hours)
-            .replace('mm', minutes)
-            .replace('ss', seconds);
+            .replace("YYYY", year.toString())
+            .replace("MM", month)
+            .replace("DD", day)
+            .replace("HH", hours)
+            .replace("mm", minutes)
+            .replace("ss", seconds);
     }
 
     // 计算相对时间
     static getRelativeTime(date: Date | string): string {
-        const d = typeof date === 'string' ? new Date(date) : date;
+        const d = typeof date === "string" ? new Date(date) : date;
         const now = new Date();
         const diffTime = now.getTime() - d.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -1290,19 +1331,19 @@ class DateUtils {
         if (diffDays > 0) return `${diffDays}天前`;
         if (diffHours > 0) return `${diffHours}小时前`;
         if (diffMinutes > 0) return `${diffMinutes}分钟前`;
-        return '刚刚';
+        return "刚刚";
     }
 
     // 检查是否为今天
     static isToday(date: Date | string): boolean {
-        const d = typeof date === 'string' ? new Date(date) : date;
+        const d = typeof date === "string" ? new Date(date) : date;
         const today = new Date();
         return d.toDateString() === today.toDateString();
     }
 
     // 检查是否逾期
     static isOverdue(date: Date | string): boolean {
-        const d = typeof date === 'string' ? new Date(date) : date;
+        const d = typeof date === "string" ? new Date(date) : date;
         return d < new Date();
     }
 }
@@ -1312,9 +1353,16 @@ class ColorUtils {
     // 生成随机颜色
     static generateRandomColor(): string {
         const colors = [
-            '#f56565', '#ed8936', '#ecc94b', '#48bb78',
-            '#38b2ac', '#4299e1', '#667eea', '#9f7aea',
-            '#ed64a6', '#a0aec0'
+            "#f56565",
+            "#ed8936",
+            "#ecc94b",
+            "#48bb78",
+            "#38b2ac",
+            "#4299e1",
+            "#667eea",
+            "#9f7aea",
+            "#ed64a6",
+            "#a0aec0",
         ];
         return colors[Math.floor(Math.random() * colors.length)];
     }
@@ -1332,7 +1380,7 @@ class ColorUtils {
 
     // 判断颜色是否为深色
     static isDarkColor(color: string): boolean {
-        const hex = color.replace('#', '');
+        const hex = color.replace("#", "");
         const r = parseInt(hex.substr(0, 2), 16);
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
@@ -1348,7 +1396,7 @@ class StorageUtils {
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
-            console.error('设置本地存储失败:', error);
+            console.error("设置本地存储失败:", error);
         }
     }
 
@@ -1358,7 +1406,7 @@ class StorageUtils {
             const item = localStorage.getItem(key);
             return item ? JSON.parse(item) : defaultValue || null;
         } catch (error) {
-            console.error('获取本地存储失败:', error);
+            console.error("获取本地存储失败:", error);
             return defaultValue || null;
         }
     }
@@ -1368,7 +1416,7 @@ class StorageUtils {
         try {
             localStorage.removeItem(key);
         } catch (error) {
-            console.error('移除本地存储失败:', error);
+            console.error("移除本地存储失败:", error);
         }
     }
 
@@ -1377,7 +1425,7 @@ class StorageUtils {
         try {
             localStorage.clear();
         } catch (error) {
-            console.error('清空本地存储失败:', error);
+            console.error("清空本地存储失败:", error);
         }
     }
 }
@@ -1448,7 +1496,7 @@ class ThrottleUtils {
 // 7. 错误处理和日志
 // ============================================================================
 
-console.log('=== 7. 错误处理和日志 ===');
+console.log("=== 7. 错误处理和日志 ===");
 
 // 自定义错误类
 class AppError extends Error {
@@ -1458,12 +1506,12 @@ class AppError extends Error {
 
     constructor(
         message: string,
-        code: string = 'UNKNOWN_ERROR',
+        code: string = "UNKNOWN_ERROR",
         statusCode: number = 500,
         isOperational: boolean = true
     ) {
         super(message);
-        this.name = 'AppError';
+        this.name = "AppError";
         this.code = code;
         this.statusCode = statusCode;
         this.isOperational = isOperational;
@@ -1475,8 +1523,8 @@ class AppError extends Error {
 // API 错误类
 class ApiError extends AppError {
     constructor(message: string, statusCode: number = 500) {
-        super(message, 'API_ERROR', statusCode);
-        this.name = 'ApiError';
+        super(message, "API_ERROR", statusCode);
+        this.name = "ApiError";
     }
 }
 
@@ -1485,8 +1533,8 @@ class ValidationError extends AppError {
     public readonly field: string;
 
     constructor(message: string, field: string) {
-        super(message, 'VALIDATION_ERROR', 400);
-        this.name = 'ValidationError';
+        super(message, "VALIDATION_ERROR", 400);
+        this.name = "ValidationError";
         this.field = field;
     }
 }
@@ -1495,7 +1543,7 @@ class ValidationError extends AppError {
 class ErrorHandler {
     // 处理错误
     static handle(error: Error): void {
-        console.error('Error occurred:', error);
+        console.error("Error occurred:", error);
 
         if (error instanceof AppError) {
             this.handleAppError(error);
@@ -1518,56 +1566,56 @@ class ErrorHandler {
     // 处理未知错误
     private static handleUnknownError(error: Error): void {
         this.logError(error);
-        this.showErrorToUser('发生了未知错误，请稍后重试');
+        this.showErrorToUser("发生了未知错误，请稍后重试");
     }
 
     // 显示错误给用户
     private static showErrorToUser(message: string): void {
         // 这里应该调用通知组件显示错误
-        console.error('User Error:', message);
+        console.error("User Error:", message);
     }
 
     // 记录错误日志
     private static logError(error: Error): void {
         // 这里应该发送错误到日志服务
-        console.error('System Error:', error);
+        console.error("System Error:", error);
     }
 }
 
 // 日志工具
 class Logger {
-    private static level: 'debug' | 'info' | 'warn' | 'error' = 'info';
+    private static level: "debug" | "info" | "warn" | "error" = "info";
 
-    static setLevel(level: 'debug' | 'info' | 'warn' | 'error'): void {
+    static setLevel(level: "debug" | "info" | "warn" | "error"): void {
         this.level = level;
     }
 
     static debug(message: string, ...args: any[]): void {
-        if (this.shouldLog('debug')) {
+        if (this.shouldLog("debug")) {
             console.debug(`[DEBUG] ${message}`, ...args);
         }
     }
 
     static info(message: string, ...args: any[]): void {
-        if (this.shouldLog('info')) {
+        if (this.shouldLog("info")) {
             console.info(`[INFO] ${message}`, ...args);
         }
     }
 
     static warn(message: string, ...args: any[]): void {
-        if (this.shouldLog('warn')) {
+        if (this.shouldLog("warn")) {
             console.warn(`[WARN] ${message}`, ...args);
         }
     }
 
     static error(message: string, ...args: any[]): void {
-        if (this.shouldLog('error')) {
+        if (this.shouldLog("error")) {
             console.error(`[ERROR] ${message}`, ...args);
         }
     }
 
     private static shouldLog(level: string): boolean {
-        const levels = ['debug', 'info', 'warn', 'error'];
+        const levels = ["debug", "info", "warn", "error"];
         return levels.indexOf(level) >= levels.indexOf(this.level);
     }
 }

@@ -1,6 +1,6 @@
 /**
  * 第8章：Vue 组件的 TypeScript 开发练习题
- * 
+ *
  * 请完成以下练习，掌握用 TypeScript 开发类型安全的 Vue 组件
  * 包括 Props 类型定义、组件间通信、Mixin、高阶组件等
  */
@@ -12,7 +12,7 @@ export {};
 // 练习1：复杂 Props 类型定义练习
 // ============================================================================
 
-console.log('=== 练习1：复杂 Props 类型定义练习 ===');
+console.log("=== 练习1：复杂 Props 类型定义练习 ===");
 
 // TODO: 定义以下类型和组件
 
@@ -52,21 +52,21 @@ console.log('=== 练习1：复杂 Props 类型定义练习 ===');
 // @Component
 // class DataTableComponent extends Vue {
 //     // TODO: 使用 @Prop 装饰器定义 props
-//     
+//
 //     // TODO: 定义组件内部状态
 //     // private sortColumn: string | null = null;
 //     // private sortOrder: 'asc' | 'desc' | null = null;
-//     
+//
 //     // TODO: 定义计算属性
 //     // get sortedData(): any[] {
 //         // 实现数据排序逻辑
 //     // }
-//     
+//
 //     // TODO: 定义方法
 //     // handleSort(column: TableColumn): void {
 //         // 实现排序逻辑
 //     // }
-//     
+//
 //     // handleRowClick(record: any, index: number): void {
 //         // 实现行点击逻辑
 //     // }
@@ -76,7 +76,7 @@ console.log('=== 练习1：复杂 Props 类型定义练习 ===');
 // 练习2：组件间通信练习
 // ============================================================================
 
-console.log('=== 练习2：组件间通信练习 ===');
+console.log("=== 练习2：组件间通信练习 ===");
 
 // TODO: 实现一个用户管理系统的组件通信
 
@@ -109,10 +109,10 @@ console.log('=== 练习2：组件间通信练习 ===');
 //     // TODO: 定义 props
 //     // @Prop({ type: Object })
 //     // initialUser?: Partial<User>;
-//     
+//
 //     // @Prop({ type: Boolean, default: false })
 //     // loading!: boolean;
-//     
+//
 //     // TODO: 定义组件状态
 //     // private form: UserFormData = {
 //         // name: '',
@@ -120,31 +120,31 @@ console.log('=== 练习2：组件间通信练习 ===');
 //         // role: 'user',
 //         // isActive: true
 //     // };
-//     
+//
 //     // private errors: ValidationError[] = [];
-//     
+//
 //     // TODO: 监听 initialUser 变化
 //     // @Watch('initialUser', { immediate: true })
 //     // onInitialUserChanged(user?: Partial<User>): void {
 //         // 更新表单数据
 //     // }
-//     
+//
 //     // TODO: 定义表单验证方法
 //     // validateForm(): boolean {
 //         // 实现表单验证逻辑
 //     // }
-//     
+//
 //     // TODO: 使用 @Emit 装饰器定义事件
 //     // @Emit('submit')
 //     // handleSubmit(): UserFormData | null {
 //         // 验证表单并返回数据
 //     // }
-//     
+//
 //     // @Emit('cancel')
 //     // handleCancel(): void {
 //         // 重置表单
 //     // }
-//     
+//
 //     // @Emit('validation-error')
 //     // emitValidationError(): ValidationError[] {
 //         // 返回验证错误
@@ -161,24 +161,24 @@ console.log('=== 练习2：组件间通信练习 ===');
 //     // private editingUser: User | null = null;
 //     // private showForm: boolean = false;
 //     // private formLoading: boolean = false;
-//     
+//
 //     // TODO: 定义方法
 //     // async handleUserSubmit(formData: UserFormData): Promise<void> {
 //         // 处理用户提交（新增或编辑）
 //     // }
-//     
+//
 //     // handleFormCancel(): void {
 //         // 处理表单取消
 //     // }
-//     
+//
 //     // handleValidationError(errors: ValidationError[]): void {
 //         // 处理验证错误
 //     // }
-//     
+//
 //     // editUser(user: User): void {
 //         // 编辑用户
 //     // }
-//     
+//
 //     // deleteUser(userId: number): void {
 //         // 删除用户
 //     // }
@@ -188,7 +188,7 @@ console.log('=== 练习2：组件间通信练习 ===');
 // 练习3：Event Bus 类型安全通信练习
 // ============================================================================
 
-console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
+console.log("=== 练习3：Event Bus 类型安全通信练习 ===");
 
 // TODO: 实现类型安全的 Event Bus
 
@@ -206,19 +206,19 @@ console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
 // class TypedEventBus {
 //     // TODO: 实现类型安全的事件总线
 //     // private vue = new Vue();
-//     
+//
 //     // emit<K extends keyof EventMap>(event: K, ...args: Parameters<EventMap[K]>): void {
 //         // 发送事件
 //     // }
-//     
+//
 //     // on<K extends keyof EventMap>(event: K, callback: EventMap[K]): void {
 //         // 监听事件
 //     // }
-//     
+//
 //     // off<K extends keyof EventMap>(event: K, callback?: EventMap[K]): void {
 //         // 移除事件监听
 //     // }
-//     
+//
 //     // once<K extends keyof EventMap>(event: K, callback: EventMap[K]): void {
 //         // 监听一次事件
 //     // }
@@ -237,7 +237,7 @@ console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
 //         // type: 'success' | 'error' | 'warning';
 //         // timestamp: Date;
 //     // }> = [];
-//     
+//
 //     // TODO: 在组件挂载时监听事件
 //     // mounted(): void {
 //         // eventBus.on('notification', this.handleNotification);
@@ -245,7 +245,7 @@ console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
 //         // eventBus.on('user-updated', this.handleUserUpdated);
 //         // eventBus.on('user-deleted', this.handleUserDeleted);
 //     // }
-//     
+//
 //     // TODO: 在组件销毁前移除事件监听
 //     // beforeDestroy(): void {
 //         // eventBus.off('notification', this.handleNotification);
@@ -253,20 +253,20 @@ console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
 //         // eventBus.off('user-updated', this.handleUserUpdated);
 //         // eventBus.off('user-deleted', this.handleUserDeleted);
 //     // }
-//     
+//
 //     // TODO: 定义事件处理方法
 //     // private handleNotification(message: string, type: 'success' | 'error' | 'warning'): void {
 //         // 添加通知
 //     // }
-//     
+//
 //     // private handleUserCreated(user: User): void {
 //         // 处理用户创建事件
 //     // }
-//     
+//
 //     // private handleUserUpdated(user: User): void {
 //         // 处理用户更新事件
 //     // }
-//     
+//
 //     // private handleUserDeleted(userId: number): void {
 //         // 处理用户删除事件
 //     // }
@@ -276,7 +276,7 @@ console.log('=== 练习3：Event Bus 类型安全通信练习 ===');
 // 练习4：TypeScript Mixin 练习
 // ============================================================================
 
-console.log('=== 练习4：TypeScript Mixin 练习 ===');
+console.log("=== 练习4：TypeScript Mixin 练习 ===");
 
 // TODO: 实现可重用的 TypeScript Mixin
 
@@ -393,7 +393,7 @@ console.log('=== 练习4：TypeScript Mixin 练习 ===');
 // 练习5：高阶组件练习
 // ============================================================================
 
-console.log('=== 练习5：高阶组件练习 ===');
+console.log("=== 练习5：高阶组件练习 ===");
 
 // TODO: 实现高阶组件
 
@@ -473,7 +473,7 @@ console.log('=== 练习5：高阶组件练习 ===');
 // 练习6：组件测试练习
 // ============================================================================
 
-console.log('=== 练习6：组件测试练习 ===');
+console.log("=== 练习6：组件测试练习 ===");
 
 // TODO: 为组件编写单元测试
 
